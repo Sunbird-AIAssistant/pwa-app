@@ -9,7 +9,7 @@ import { RecentlyViewedContent } from './models/recently.viewed.content';
 import { ContentRVCEntry } from './db/content.rvc';
 import { ContentRVCMixMapper } from './util/content.rvc.mix.entry.mapper';
 import { v4 as uuidv4 } from "uuid";
-import { ContentMetaData, MimeType } from 'src/app/appConstants';
+import { SearchContentMetaData, MimeType } from 'src/app/appConstants';
 import { ApiHttpRequestType, ApiRequest } from '../api/model/api.request';
 import { ApiService } from '../api/api.service';
 import { DbService } from '..';
@@ -52,17 +52,16 @@ export class ContentService {
     return Promise.resolve(recentlyViewedContent)
   }
 
-  async getAllContent(): Promise<Array<ContentMetaData>> {
+  async getAllContent(): Promise<Array<SearchContentMetaData>> {
     const query = `SELECT c.*, cr.content_identifier from ${ContentEntry.TABLE_NAME} c LEFT JOIN ${ContentReactionsEntry.TABLE_NAME} cr ON c.identifier = cr.content_identifier WHERE ${ContentEntry.COLUMN_NAME_SOURCE} NOT IN ('local', 'dialcode') ORDER BY ${ContentEntry.COLUMN_NAME_TIME_STAMP}`;
-    const contentList: Array<ContentMetaData> = []
+    const contentList: Array<SearchContentMetaData> = []
     return this.dbService.readDbData(query).then((content: Array<any>) => {
       content.map((element) => {
-        const metaData = JSON.parse(element['metadata']) as ContentMetaData;
-        metaData.isLiked = !!element['content_identifier'];
+        const metaData = JSON.parse(element['metadata']) as SearchContentMetaData;
+        // metaData.isLiked = !!element['content_identifier'];
         element.metaData = metaData;
         contentList.push(element);
       })
-
       return Promise.resolve(contentList);
     })
   }

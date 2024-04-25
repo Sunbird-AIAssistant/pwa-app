@@ -36,8 +36,8 @@ export class ConfigService {
       .withPath(config.api.PAGE_SEARCH_API)
       .withType(ApiHttpRequestType.POST)
       .withBearerToken(true)
-      .withBody(req)
-      .withLanguge(lang)
+      // .withBody(req)
+      // .withLanguge(lang)
       .build()
     return lastValueFrom(this.apiService.fetch(apiRequest).pipe(
       map((apiResponse) => apiResponse.body.result),

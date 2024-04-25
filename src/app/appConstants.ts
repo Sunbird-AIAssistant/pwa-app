@@ -130,6 +130,37 @@ export interface ContentMetaData {
     isLiked?: boolean
 }
 
+export interface SearchContentMetaData {
+    id: string;
+    unique_id: string;
+    item_id: string;
+    provider_id: string;
+    provider_name: null;
+    bpp_id: string;
+    bpp_uri: string;
+    title: string;
+    description: string;
+    image_url: string;
+    code: string;
+    competency: string;
+    contentType: string;
+    domain: string;
+    goal: string;
+    language: string;
+    link: string;
+    sourceOrganisation: string;
+    themes: string;
+    minAge: string;
+    maxAge: string;
+    author: string;
+    learningOutcomes: string;
+    category: string;
+    persona: string;
+    license: null;
+    conditions: string;
+    urlType: string;
+}
+
 export interface Searchrequest {
     request: {
         pageId: string,

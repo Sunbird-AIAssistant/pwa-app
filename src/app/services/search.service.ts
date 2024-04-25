@@ -48,17 +48,17 @@ export class SearchService {
   }
 
   postContentSearch(data: any, lang: any): Promise<any> {
-    let request = {
-      request: {
-        query: data.query,
-        filters: data.filter ?? ""
-      }
-    }
+    // let request = {
+    //   request: {
+    //     query: data.query,
+    //     filters: data.filter ?? ""
+    //   }
+    // }
     const apiRequest = new ApiRequest.Builder()
       .withHost(config.api.BASE_URL)
       .withPath(config.api.CONTENT_SEARCH_API)
       .withType(ApiHttpRequestType.POST)
-      .withBody(request)
+      .withBody(data)
       .withBearerToken(true)
       .withLanguge(lang)
       .build()
