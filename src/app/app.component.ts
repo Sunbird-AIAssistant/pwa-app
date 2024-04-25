@@ -8,6 +8,7 @@ import { ScannerService } from './services/scan/scanner.service';
 import { LangaugeSelectComponent } from './components/langauge-select/langauge-select.component';
 import { Router } from '@angular/router';
 import { QrcodePopupComponent } from './components/qrcode-popup/qrcode-popup.component';
+import { SwUpdate } from '@angular/service-worker';
 
 @Component({
   selector: 'app-root',
@@ -24,7 +25,18 @@ export class AppComponent implements OnInit {
     private scannerService: ScannerService,
     private popoverCtrl: PopoverController,
     private modalCtrl: ModalController,
-    private router: Router) {
+    private router: Router,
+    private swUpdate: SwUpdate) {
+      this.initializeApp();
+  }
+
+  initializeApp(): void {
+    if (this.swUpdate.available) {
+      this.swUpdate.available.subscribe(() => {
+        if (confirm('A new version is available. Load it?'))
+          window.location.reload();
+      });
+    }    
   }
 
   async ngOnInit() {

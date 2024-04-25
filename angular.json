@@ -37,9 +37,10 @@
               },
               {
                 "glob": "**/*.*",
-                "input": "./node_modules/@project-sunbird/sunbird-video-player-web-component/assets",  
+                "input": "./node_modules/@project-sunbird/sunbird-video-player-web-component/assets",
                 "output": "/assets/"
-              }
+              },
+              "src/manifest.webmanifest"
             ],
             "styles": [
               "src/theme/variables.scss", "src/global.scss",
@@ -53,7 +54,9 @@
               "node_modules/jquery/dist/jquery.min.js",
               "node_modules/@project-sunbird/sunbird-video-player-web-component/sunbird-video-player.js",
               "node_modules/plyr/dist/plyr.js"
-            ]
+            ],
+            "serviceWorker": true,
+            "ngswConfigPath": "ngsw-config.json"
           },
           "configurations": {
             "production": {
@@ -130,7 +133,8 @@
                 "glob": "**/*.svg",
                 "input": "node_modules/ionicons/dist/ionicons/svg",
                 "output": "./svg"
-              }
+              },
+              "src/manifest.webmanifest"
             ],
             "styles": ["src/theme/variables.scss", "src/global.scss"],
             "scripts": []
