@@ -1,0 +1,108 @@
+{
+    "body": {
+        "result": {
+            "pageConfig": [{
+                "defaultFilter": {
+                    "id": "All",
+                    "label": "All",
+                    "query": "All",
+                    "filters": "All"
+                },
+                    "additionalFilters": [
+                        {
+                            "id": "Stories",
+                            "label": "Stories",
+                            "query": "Stories",
+                            "filters": "Stories"
+                        },
+                        {
+                            "id": "Toys and Games",
+                            "label": "Toys and Games",
+                            "query": "Toys and Games",
+                            "filters": "Toys and Games"
+                        },
+                        {
+                            "id": "learning",
+                            "label": "Learning",
+                            "query": "learning",
+                            "filters": "learning"
+                        },
+                        {
+                            "id": "online courses",
+                            "label": "online courses",
+                            "query": "online courses",
+                            "filters": "online courses"
+                        }
+                    ]
+                       }
+            ],
+            "languages": [
+                {
+                    "id": "as",
+                    "label": "অসমীয়া",
+                    "default": true
+                },
+                {
+                    "id": "bn",
+                    "label": "বাংলা",
+                    "default": false
+                },
+                {
+                    "id": "bo",
+                    "label": "बोडो",
+                    "default": false
+                },
+                {
+                    "id": "do",
+                    "label": "डोगरी",
+                    "default": true
+                },
+                {
+                    "id": "en",
+                    "label": "English",
+                    "default": false
+                },
+                {
+                    "id": "gu",
+                    "label": "ગુજરાતી",
+                    "default": false
+                },
+                {
+                    "id": "hi",
+                    "label": "हिंदी",
+                    "default": true
+                },
+                {
+                    "id": "kn",
+                    "label": "ಕನ್ನಡ",
+                    "default": false
+                },
+                {
+                    "id": "ko",
+                    "label": "कोंकणी",
+                    "default": false
+                },
+                {
+                    "id": "ks",
+                    "label": "ಕಶ್ಮೀರಿ",
+                    "default": false
+                },
+                {
+                    "id": "ma",
+                    "label": "मैथिली",
+                    "default": true
+                },
+                {
+                    "id": "ml",
+                    "label": "മലയാളം",
+                    "default": false
+                },
+                {
+                    "id": "mn",
+                    "label": "মণিপুরী",
+                    "default": false
+                }
+            ]
+        }
+    }
+}

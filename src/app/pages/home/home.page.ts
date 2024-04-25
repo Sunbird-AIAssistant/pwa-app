@@ -21,6 +21,7 @@ import { Subscription } from 'rxjs';
 import { App } from '@capacitor/app';
 import { LocalNotificationSchema } from '@capacitor/local-notifications';
 import { AppUpdateService } from 'src/app/services/app-update/app-update.service';
+import searchBody from '../../../assets/mock/searchBody.json'
 import { ConfigVariables } from "../../config";
 
 @Component({
@@ -122,39 +123,42 @@ export class HomePage implements OnInit, OnTabViewWillEnter, OnDestroy {
     })
     // this.langChangeSubscription = this.translateService.onLangChange.subscribe((event: LangChangeEvent) => {
     // });
-    let req: Searchrequest = {
-      request: {
-        pageId: '',
-        query: undefined,
-        filters: undefined
-      }
-    }
+    // let req: Searchrequest = {
+    //   request: {
+    //     pageId: '',
+    //     query: undefined,
+    //     filters: undefined
+    //   }
+    // }
+
+    let req = searchBody;
     // main content config and filter
     this.headerService.filterConfigEmitted$.subscribe(async (val: any) => {
-      req.request.pageId = PageId.HOME;
-      req.request.query = val.defaultFilter.query;
-      req.request.filters = val.defaultFilter.filters;
+      // req.request.pageId = PageId.HOME;
+      // req.request.query = val.defaultFilter.query;
+      // req.request.filters = val.defaultFilter.filters;
       this.configContents = [];
       this.contentList = [];
       this.serverError = false;
       this.showSheenAnimation = true;
-      try {
-        let lang = await this.storage.getData('lang')
-        let content: Array<ContentMetaData> = await this.configService.getAllContent(req, lang);
-        console.log('content', content);
+      // try {
+        let lang = 'en';//await this.storage.getData('lang')
+        let content = await this.configService.getAllContent(req, lang);
         this.mappUIContentList(content);
-      }
-      catch (e) {
-        this.showSheenAnimation = false;
-        this.serverError = true;
-      }
+      // }
+      // catch (e) {
+      //   this.showSheenAnimation = false;
+      //   this.serverError = true;
+      // }
     })
     // side bar menu and filter chip events
     this.headerService.sideMenuItemEventEmitted$.subscribe(async (val: any) => {
+      let req = searchBody;
+      req['message']['intent']['item']['descriptor'].name = val.query;
       console.log(val);
       this.showSheenAnimation = true;
       try {
-        let res: any = await this.searchService.postContentSearch({ query: val.query, filter: val.filters }, await this.storage.getData('lang'));
+        let res: any = await this.searchService.postContentSearch(req, await this.storage.getData('lang'));
         console.log('Response', res);
         this.mappUIContentList(res);
       }
@@ -197,7 +201,7 @@ export class HomePage implements OnInit, OnTabViewWillEnter, OnDestroy {
   }
 
   async mappUIContentList(content: Array<ContentMetaData>) {
-    await this.contentService.deleteAllContents();
+    // await this.contentService.deleteAllContents();
     this.showSheenAnimation = false;
     this.configContents = [];
     this.contentList = [];
@@ -273,7 +277,7 @@ export class HomePage implements OnInit, OnTabViewWillEnter, OnDestroy {
         this.addContentToMyPitara(result.data.content || content)
       } else if (result.data && result.data.type == 'like') {
         this.contentService.likeContent(result.data.content || content, 'guest', true)
-        if(result.data.content.metaData.isLiked) {
+       /* if(result.data.content.metaData.isLiked) {
           await NativeAudio.play({
             assetId: 'windchime',
           });
@@ -285,7 +289,7 @@ export class HomePage implements OnInit, OnTabViewWillEnter, OnDestroy {
             origin: { y: 0.5, x: 0.5 },
             colors: ['#a864fd', '#29cdff', '#78ff44', '#ff718d', '#fdff6a']
           });
-        }
+        }*/
         this.telemetryGeneratorService.generateInteractTelemetry('TOUCH', 'content-liked', 'home', 'home', new TelemetryObject(content?.metaData.identifier!, content?.metaData.mimetype!, ''));
       }
     });
@@ -304,6 +308,7 @@ export class HomePage implements OnInit, OnTabViewWillEnter, OnDestroy {
   }
 
   async playContent(event: Event, content: Content) {
+    console.log("event", event);
     this.contentService.markContentAsViewed(content)
     this.configContents.forEach(cont => {
       cont.play = false;
