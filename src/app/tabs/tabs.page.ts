@@ -6,6 +6,7 @@ import { TabsService } from '../services/tabs.service';
 import { TelemetryGeneratorService } from '../services/telemetry/telemetry.generator.service';
 import { AppExitComponent } from '../components/app-exit/app-exit.component';
 import { App } from '@capacitor/app';
+import { ConfigVariables } from "../config";
 
 @Component({
   selector: 'app-tabs',
@@ -15,6 +16,7 @@ import { App } from '@capacitor/app';
 export class TabsPage implements OnTabViewWillEnter{
   subscription: any;
   optModalOpen = false;
+  configVariables = ConfigVariables;
   @ViewChild('tabRef', { static: false }) tabRef!: IonTabs;
   constructor(private platform: Platform,
     private router: Router,

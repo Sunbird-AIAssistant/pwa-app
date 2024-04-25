@@ -1,12 +1,12 @@
 <ion-content [fullscreen]="true" class="splash-screen">
   <div class="splash-screen-header">
     <div class="MOE-logos">
-      <img src="assets/images/Ministry_of_Education_India.svg" alt="Ministry logo" />
+      <img [src]=(configVariables.splashImage) alt="Tekdi logo" />
       <img src="assets/images/NCERT_1.svg" alt="NCERT image" />
     </div>
     <div class="bhashini-logo">
       <span class="text">Powered by</span>
-      <img src="assets/images/bhashini-logo.png" alt="bhashini" />
+      <img [src]=(configVariables.splashImage) alt="Tekdi" />
     </div>
   </div>
   <!-- <div class="splash-screen-img">
@@ -16,6 +16,6 @@
     <img src="assets/images/splash-center-box.png" alt="Pitara box" class="pitara-box">
   </div>  
   <div class="footer-img">
-    <img src="assets/images/pitara-logo.png" alt="pitara-logo">
+    <img [src]=(configVariables.splashImage) alt="pitara-logo">
   </div>
 </ion-content>

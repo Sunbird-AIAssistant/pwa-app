@@ -9,6 +9,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { ApiModule } from 'src/app/services/api/api.module';
 import { Config } from 'src/app/appConstants';
 import { LocalNotificationSchema } from '@capacitor/local-notifications';
+import { ConfigVariables } from "../../config";
 
 @Component({
   selector: 'app-splash',
@@ -16,6 +17,7 @@ import { LocalNotificationSchema } from '@capacitor/local-notifications';
   styleUrls: ['splash.page.scss'],
 })
 export class SplashPage implements OnInit {
+  configVariables = ConfigVariables;
   constructor(private appinitialise: AppInitializeService,
     private storage: StorageService,
     private router: Router,

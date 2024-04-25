@@ -21,6 +21,7 @@ import { Subscription } from 'rxjs';
 import { App } from '@capacitor/app';
 import { LocalNotificationSchema } from '@capacitor/local-notifications';
 import { AppUpdateService } from 'src/app/services/app-update/app-update.service';
+import { ConfigVariables } from "../../config";
 
 @Component({
   selector: 'app-home',
@@ -47,6 +48,7 @@ export class HomePage implements OnInit, OnTabViewWillEnter, OnDestroy {
   networkChangeSub: Subscription | null = null;
   selectedLang: any = "";
   appName: string = "";
+  configVariables = ConfigVariables;
   constructor(
     private headerService: AppHeaderService,
     private router: Router,
@@ -223,12 +225,12 @@ export class HomePage implements OnInit, OnTabViewWillEnter, OnDestroy {
 
   async getServerMetaConfig() {
     let meta: any = await this.storage.getData('configMeta');
-    let config = meta ? JSON.parse(meta) : await this.configService.getConfigMeta();
-    config.pageConfig.forEach((cfg: any) => {
+    let config = this.configVariables.headerFilters;//(meta && meta != 'undefined') ? JSON.parse(meta) : await this.configService.getConfigMeta();
+    config.forEach((cfg: any) => {
       this.filters = (cfg.additionalFilters).sort((a: Filter, b: Filter) => a.index - b.index);
     })
-    this.languages = config.languages.sort((a: Language, b: Language) => a.id.localeCompare(b.id));
-    this.headerService.filterEvent({ defaultFilter: config.pageConfig[0].defaultFilter, filter: this.filters, languages: this.languages });
+    this.languages = this.configVariables.languages.sort((a: Language, b: Language) => a.id.localeCompare(b.id));
+    this.headerService.filterEvent({ defaultFilter: config[0].defaultFilter, filter: this.filters, languages: this.languages });
   }
 
   async tabViewWillEnter() {
