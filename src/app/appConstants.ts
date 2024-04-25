@@ -159,6 +159,7 @@ export interface SearchContentMetaData {
     license: null;
     conditions: string;
     urlType: string;
+    mimetype: string;
 }
 
 export interface Searchrequest {

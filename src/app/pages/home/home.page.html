@@ -48,14 +48,16 @@
           <div class="image-title">{{"Teacher Tara" | translate }}</div>
         </div>
       </div>
-      <div class="card" *ngIf="content.metaData && content.metaData.name">
+      <div class="card" *ngIf="content.metaData && content.metaData.title">
         <div class="card__img" (click)="playContent($event, content)">
+          <img [src]="(content?.metaData?.image_url) ? content?.metaData?.image_url : 'assets/images/Video.png'" alt="">
           <img [src]="(content?.metaData?.thumbnail && !content.metaData.identifier.startsWith('do_')) ? content?.metaData?.thumbnail : 'assets/images/Audio.png'" alt="" *ngIf="content.metaData.mimetype === mimeType.AUDIO">
-          <img appThumbnail [appThumbnail]="content?.metaData" alt=""
-            *ngIf="content.metaData.mimetype === mimeType.YOUTUBE">
+          <img appThumbnail [appThumbnail]="content?.metaData" alt="" *ngIf="content.metaData.mimetype === mimeType.YOUTUBE">
           <!-- <img [src]="loadYoutubeImg(content.metaData.identifier)" alt="" *ngIf="content.metaData.mimetype === mimeType.YOUTUBE && !content.play"> -->
           <img [src]="(content?.metaData?.thumbnail && !content.metaData.identifier.startsWith('do_')) ? content?.metaData?.thumbnail : 'assets/images/Video.png'" alt="" *ngIf="content.metaData.mimetype === mimeType.MP4">
           <img [src]="(content?.metaData?.thumbnail && !content.metaData.identifier.startsWith('do_')) ? content?.metaData?.thumbnail : 'assets/images/PDF.png'" alt="" *ngIf="content.metaData.mimetype === mimeType.PDF">
+          <img [src]="(content?.metaData?.thumbnail =='' && !content.metaData.identifier.startsWith('do_')) ? 'https://ejaaduipitara.ncert.gov.in/assets/img/cards.jpg' : ''" alt="">
+
           <!-- <ion-img *ngIf="content.metaData.thumbnail && !content.play" [src]="content.metaData.thumbnail" alt=""/>
             <ion-img *ngIf="!content.metaData.thumbnail && !content.play" [src]="loadYoutubeImg(content.metaData.identifier)" alt=""/> -->
           <!-- <div *ngIf="content.metaData.mimetype === 'video/x-youtube' && content.play">
@@ -66,7 +68,7 @@
             </div> -->
         </div>
         <div class="card__metadata">
-          <div class="card__title">{{content.metaData?.name}}</div>
+          <div class="card__title">{{content.metaData?.title}}</div>
           <ion-icon aria-hidden="true" src="assets/icon/kabab-icon.svg" (click)="moreOtions(content)"></ion-icon>
         </div>
       </div>

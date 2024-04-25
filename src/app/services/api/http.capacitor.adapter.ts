@@ -58,6 +58,7 @@ interface SearchContentMetaData {
     license: null;
     conditions: string;
     urlType: string;
+    mimetype: string;
 }
 
 @Injectable({
@@ -142,6 +143,7 @@ export class HttpCapacitorAdapter implements HttpClient {
                     license: item.license,
                     conditions: item.conditions,
                     urlType: item.urlType,
+                    mimetype: 'video/x-youtube'
                 };
                 // Push the mapped object into the array
                 mappedContent.push(content);

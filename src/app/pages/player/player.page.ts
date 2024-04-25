@@ -40,8 +40,9 @@ export class PlayerPage implements OnInit {
     let extras = this.router.getCurrentNavigation()?.extras;
     if (extras) {
       this.content = extras.state?.['content'] as Content;
+      console.log('content received in player ', this.content);
       this.playerType = this.getPlayerType(this.content.metaData.mimetype);
-      this.srcUrl = this.content.metaData.url.startsWith('https://') ? this.domSanitiser.bypassSecurityTrustResourceUrl(this.content.metaData.url) : this.domSanitiser.bypassSecurityTrustResourceUrl('https://'+this.content.metaData.url); 
+      this.srcUrl = this.content.metaData.link.startsWith('https://') ? this.domSanitiser.bypassSecurityTrustResourceUrl(this.content.metaData.link) : this.domSanitiser.bypassSecurityTrustResourceUrl('https://'+this.content.metaData.link); 
       this.pageId = extras.state?.['pageid'];
     }
     this.populateCData();

@@ -207,7 +207,6 @@ export class HomePage implements OnInit, OnTabViewWillEnter, OnDestroy {
     this.contentList = [];
     if (content.length > 0) {
       this.noSearchData = false;
-      console.log('content ', content);
       let list: any = {};
       content.forEach((ele: any, i: number) => {
         list = {}
