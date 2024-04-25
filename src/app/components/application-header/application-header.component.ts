@@ -3,6 +3,7 @@ import { AppHeaderService, UtilService } from '../../../app/services';
 import { MenuController } from '@ionic/angular';
 import { TelemetryGeneratorService } from 'src/app/services/telemetry/telemetry.generator.service';
 import { App } from '@capacitor/app';
+import { ConfigVariables } from '../../config';
 
 @Component({
   selector: 'app-application-header',
@@ -19,6 +20,7 @@ export class ApplicationHeaderComponent  implements OnInit {
   defaultFilter!: any;
   appVersion: string = ''
   appName: string = ""
+  configVariables = ConfigVariables;
   constructor(private utilService: UtilService,
     private telemetryGeneratorService: TelemetryGeneratorService,
     public menuCtrl: MenuController,
@@ -41,6 +43,7 @@ export class ApplicationHeaderComponent  implements OnInit {
         this.filters.push(item);
       });
     })
+    this.appInfo = await this.utilService.getAppInfo();
   }
 
   async scan() {

@@ -3,7 +3,7 @@
     <div class="header-content" *ngIf="headerConfig?.actionButtons[0] !== 'bot'">
       <ion-buttons slot="start" class="start-icon">
         <ion-button [hidden]="headerConfig?.showbackButton">
-          <ion-icon aria-hidden="true" class="pitara-icon" src="assets/images/logo.svg"></ion-icon>
+          <ion-icon aria-hidden="true" class="pitara-icon" src="{{configVariables.tenantLogo}}"></ion-icon>
         </ion-button>
         <!-- Back button image -->
         <ion-button [hidden]="!headerConfig?.showbackButton" (click)="emitEvent($event, 'back')">
@@ -11,7 +11,7 @@
         </ion-button>
       </ion-buttons>
       <ion-title role="heading" [ngClass]="{'title_bb': headerConfig?.showbackButton, 'animate_title': headerConfig?.pageTitle == appName}" aria-level="1" 
-      *ngIf="!(headerConfig?.showbackButton && headerConfig?.actionButtons?.indexOf('search') >=0)">{{ headerConfig?.pageTitle | translate}}</ion-title>
+      *ngIf="!(headerConfig?.showbackButton && headerConfig?.actionButtons?.indexOf('search') >=0)">{{ configVariables.siteName }}</ion-title>
       <ion-input type="search" *ngIf="headerConfig?.showbackButton && headerConfig?.actionButtons?.indexOf('search') >=0" #searchInput [placeholder]="'SEARCH_HINT' | translate"></ion-input>
       <ion-buttons slot="end" [hidden]="headerConfig?.showbackButton">
         <ion-button (click)="emitEvent($event, 'search')">
