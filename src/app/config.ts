@@ -7,7 +7,7 @@ export const ConfigVariables = {
         "defaultFilter": {
             "id": "All",
             "label": "All",
-            "query": "All",
+            "query": "",
             "filters": "All"
         },
         "additionalFilters": [
