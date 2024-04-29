@@ -133,21 +133,21 @@ export interface ContentMetaData {
 export interface SearchContentMetaData {
     id: string;
     unique_id: string;
-    item_id: string;
+    identifier: string;
     provider_id: string;
     provider_name: null;
     bpp_id: string;
     bpp_uri: string;
-    title: string;
+    name: string;
     description: string;
-    image_url: string;
+    thumbnail: string;
     code: string;
     competency: string;
     contentType: string;
     domain: string;
     goal: string;
     language: string;
-    link: string;
+    url: string;
     sourceOrganisation: string;
     themes: string;
     minAge: string;

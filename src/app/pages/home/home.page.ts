@@ -307,7 +307,6 @@ export class HomePage implements OnInit, OnTabViewWillEnter, OnDestroy {
   }
 
   async playContent(event: Event, content: Content) {
-    console.log("event", event);
     this.contentService.markContentAsViewed(content)
     this.configContents.forEach(cont => {
       cont.play = false;

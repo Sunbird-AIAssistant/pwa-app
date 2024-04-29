@@ -32,21 +32,21 @@ interface ContentMetaData {
 interface SearchContentMetaData {
     id: string;
     unique_id: string;
-    item_id: string;
+    identifier: string;
     provider_id: string;
     provider_name: null;
     bpp_id: string;
     bpp_uri: string;
-    title: string;
+    name: string;
     description: string;
-    image_url: string;
+    thumbnail: string;
     code: string;
     competency: string;
     contentType: string;
     domain: string;
     goal: string;
     language: string;
-    link: string;
+    url: string;
     sourceOrganisation: string;
     themes: string;
     minAge: string;
@@ -107,6 +107,7 @@ export class HttpCapacitorAdapter implements HttpClient {
         
         this.http.request(requestOptions).then((response: HttpResponse) => {
             response.data = response.data.data.kahani_cache;
+            console.log("response.data", response.data);
 
             // Move mappedContent inside the response handling block
             const mappedContent: SearchContentMetaData[] = [];
@@ -117,21 +118,21 @@ export class HttpCapacitorAdapter implements HttpClient {
                 const content: SearchContentMetaData = {
                     id: item.id,
                     unique_id: item.unique_id,
-                    item_id: item.item_id,
+                    identifier: item.item_id,
                     provider_id: item.provider_id,
                     provider_name: item.provider_name,
                     bpp_id: item.bpp_id,
                     bpp_uri: item.bpp_uri,
-                    title: item.title,
+                    name: item.title,
                     description: item.description,
-                    image_url: item.image_url,
+                    thumbnail: item.image_url,
                     code: item.code,
                     competency: item.competency,
                     contentType: item.contentType,
                     domain: item.domain,
                     goal: item.goal,
                     language: item.language,
-                    link: item.link,
+                    url: item.link,
                     sourceOrganisation: item.sourceOrganisation,
                     themes: item.themes,
                     minAge: item.minAge,
@@ -143,7 +144,8 @@ export class HttpCapacitorAdapter implements HttpClient {
                     license: item.license,
                     conditions: item.conditions,
                     urlType: item.urlType,
-                    mimetype: 'video/x-youtube'
+                    mimetype: item.mimeType || ''
+                    // mimetype: 'video/x-youtube'
                 };
                 // Push the mapped object into the array
                 mappedContent.push(content);
