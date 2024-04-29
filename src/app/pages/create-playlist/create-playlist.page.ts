@@ -169,7 +169,7 @@ export class CreatePlaylistPage implements OnInit {
       this.getContentImgPath();
     }
   }
-  
+
   getContentImgPath(){
     this.selectedContents.forEach((ele) => {
       if (!ele.metaData['thumbnail']) {
@@ -198,7 +198,8 @@ export class CreatePlaylistPage implements OnInit {
       this.optModalOpen = true;
       modal = await this.modalCtrl.create({
         component: UploadLocalComponent,
-        componentProps: {uploadType: [{type: 'url', label: "Upload from Youtube"}, {type: 'file', label: 'Upload from Local Files' }, {type: 'diksha', label: 'Upload from Diksha' }]},
+//         componentProps: {uploadType: [{type: 'url', label: "Upload from Youtube"}, {type: 'file', label: 'Upload from Local Files' }, {type: 'diksha', label: 'Upload from Diksha' }]},
+        componentProps: {uploadType: [{type: 'url', label: "Upload from Youtube"}, {type: 'diksha', label: 'Upload from Diksha' }]},
         cssClass: 'sheet-modal',
         breakpoints: [0.25],
         showBackdrop: false,

@@ -263,7 +263,8 @@ export class ViewAllPage implements OnInit {
       this.optModalOpen = true;
       modal = await this.modalCtrl.create({
         component: UploadLocalComponent,
-        componentProps: {uploadType: [{type: 'url', label: "Upload from Youtube"}, {type: 'file', label: 'Upload from Local Files' }, {type: 'diksha', label: 'Upload from Diksha' }]},
+//         componentProps: {uploadType: [{type: 'url', label: "Upload from Youtube"}, {type: 'file', label: 'Upload from Local Files' }, {type: 'diksha', label: 'Upload from Diksha' }]},
+        componentProps: {uploadType: [{type: 'url', label: "Upload from Youtube"}, {type: 'diksha', label: 'Upload from Diksha' }]},
         cssClass: 'sheet-modal',
         breakpoints: [0.25],
         showBackdrop: false,
@@ -296,7 +297,7 @@ export class ViewAllPage implements OnInit {
         let localContents: Array<Content> = []
         const loader = await this.utilService.getLoader()
         await loader.present();
-        let id = '' 
+        let id = ''
         if(type === 'url') {
           id = getYouTubeID(url) as string
           localContents.push({
