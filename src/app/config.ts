@@ -34,7 +34,13 @@ export const ConfigVariables = {
                 "label": "online courses",
                 "query": "online courses",
                 "filters": "online courses"
-            }
+            },
+            {
+                "id": "Dominoes",
+                "label": "Dominoes",
+                "query": "Dominoes",
+                "filters": "Dominoes"
+            },
         ]
     }],
     "languages": [

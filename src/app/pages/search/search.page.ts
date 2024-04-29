@@ -111,7 +111,9 @@ export class SearchPage implements OnInit, OnTabViewWillEnter {
   }
 
   async handleContentSearch(res?: any, audio: boolean = false) {
-    await this.searchApi.postContentSearch({query: res?.context ?? this.searchKeywords, filter: res?.filter ?? ''}, await this.storage.getData('lang')).then(searchRes => {
+
+    let req = { "title" : res?.context ?? this.searchKeywords };
+    await this.searchApi.postContentSearch(req, await this.storage.getData('lang')).then(searchRes => {
       console.log('searchRes ', searchRes);
       this.telemetryGeneratorService.generateSearchTelemetry(audio ? 'audio': 'text', audio ? '' : this.searchKeywords, searchRes.length, 'search', '' )
       this.disabled = false;
