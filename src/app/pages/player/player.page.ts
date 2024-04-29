@@ -62,8 +62,11 @@ export class PlayerPage implements OnInit {
       return 'video'
     } else if (mimetype == PlayerType.YOUTUBE) {
       return 'youtube'
+    } else (mimetype == PlayerType.LINK) 
+    {
+      return 'link'
     }
-    return ''
+    //return ''
   }
 
   ngOnInit() {
@@ -130,10 +133,14 @@ export class PlayerPage implements OnInit {
           this.playerTelemetryEvents(event);
         });
         this.video.nativeElement.append(epubElement);
+      }else if (this.playerType == "link") {
+        this.srcUrl = this.content?.metaData.url
       }
     }
+    if (this.playerType != "link"){
     const player = new Plyr('#player', { autoplay: true});
     console.log('player ', player);
+  }
   }
 
   ionViewWillLeave() {

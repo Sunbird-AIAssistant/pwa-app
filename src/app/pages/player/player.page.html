@@ -17,4 +17,12 @@
       ></iframe>
     </div>
   </div>
+
+  <div *ngIf="playerType==='link'">
+    <iframe
+    [src]="srcUrl"
+    title="External Website"
+   class="iframeCss"
+  ></iframe>
+  </div>
 </div>

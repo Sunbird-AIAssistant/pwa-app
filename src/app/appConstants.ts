@@ -11,6 +11,7 @@ export class PlayerType {
     static YOUTUBE = "video/x-youtube";
     static AUDIO = "audio/mp3";
     static WEBM = "video/webm";
+    static LINK = "text/html";
 }
 
 

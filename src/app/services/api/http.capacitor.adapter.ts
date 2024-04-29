@@ -98,7 +98,7 @@ export class HttpCapacitorAdapter implements HttpClient {
         } else if (mediaUrl.endsWith(".mp4")) {
             return 'video/mp4';            // MP4 video
         } else {
-            return 'url';
+            return 'text/html';
         }
     }
 
@@ -133,7 +133,7 @@ export class HttpCapacitorAdapter implements HttpClient {
             const mappedContent: SearchContentMetaData[] = [];
 
             response.data.forEach((item : any) => {
-                    let mimeType = item?.link ?  this.checkMimieType(item?.link) : 'url';
+                    let mimeType = item?.link ?  this.checkMimieType(item?.link) : 'text/html';
                 // Traverse through the items array of each provider
                 const content: SearchContentMetaData = {
                     id: item.id,
