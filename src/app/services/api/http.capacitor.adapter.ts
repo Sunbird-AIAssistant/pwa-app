@@ -4,7 +4,6 @@ import { Observable, Subject } from "rxjs";
 import { HttpClient } from "./http.client";
 import { ApiHttpRequestType, ApiRequest } from "./model/api.request";
 import { ApiResponse } from "./model/api.response";
-import searchBody from '../../../assets/mock/onSearch.json';
 
 // Define ContentMetaData interface outside the service class
 interface ContentMetaData {
@@ -82,6 +81,27 @@ export class HttpCapacitorAdapter implements HttpClient {
         return this.invokeRequest(ApiHttpRequestType.POST, baseUrl + path, body, headers);
     }
 
+    checkMimieType(url: any)
+    {
+       
+        const mediaUrl = url;
+        console.log(mediaUrl);
+        console.log(mediaUrl.endsWith(".mp3"));
+
+
+        if (mediaUrl.endsWith(".mp3")) {
+            return 'audio/mp3' ; // // MP3 audio
+        } else if (mediaUrl.endsWith(".pdf")) {
+            return 'application/pdf';             // PDF document
+        } else if (mediaUrl.includes("youtube.com") || mediaUrl.includes("youtu.be")) {
+            return 'video/x-youtube'; //            // YouTube video
+        } else if (mediaUrl.endsWith(".mp4")) {
+            return 'video/mp4';            // MP4 video
+        } else {
+            return 'url';
+        }
+    }
+
     private invokeRequest(type: ApiHttpRequestType, url: string, parametersOrData: any,
                           headers: { [key: string]: string }): Observable<ApiResponse> {
         const observable = new Subject<ApiResponse>();
@@ -113,7 +133,7 @@ export class HttpCapacitorAdapter implements HttpClient {
             const mappedContent: SearchContentMetaData[] = [];
 
             response.data.forEach((item : any) => {
-
+                    let mimeType = item?.link ?  this.checkMimieType(item?.link) : 'url';
                 // Traverse through the items array of each provider
                 const content: SearchContentMetaData = {
                     id: item.id,
@@ -144,7 +164,7 @@ export class HttpCapacitorAdapter implements HttpClient {
                     license: item.license,
                     conditions: item.conditions,
                     urlType: item.urlType,
-                    mimetype: item.mimeType || ''
+                        mimetype: mimeType, //"application/pdf" : "video/x-youtube", // You can populate this based on item properties
                     // mimetype: 'video/x-youtube'
                 };
                 // Push the mapped object into the array

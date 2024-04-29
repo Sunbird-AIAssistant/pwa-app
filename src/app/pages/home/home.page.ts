@@ -21,7 +21,6 @@ import { Subscription } from 'rxjs';
 import { App } from '@capacitor/app';
 import { LocalNotificationSchema } from '@capacitor/local-notifications';
 import { AppUpdateService } from 'src/app/services/app-update/app-update.service';
-import searchBody from '../../../assets/mock/searchBody.json'
 import { ConfigVariables } from "../../config";
 
 @Component({
@@ -131,7 +130,7 @@ export class HomePage implements OnInit, OnTabViewWillEnter, OnDestroy {
     //   }
     // }
 
-    let req = searchBody;
+    let req = {};
     // main content config and filter
     this.headerService.filterConfigEmitted$.subscribe(async (val: any) => {
       // req.request.pageId = PageId.HOME;
@@ -153,8 +152,7 @@ export class HomePage implements OnInit, OnTabViewWillEnter, OnDestroy {
     })
     // side bar menu and filter chip events
     this.headerService.sideMenuItemEventEmitted$.subscribe(async (val: any) => {
-      let req = searchBody;
-      req['message']['intent']['item']['descriptor'].name = val.query;
+      let req = {"category" : val.query};
       console.log(val);
       this.showSheenAnimation = true;
       try {
