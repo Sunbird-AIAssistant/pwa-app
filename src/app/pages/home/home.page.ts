@@ -152,7 +152,12 @@ export class HomePage implements OnInit, OnTabViewWillEnter, OnDestroy {
     })
     // side bar menu and filter chip events
     this.headerService.sideMenuItemEventEmitted$.subscribe(async (val: any) => {
-      let req = {"category" : val.query};
+      let req;
+      if( val.query == "" ||  val?.query == "All"){
+         req = {};
+      }else{
+         req = {"category" : val.query};
+      }
       console.log(val);
       this.showSheenAnimation = true;
       try {
