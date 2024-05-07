@@ -22,6 +22,7 @@ import { App } from '@capacitor/app';
 import { LocalNotificationSchema } from '@capacitor/local-notifications';
 import { AppUpdateService } from 'src/app/services/app-update/app-update.service';
 import { ConfigVariables } from "../../config";
+import { ConfirmService } from 'src/app/services/confirm.service'
 
 @Component({
   selector: 'app-home',
@@ -66,7 +67,8 @@ export class HomePage implements OnInit, OnTabViewWillEnter, OnDestroy {
     private toastController: ToastController,
     private botMessageApiService: BotApiService,
     private lcoalNotifService: LocalNotificationService,
-    private appUpdateService: AppUpdateService) {
+    private appUpdateService: AppUpdateService,
+    private confirmService: ConfirmService) {
       App.getInfo().then(info => {this.appName = info.name});
     this.configContents = [];
     this.contentList = [];
@@ -314,8 +316,10 @@ export class HomePage implements OnInit, OnTabViewWillEnter, OnDestroy {
     this.configContents.forEach(cont => {
       cont.play = false;
     })
-    // if(content.metaData.mimetype !== PlayerType.YOUTUBE) {
+    this.confirmContent(content);
     await this.router.navigate(['/player'], { state: { content } });
+    // if(content.metaData.mimetype !== PlayerType.YOUTUBE) {
+    // await this.router.navigate(['/player'], { state: { content } });
     // } else {
     //   content.play = true;
     //   this.configContents.forEach(cont => {
@@ -389,5 +393,11 @@ export class HomePage implements OnInit, OnTabViewWillEnter, OnDestroy {
       this.generateItems();
       (ev as InfiniteScrollCustomEvent).target.complete();
     }, 500);
+  }
+
+  async confirmContent(content: Content) {
+    if (content !== null && content !== undefined) {
+      await this.confirmService.onConfirmContent(content.metaData);
+    }
   }
 }

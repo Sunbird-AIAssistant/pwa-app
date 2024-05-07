@@ -30,15 +30,18 @@ export class AddToPitaraComponent  implements OnInit {
   }
 
   async getAllPlaylists(name?: string) {
-    await this.playListService.getAllPlayLists('guest').then((result: Array<PlayList>) => {
-      this.playlists = result;
-      if (name) {
-        this.selectedContentId = this.playlists.find((e) => e.name.toLowerCase()===name.toLowerCase()).identifier || this.playlists[0].identifier;
-      }
-      console.log('playlists', this.playlists);
-    }).catch((error) => {
-      console.log('error', error)
-    })
+    if (name !== null && name !== undefined) {
+      await this.playListService.getAllPlayLists('guest').then((result: Array<PlayList>) => {
+        this.playlists = result;
+        if (name) {
+          this.selectedContentId = this.playlists.find((e) => e.name.toLowerCase()===name.toLowerCase()).identifier || this.playlists[0].identifier;
+        }
+        console.log('playlists', this.playlists);
+      }).catch((error) => {
+        console.log('error', error)
+      })
+    }
+    
   }
 
   playlistSelected(ev: any) {

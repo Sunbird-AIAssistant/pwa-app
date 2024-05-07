@@ -126,7 +126,7 @@ export class HttpCapacitorAdapter implements HttpClient {
         console.log('requestOptions', requestOptions);
         
         this.http.request(requestOptions).then((response: HttpResponse) => {
-            response.data = response.data.data.kahani_cache;
+            response.data = response.data.data.kahani_cache_dev;
             console.log("response.data", response.data);
 
             // Move mappedContent inside the response handling block
