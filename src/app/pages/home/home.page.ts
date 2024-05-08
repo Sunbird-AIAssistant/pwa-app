@@ -316,7 +316,6 @@ export class HomePage implements OnInit, OnTabViewWillEnter, OnDestroy {
     this.configContents.forEach(cont => {
       cont.play = false;
     })
-    this.confirmContent(content);
     await this.router.navigate(['/player'], { state: { content } });
     // if(content.metaData.mimetype !== PlayerType.YOUTUBE) {
     // await this.router.navigate(['/player'], { state: { content } });
