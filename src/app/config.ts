@@ -1,8 +1,8 @@
 export const ConfigVariables = {
-    "tenantLogo": "assets/images/Story_bot.svg",
-    "siteName": "BEML Public School",
+    "tenantLogo": "assets/school/GEMS.svg",
+    "siteName": "Garhwal English Medium School ",
     "siteByLine": "Listen, Learn & Grow !!!",
-    "splashImage": "assets/images/tekdi.png",
+    "splashImage": "assets/school/GEMS.jpeg",
     "headerFilters": [{
         "defaultFilter": {
             "id": "All",
@@ -18,96 +18,41 @@ export const ConfigVariables = {
                 "filters": "Stories"
             },
             {
-                "id": "Toys and Games",
-                "label": "Toys and Games",
-                "query": "Toys and Games",
-                "filters": "Toys and Games"
+                "id": "Activities",
+                "label": "Activities",
+                "query": "Activities",
+                "filters": "Activities"
             },
             {
-                "id": "learning",
-                "label": "Learning",
-                "query": "learning",
-                "filters": "learning"
+                "id": "Songs",
+                "label": "Songs",
+                "query": "Songs",
+                "filters": "Songs"
             },
             {
-                "id": "online courses",
-                "label": "online courses",
-                "query": "online courses",
-                "filters": "online courses"
+                "id": "Audio Books",
+                "label": "Audio Books",
+                "query": "Audio Books",
+                "filters": "Audio Books"
             },
             {
-                "id": "Dominoes",
-                "label": "Dominoes",
-                "query": "Dominoes",
-                "filters": "Dominoes"
+                "id": "Handbooks",
+                "label": "Handbooks",
+                "query": "Handbooks",
+                "filters": "Handbooks"
             },
         ]
     }],
     "languages": [
-        {
-            "id": "as",
-            "label": "অসমীয়া",
-            "default": true
-        },
-        {
-            "id": "bn",
-            "label": "বাংলা",
-            "default": false
-        },
-        {
-            "id": "bo",
-            "label": "बोडो",
-            "default": false
-        },
-        {
-            "id": "do",
-            "label": "डोगरी",
-            "default": true
-        },
         {
             "id": "en",
             "label": "English",
             "default": false
         },
         {
-            "id": "gu",
-            "label": "ગુજરાતી",
-            "default": false
-        },
-        {
             "id": "hi",
             "label": "हिंदी",
             "default": true
-        },
-        {
-            "id": "kn",
-            "label": "ಕನ್ನಡ",
-            "default": false
-        },
-        {
-            "id": "ko",
-            "label": "कोंकणी",
-            "default": false
-        },
-        {
-            "id": "ks",
-            "label": "ಕಶ್ಮೀರಿ",
-            "default": false
-        },
-        {
-            "id": "ma",
-            "label": "मैथिली",
-            "default": true
-        },
-        {
-            "id": "ml",
-            "label": "മലയാളം",
-            "default": false
-        },
-        {
-            "id": "mn",
-            "label": "মণিপুরী",
-            "default": false
         }
     ],
     // "apiEndPoint": "/dsep/search",
@@ -118,9 +63,9 @@ export const ConfigVariables = {
     // "orderBy": "",
     // "filterBy": "default",
     "footerText": "Developed with ❤️ by Tekdi Technologies ",
-    "headerColor": "purple",
+    "headerColor": "brown",
     "headerFontSize": "16",
-    "footerColor": "purple",
+    "footerColor": "brown",
     "footerFontSize": "16",
     // "positionByLine": "false",
     // "positionLogo": "false",
