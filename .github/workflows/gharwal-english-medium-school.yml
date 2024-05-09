@@ -17,5 +17,8 @@ jobs:
           TARGET: ${{ secrets.TARGET_DIR }} 
       - name: Deploy to server
         run: |
-          sudo apt-get install -y sshpass
-          sshpass -p '${{ secrets.EC2_SSH_PASS }}' ssh -o StrictHostKeyChecking=no ${{ secrets.USERNAME }}@${{ secrets.HOST_DNS }} 'bash -s' < deploy.sh
+          # sudo apt-get install -y sshpass
+          # sshpass -p '${{ secrets.EC2_SSH_PASS }}' ssh -o StrictHostKeyChecking=no ${{ secrets.USERNAME }}@${{ secrets.HOST_DNS }} 'bash -s' < deploy.sh
+          cd ${{ secrets.TARGET_DIR }}
+          chmod +x deploy.sh
+          ./deploy.sh
