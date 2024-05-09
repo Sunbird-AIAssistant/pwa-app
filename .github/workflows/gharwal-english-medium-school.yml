@@ -9,7 +9,7 @@ jobs:
     timeout-minutes: 15
     steps:
       - name: Deploy Stack
-        uses: TekdiAshwini/ssh-deploy@gharwal-english-medium-school
+        uses: easingthemes/ssh-deploy@main
         env: 
           SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
           REMOTE_HOST: ${{ secrets.HOST_DNS }}
@@ -17,8 +17,5 @@ jobs:
           TARGET: ${{ secrets.TARGET_DIR }} 
       - name: Deploy to server
         run: |
-          # sudo apt-get install -y sshpass
-          # sshpass -p '${{ secrets.EC2_SSH_PASS }}' ssh -o StrictHostKeyChecking=no ${{ secrets.USERNAME }}@${{ secrets.HOST_DNS }} 'bash -s' < deploy.sh
           cd ${{ secrets.TARGET_DIR }}
-          chmod +x deploy.sh
           ./deploy.sh
