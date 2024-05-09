@@ -9,7 +9,7 @@ jobs:
     timeout-minutes: 15
     steps:
       - name: Deploy Stack
-        uses: easingthemes/ssh-deploy@main
+        uses: TekdiAshwini/ssh-deploy@gharwal-english-medium-school
         env: 
           SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
           REMOTE_HOST: ${{ secrets.HOST_DNS }}
