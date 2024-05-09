@@ -1,8 +1,8 @@
-name: Deploy to DEV
+name: Deploy to PWA-BRANCH
 on: 
   push: 
     branches:
-      - main
+      - pwa-branch
 jobs:
   build:
     name: Generate Build and Deploy to DEV
@@ -19,10 +19,9 @@ jobs:
 
       - name: Copy .env file
         env:
-          ENV_FILE_CONTENT_NEW: ${{ secrets.ENV_PROD }}
-        run: echo "$ENV_FILE_CONTENT_NEW" > .env
-
-          
+          ENV_FILE_CONTENT: ${{ secrets.env }}
+        run: echo "$ENV_FILE_CONTENT" > .env  
+        
       - name: Generate React Build
         run: |
          npm install
