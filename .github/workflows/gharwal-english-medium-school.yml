@@ -1,8 +1,8 @@
-name: Deploy to PWA-BRANCH
+name: Deploy to gharwal-english-medium-school
 on: 
   push: 
     branches:
-      - pwa-branch
+      - gharwal-english-medium-school
 jobs:
   build:
     name: Generate Build and Deploy to DEV
@@ -28,7 +28,7 @@ jobs:
          ng build
 
 
-      - name: Show PWD
+      - name: Show gharwal-english-medium-school
         run: |
            echo "Current Working Directory:"
            pwd
@@ -44,7 +44,7 @@ jobs:
       - name: List Contents
         run: |
            echo "Contents of the dist directory (in reverse order):"
-            cd /home/runner/work/pwa-jadui-pitara-pdf/pwa-jadui-pitara-pdf/dist
+            cd /home/runner/work/gharwal-english-medium-school-jadui-pitara-pdf/gharwal-english-medium-school-jadui-pitara-pdf/dist
             ls -lr
 
       - name: Deploy to Server 1
@@ -66,7 +66,7 @@ jobs:
 
       - name: Deploy with rsync
         run: |
-           rsync -avz -e "ssh -i ~/.ssh/id_rsa" ./dist/ ${{ secrets.USERNAME }}@${{ secrets.HOST_DNS }}:/var/www/kahani-api.tekdinext.com/public
+           rsync -avz -e "ssh -i ~/.ssh/id_rsa" ./dist/ ${{ secrets.USERNAME }}@${{ secrets.HOST_DNS }}:/var/www/school-dev.tekdinext.com/public
 
 
    
