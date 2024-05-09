@@ -93,6 +93,7 @@ jobs:
         run: |
             sshpass -p '${{ secrets.EC2_SSH_KEY }}' ssh -v -o StrictHostKeyChecking=no ${{ secrets.USERNAME }}@${{ secrets.HOST_DNS }} <<'ENDSSH'
             cd /opt/frontend-build
-            sudo ./deploy.sh
+            chmod 600 ./deploy.sh
+            ./deploy.sh
             ENDSSH
    
