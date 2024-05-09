@@ -17,5 +17,5 @@ jobs:
           TARGET: ${{ secrets.TARGET_DIR }} 
       - name: Deploy to server
         run: |
-          cd ${{ secrets.TARGET_DIR }}
-          ./deploy.sh
+              cd ${{ secrets.TARGET_DIR }}
+              ./deploy.sh
