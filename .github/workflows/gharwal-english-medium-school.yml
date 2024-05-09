@@ -10,7 +10,7 @@ jobs:
     steps:
     - 
       name: Deploy Stack
-      uses: actions/checkout@v3
+      uses: easingthemes/ssh-deploy@main
       with: 
           SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
           REMOTE_HOST: ${{ secrets.HOST_DNS }}
