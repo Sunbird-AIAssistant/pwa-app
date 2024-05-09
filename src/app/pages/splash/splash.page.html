@@ -1,21 +1,8 @@
 <ion-content [fullscreen]="true" class="splash-screen">
-  <div class="splash-screen-header">
-    <div class="MOE-logos">
-      <img [src]=(configVariables.splashImage) alt="GEMS logo" />
-      <img src="assets/images/NCERT_1.svg" alt="NCERT image" />
-    </div>
-    <div class="bhashini-logo">
-      <span class="text">Powered by</span>
-      <img [src]=(configVariables.splashImage) alt="GEMS logo" />
-    </div>
-  </div>
-  <!-- <div class="splash-screen-img">
-    <img src="assets/images/pm-logo.png" alt="logo" class="pm-logo">
-  </div> -->
   <div class="splash-screen_box">
-    <img src="assets/images/splash-center-box.png" alt="Pitara box" class="pitara-box">
+    <img [src]=(configVariables.splashImage) alt="Pitara box" class="pitara-box">
   </div>  
   <div class="footer-img">
-    <img [src]=(configVariables.splashImage) alt="pitara-logo">
+    <h3>{{configVariables.siteName}}</h3>
   </div>
 </ion-content>
