@@ -4,28 +4,18 @@ on:
     branches:
       - gharwal-english-medium-school
 jobs:
-   deploy:
+  deploy:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-    - name: Deploy Stack
-      uses: easingthemes/ssh-deploy@main
-      env: 
+      - name: Deploy Stack
+        uses: easingthemes/ssh-deploy@main
+        env: 
           SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
           REMOTE_HOST: ${{ secrets.HOST_DNS }}
           REMOTE_USER: ${{ secrets.USERNAME }}
           TARGET: ${{ secrets.TARGET_DIR }} 
-         # script: | 
-         #     echo pwd
-         #     echo "Current directory"
-         #     cd ${{ secrets.TARGET_DIR }}
-         #     chmod +x deploy.sh
-         #     ./deploy.sh
-    - name: Deploy to server
-        run:|
-            sudo apt-get install sshpass
-            sshpass -p '${{ secrets.EC2_SSH_KEY }}' ssh -v -o StrictHostKeyChecking=no ${{ secrets.USERNAME }}@${{ secrets.HOST_DNS }} <<'ENDSSH'
-            cd ${{ secrets.TARGET_DIR }}
-            chmod +x deploy.sh
-            ./deploy.sh
-            ENDSSH
+      - name: Deploy to server
+        run: |
+          sudo apt-get install -y sshpass
+          sshpass -p '${{ secrets.EC2_SSH_PASS }}' ssh -o StrictHostKeyChecking=no ${{ secrets.USERNAME }}@${{ secrets.HOST_DNS }} 'bash -s' < deploy.sh
