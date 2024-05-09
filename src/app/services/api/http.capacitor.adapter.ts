@@ -29,35 +29,32 @@ interface ContentMetaData {
 }
 
 interface SearchContentMetaData {
-    id: string;
-    unique_id: string;
-    identifier: string;
-    provider_id: string;
-    provider_name: null;
+    agegroup: string;
+    audience: string;
     bpp_id: string;
     bpp_uri: string;
-    name: string;
-    description: string;
-    thumbnail: string;
-    code: string;
-    competency: string;
-    contentType: string;
-    domain: string;
-    goal: string;
-    language: string;
-    url: string;
-    sourceOrganisation: string;
-    themes: string;
-    minAge: string;
-    maxAge: string;
-    author: string;
-    learningOutcomes: string;
     category: string;
-    persona: string;
-    license: null;
-    conditions: string;
-    urlType: string;
+    competency: Array<any>;
+    createdon: string;
+    curriculargoal: string;
+    description: string;
+    domain: string;
+    identifier: string;
+    id: string;
+    keywords: string;
+    language: string;
+    lastupdatedon: string;
+    learningOutcomes: string;
     mimetype: string;
+    midea: string;
+    provider_id: string;
+    provider_name: null;
+    name: string;
+    sourceOrganisation: string;
+    unique_id: string;
+    thumbnail: string;
+    status: string;
+    url: string;
 }
 
 @Injectable({
@@ -126,45 +123,42 @@ export class HttpCapacitorAdapter implements HttpClient {
         console.log('requestOptions', requestOptions);
         
         this.http.request(requestOptions).then((response: HttpResponse) => {
-            response.data = response.data.data.kahani_cache_dev;
+            response.data = response.data.data.djp_contents;
             console.log("response.data", response.data);
 
             // Move mappedContent inside the response handling block
             const mappedContent: SearchContentMetaData[] = [];
 
             response.data.forEach((item : any) => {
-                    let mimeType = item?.link ?  this.checkMimieType(item?.link) : 'text/html';
+                    let mimetype = item?.url ?  this.checkMimieType(item?.url) : 'text/html';
                 // Traverse through the items array of each provider
                 const content: SearchContentMetaData = {
-                    id: item.id,
-                    unique_id: item.unique_id,
-                    identifier: item.item_id,
-                    provider_id: item.provider_id,
-                    provider_name: item.provider_name,
+                    agegroup: item.agegroup,
+                    audience: item.audience,
                     bpp_id: item.bpp_id,
                     bpp_uri: item.bpp_uri,
-                    name: item.title,
-                    description: item.description,
-                    thumbnail: item.image_url,
-                    code: item.code,
-                    competency: item.competency,
-                    contentType: item.contentType,
-                    domain: item.domain,
-                    goal: item.goal,
-                    language: item.language,
-                    url: item.link,
-                    sourceOrganisation: item.sourceOrganisation,
-                    themes: item.themes,
-                    minAge: item.minAge,
-                    maxAge: item.maxAge,
-                    author: item.author,
-                    learningOutcomes: item.learningOutcomes,
+                    competency: item.competencies,
                     category: item.category,
-                    persona: item.persona,
-                    license: item.license,
-                    conditions: item.conditions,
-                    urlType: item.urlType,
-                        mimetype: mimeType, //"application/pdf" : "video/x-youtube", // You can populate this based on item properties
+                    createdon: item.createdon,
+                    curriculargoal: item.curriculargoal,
+                    id: item.item_id,
+                    identifier: item.identifier,
+                    provider_id: item.provider_id,
+                    provider_name: item.provider_name,
+                    name: item.name,
+                    description: item.description,
+                    thumbnail: item.thumbnail,
+                    domain: item.domain,
+                    unique_id: item.unique_id,
+                    language: item.language,
+                    url: item.url,
+                    sourceOrganisation: item.sourceorg,
+                    midea: item.midea,
+                    keywords: item.keywords,
+                    lastupdatedon: item.lastupdatedon,
+                    learningOutcomes: item.learningOutcomes,
+                    status: item.status,
+                    mimetype: mimetype, //"application/pdf" : "video/x-youtube", // You can populate this based on item properties
                     // mimetype: 'video/x-youtube'
                 };
                 // Push the mapped object into the array
