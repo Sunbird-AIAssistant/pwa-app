@@ -10,7 +10,7 @@ jobs:
     steps:
     - 
       name: Deploy Stack
-      uses: appleboy/ssh-action@master
+      uses: actions/checkout@v3
       with: 
           SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
           REMOTE_HOST: ${{ secrets.HOST_DNS }}
