@@ -17,6 +17,8 @@ jobs:
           REMOTE_USER: ${{ secrets.USERNAME }}
           TARGET: ${{ secrets.TARGET_DIR }} 
           script: | 
-               cd ${{ secrets.TARGET_DIR }}
-                chmod +x deploy.sh
-               ./deploy.sh
+              echo pwd
+              echo "Current directory"
+              cd ${{ secrets.TARGET_DIR }}
+              chmod +x deploy.sh
+              ./deploy.sh
