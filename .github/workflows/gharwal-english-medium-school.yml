@@ -1,21 +1,21 @@
-name: Deploy to gharwal-english-medium-school
-on: 
-  push: 
+name: Deploy to dev server school-app
+on:
+  push:
     branches:
       - gharwal-english-medium-school
 jobs:
-  deploy:
+   deploy:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - name: Deploy Stack
-        uses: appleboy/ssh-action@master
-        env: 
-          SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
-          REMOTE_HOST: ${{ secrets.HOST_DNS }}
-          REMOTE_USER: ${{ secrets.USERNAME }}
-          TARGET: ${{ secrets.TARGET_DIR }} 
-      - name: Deploy to server
-        run: |
-              cd ${{ secrets.TARGET_DIR }}
-              ./deploy.sh
+    - 
+      name: Deploy Stack
+      uses: appleboy/ssh-action@master
+      with:
+          host: ${{ secrets.HOST_NAME_DEV }}
+          username: ${{ secrets.USERNAME_DEV }}
+          key: ${{ secrets.SSH_KEY_DEV }}
+          port: ${{ secrets.PORT_DEV }}
+          script: |    
+               cd ${{ secrets.TARGET_DIR_DEV }}
+               ./deploy.sh
