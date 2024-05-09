@@ -1,0 +1,62 @@
+{
+    "result" : [
+        {
+        "identifier": "123456789",
+        "name": "Sample Data Req",
+        "thumbnail": "https://ejaaduipitara.ncert.gov.in/assets/img/books.jpg",
+        "description": "This is a sample content for demonstration purposes.",
+        "mimetype": "video/mp4",
+        "url": "https://www.youtube.com/watch?v=cPkLvk_DgUA",
+        "domain": "Education",
+        "curriculargoal": null,
+        "competencies": null,
+        "language": "English",
+        "category": "Science",
+        "audience": ["Students", "Educators"],
+        "focus": "General",
+        "keyword": ["sample", "demo"],
+        "status": "Active",
+        "createdon": "2024-04-17T12:00:00Z",
+        "lastupdatedon": "2024-04-17T12:00:00Z",
+        "media": [
+            {
+                "type": "image",
+                "url": "https://ejaaduipitara.ncert.gov.in/assets/img/books.jpg"
+            },
+            {
+                "type": "image",
+                "url": "https://ejaaduipitara.ncert.gov.in/assets/img/books.jpg"
+            }
+        ],
+        "isLiked": true
+    }, {
+        "identifier": "123456789",
+        "name": "Sample Content",
+        "thumbnail": "https://ejaaduipitara.ncert.gov.in/assets/img/cards.jpg",
+        "description": "This is a sample content for demonstration purposes.",
+        "mimetype": "video/mp4",
+        "url": "https://www.youtube.com/watch?v=cPkLvk_DgUA",
+        "domain": "Education",
+        "curriculargoal": null,
+        "competencies": null,
+        "language": "English",
+        "category": "Science",
+        "audience": ["Students", "Educators"],
+        "focus": "General",
+        "keyword": ["sample", "demo"],
+        "status": "Active",
+        "createdon": "2024-04-17T12:00:00Z",
+        "lastupdatedon": "2024-04-17T12:00:00Z",
+        "media": [
+            {
+                "type": "image",
+                "url": "https://ejaaduipitara.ncert.gov.in/assets/img/cards.jpg"
+            },
+            {
+                "type": "image",
+                "url": "https://ejaaduipitara.ncert.gov.in/assets/img/cards.jpg"
+            }
+        ],
+        "isLiked": true
+    }]
+}

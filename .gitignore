@@ -12,14 +12,12 @@ $RECYCLE.BIN/
 *.log
 log.txt
 
-
 /.sourcemaps
 /.versions
 /coverage
 
 # Ionic
 /.ionic
-/www
 /platforms
 /plugins
 /android

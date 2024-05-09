@@ -1,0 +1,102 @@
+// common styles for create-playlist and view-all pages
+
+.cards-container {
+    padding-top: 0.5rem;
+}
+
+.card {
+    display: flex;
+
+    &__img {
+      width: 100%;
+      height: 4.5rem;
+      max-width: 7.5rem;
+
+      img {
+        border-radius: 0.5rem;
+      }
+    }
+
+    &__metadata {
+      padding-top: 0;
+      padding-left: 0.5rem;
+      align-items: flex-start;
+      width: 100%;
+    }
+}
+
+.view-playlist {
+    position: fixed;
+    bottom: 0.188rem;
+    width: 98%;
+    height: 4rem;
+    background-color: var(--ion-color-secondary);
+    border-radius: 3.125rem;
+    display: flex;
+    align-items: center;
+    padding: .5rem;
+  
+    &__icon {
+        width: 3rem;
+        height: 3rem;
+        background-color: var(--ion-color-primary-contrast);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        margin-right: 5%;
+  
+        .count {
+            position: absolute;
+            top: -0.188rem;
+            right: -0.188rem;
+            background: var(--ion-color-primary);
+            border-radius: 50%;
+            font-size: 0.625rem;
+            width: 1.125rem;
+            height: 1.125rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--ion-color-primary-contrast);
+        }
+  
+        ion-icon {
+            width: 1.5rem;
+            height: 1.5rem;
+        }
+    }
+  
+    &__button {
+        margin-left: auto;
+        ion-button {
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+    }
+}
+
+.view-all-btn{
+    display: flex;
+    justify-content: center;
+}
+  
+:host ion-checkbox {
+    --border-radius: 50% !important;
+    --border-color: var(--ion-color-medium) !important;
+    --size: 1.5rem !important;
+    --checkbox-background-checked: var(--ion-color-secondary) !important;
+    --border-color-checked: var(--ion-color-secondary) !important;
+    margin: 0;
+}
+
+:host ion-button.new-playlist__btn {
+    --background: var(--ion-color-secondary);
+    --color: var(--ion-color-primary-contrast);
+    --border-radius: 1.875rem;
+    --border-color: var(--ion-color-primary-contrast);
+    --border-style: solid;
+    --border-width: 1px;
+    --box-shadow: none;
+}
