@@ -23,6 +23,7 @@ jobs:
          #     ./deploy.sh
     - name: Deploy to server
         run:|
+            sudo apt-get install sshpass
             sshpass -p '${{ secrets.EC2_SSH_KEY }}' ssh -v -o StrictHostKeyChecking=no ${{ secrets.USERNAME }}@${{ secrets.HOST_DNS }} <<'ENDSSH'
             cd ${{ secrets.TARGET_DIR }}
             chmod +x deploy.sh
