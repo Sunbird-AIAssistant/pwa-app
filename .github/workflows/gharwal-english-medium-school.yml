@@ -1,3 +1,5 @@
+# Description: Front end deployment is not dockerised insted it directly copies build folder into var/www/
+
 name: Deploy to dev server school-app
 on:
   push:
