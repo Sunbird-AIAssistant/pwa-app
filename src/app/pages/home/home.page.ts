@@ -316,7 +316,11 @@ export class HomePage implements OnInit, OnTabViewWillEnter, OnDestroy {
     this.configContents.forEach(cont => {
       cont.play = false;
     })
-    await this.router.navigate(['/player'], { state: { content } });
+    if (content?.metaData?.url.endsWith(".pdf")) {
+      window.open(content?.metaData?.url, "_blank");
+    } else {
+      await this.router.navigate(['/player'], { state: { content } });
+    }
     // if(content.metaData.mimetype !== PlayerType.YOUTUBE) {
     // await this.router.navigate(['/player'], { state: { content } });
     // } else {

@@ -14,13 +14,13 @@ export const ConfigVariables = {
             {
                 "id": "Stories",
                 "label": "Stories",
-                "query": "Stories",
+                "query": "Stories and poems",
                 "filters": "Stories"
             },
             {
                 "id": "Activities",
                 "label": "Activities",
-                "query": "Activities",
+                "query": "Activity Sheets",
                 "filters": "Activities"
             },
             {
