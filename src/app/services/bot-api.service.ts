@@ -11,6 +11,7 @@ import { capSQLiteSet } from '@capacitor-community/sqlite';
 import { BotChatEntry } from './bot/db/chat.schema';
 import { BotChatEntryMapper } from './bot/db/utils/bot.chat.entry.mapper';
 import { Directory, Filesystem } from '@capacitor/filesystem';
+import { HttpHeaders } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -36,22 +37,34 @@ export class BotApiService {
     if (text !== "") {
       req.input = {
         language: lang,
-        text: text
+        text: text,
+        audio: ""
       }
     } else if (audio !== "") {
       req.input = {
         language: lang,
-        audio: audio
+        audio: audio,
+        text: ""
       }
     }
     if (botType !== "story") {
-      req.input.audienceType = botType 
+      req.input.context = botType 
     }
+
+    let headers = new HttpHeaders()
+      .set('Authorization', `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJtb2JpbGVfZGV2aWNlIn0.W9cvngZh0_Y6hcGCBqS8MZOejkUxU9ptnJFji6VBHtA`)
+      .set('Content-Type', 'application/json');
+
+      const headersObject = headers.keys().reduce((acc: any, key) => {
+        acc[key] = headers.getAll(key);
+        return acc;
+      }, {});
+
     const apiRequest = new ApiRequest.Builder()
-      .withHost(config.api.BASE_URL)
+      .withHost(config.api.BASE_URL_BOT)
       .withPath(botApiPath)
       .withType(ApiHttpRequestType.POST)
-      .withBearerToken(true)
+      .withHeaders(headersObject)
       .withBody(req)
       .withLanguge(lang)
       .build()
@@ -68,7 +81,7 @@ export class BotApiService {
   getBotApiPath(type: string): string {
     switch (type) {
       case Sakhi.STORY:
-        return config.api.BOT_SAKHI_API_PATH;
+        return config.api.BOT_ACTIVITY_API_PATH;
       case Sakhi.PARENT:
         return config.api.BOT_ACTIVITY_API_PATH;
       case Sakhi.TEACHER:

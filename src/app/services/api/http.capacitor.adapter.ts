@@ -123,13 +123,14 @@ export class HttpCapacitorAdapter implements HttpClient {
         console.log('requestOptions', requestOptions);
         
         this.http.request(requestOptions).then((response: HttpResponse) => {
-            response.data = response.data.data.djp_contents;
-            console.log("response.data", response.data);
+            response.data = response.data;
+             let receivedData = response.data;
 
             // Move mappedContent inside the response handling block
             const mappedContent: SearchContentMetaData[] = [];
 
-            response.data.forEach((item : any) => {
+            if (receivedData.data && receivedData.data.djp_contents !== null && receivedData.data.djp_contents !== undefined) {
+                receivedData.data.djp_contents.forEach((item : any) => {
                     let mimetype = item?.url ?  this.checkMimieType(item?.url) : 'text/html';
                 // Traverse through the items array of each provider
                 const content: SearchContentMetaData = {
@@ -164,6 +165,7 @@ export class HttpCapacitorAdapter implements HttpClient {
                 // Push the mapped object into the array
                 mappedContent.push(content);
             });
+            }
 
             // response.data.forEach((provider : any) => {
             //     // Traverse through the items array of each provider
@@ -189,14 +191,26 @@ export class HttpCapacitorAdapter implements HttpClient {
             // });
             
             if(mappedContent){
-            const apiResponse: ApiResponse = {
-                body: {
-                    "result" : mappedContent},// response.data,
-                responseCode : 200,//response.status,
-                errorMesg : '',
-                headers : response.headers,
-                requestHeaders: requestOptions.headers
-            }
+                let apiResponse: ApiResponse;
+                if (receivedData.data && receivedData.data.djp_contents !== null && receivedData.data.djp_contents !== undefined) {
+                    apiResponse = {
+                        body: {
+                            "result" : mappedContent},// response.data,
+                        responseCode : 200,//response.status,
+                        errorMesg : '',
+                        headers : response.headers,
+                        requestHeaders: requestOptions.headers
+                    }
+                } else {
+                    apiResponse = {
+                        body: {
+                            "result" : response.data},// response.data,
+                        responseCode : 200,//response.status,
+                        errorMesg : '',
+                        headers : response.headers,
+                        requestHeaders: requestOptions.headers
+                    }
+                }
             console.log('apiResponse', apiResponse);
             observable.next(apiResponse);
             observable.complete();

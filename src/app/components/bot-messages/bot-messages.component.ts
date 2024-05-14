@@ -109,34 +109,34 @@ export class BotMessagesComponent  implements OnInit, AfterViewInit {
     this.content.scrollToBottom(300).then(() => {
       this.content.scrollToBottom(300)
     });
-    await this.messageApi.getAllChatMessages(this.config.type).then((res) => {
-      console.log('Bot response', res);
-      res.forEach(chat => {
-        let msg = {identifier: "", message: '', messageType: '', type: '', displayMsg: "", audio: { file: '', duration: '', play: false }, time: new Date().toLocaleTimeString('en', { hour: '2-digit', minute: '2-digit' }), timeStamp: '', readMore: false, likeMsg: false, dislikeMsg: false, requestId: ""}
-        msg.message = chat.message
-        msg.identifier = chat.identifier
-        if(chat.message.length > 200 && (chat.message.length - 200 > 100)) {
-          msg.displayMsg = chat.message.substring(0, 200);
-          msg.readMore = true;
-        } else {
-          msg.displayMsg = chat.message.substring(0, 200);
-          msg.readMore = false;
-        }
-        msg.messageType = chat.messageType
-        msg.type = chat.fromMe === 0 ? 'received' : 'sent'
-        msg.time = new Date(JSON.parse(chat.ts)).toLocaleTimeString('en', { hour: '2-digit', minute: '2-digit' })
-        msg.timeStamp = chat.ts
-        msg.requestId = chat.requestId ?? ""
-        msg.likeMsg = chat.reaction == 1
-        msg.dislikeMsg = chat.reaction == 0
-        if (chat.messageType == 'audio') {
-          msg.audio.file = msg.type == 'sent' ? chat.mediaData : chat.mediaUrl
-          msg.audio.duration = chat.duration ?? ""
-        } 
-        this.botMessages.push(msg);
-      })
-      console.log("botMessages ", this.botMessages);
-    });
+    // await this.messageApi.getAllChatMessages(this.config.type).then((res) => {
+    //   console.log('Bot response', res);
+    //   res.forEach(chat => {
+    //     let msg = {identifier: "", message: '', messageType: '', type: '', displayMsg: "", audio: { file: '', duration: '', play: false }, time: new Date().toLocaleTimeString('en', { hour: '2-digit', minute: '2-digit' }), timeStamp: '', readMore: false, likeMsg: false, dislikeMsg: false, requestId: ""}
+    //     msg.message = chat.message
+    //     msg.identifier = chat.identifier
+    //     if(chat.message.length > 200 && (chat.message.length - 200 > 100)) {
+    //       msg.displayMsg = chat.message.substring(0, 200);
+    //       msg.readMore = true;
+    //     } else {
+    //       msg.displayMsg = chat.message.substring(0, 200);
+    //       msg.readMore = false;
+    //     }
+    //     msg.messageType = chat.messageType
+    //     msg.type = chat.fromMe === 0 ? 'received' : 'sent'
+    //     msg.time = new Date(JSON.parse(chat.ts)).toLocaleTimeString('en', { hour: '2-digit', minute: '2-digit' })
+    //     msg.timeStamp = chat.ts
+    //     msg.requestId = chat.requestId ?? ""
+    //     msg.likeMsg = chat.reaction == 1
+    //     msg.dislikeMsg = chat.reaction == 0
+    //     if (chat.messageType == 'audio') {
+    //       msg.audio.file = msg.type == 'sent' ? chat.mediaData : chat.mediaUrl
+    //       msg.audio.duration = chat.duration ?? ""
+    //     } 
+    //     this.botMessages.push(msg);
+    //   })
+    //   console.log("botMessages ", this.botMessages);
+    // });
     if(this.config.notif) {
       this.textMessage = this.config.notif.body;
       this.handleMessage();
@@ -181,7 +181,7 @@ export class BotMessagesComponent  implements OnInit, AfterViewInit {
       ts: message.timeStamp,
       reaction: -1
     }
-    this.messageApi.saveChatMessage(chatMessage).then();
+    // this.messageApi.saveChatMessage(chatMessage).then();
   }
 
   async makeBotAPICall(text: string, audio: string) {
@@ -194,7 +194,7 @@ export class BotMessagesComponent  implements OnInit, AfterViewInit {
     this.botMessages = JSON.parse(JSON.stringify(this.botMessages));
       this.botMessages.forEach(async (msg, i) => {
         if (result.responseCode === 200) {
-          let data = result.body;
+          let data = result.body.result;
           if(i == index-1 && msg.type === 'received') {
             msg.time = new Date().toLocaleTimeString('en', {hour: '2-digit', minute:'2-digit'})
             msg.timeStamp = Date.now();
