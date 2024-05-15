@@ -50,13 +50,13 @@
       </div>
       <div class="card" *ngIf="content.metaData && content.metaData.name">
         <div class="card__img" (click)="playContent($event, content)">
-          <img [src]="(content?.metaData?.thumbnail && !content.metaData.identifier.startsWith('do_')) ? 'assets/images/siet.png' : 'assets/images/audio.png'" alt="" *ngIf="content.metaData.mimetype === mimeType.AUDIO">
+          <img [src]="(content?.metaData?.thumbnail && !content.metaData.identifier.startsWith('do_')) ? (content?.metaData?.thumbnail) : 'assets/images/Audio.png'" alt="" *ngIf="content.metaData.mimetype === mimeType.AUDIO">
           <!-- <img appThumbnail [appThumbnail]="'assets/images/yt.jpeg'" alt="" *ngIf="content.metaData.mimetype === mimeType.YOUTUBE"> -->
-          <img [src]="(content?.metaData?.thumbnail && !content.metaData.identifier.startsWith('do_')) ? 'assets/images/siet.png' : 'assets/images/youtube-video.png'" alt="" *ngIf="content.metaData.mimetype === mimeType.YOUTUBE">
+          <img [src]="(content?.metaData?.thumbnail && !content.metaData.identifier.startsWith('do_')) ? (content?.metaData?.thumbnail) : 'assets/images/youtube-video.png'" alt="" *ngIf="content.metaData.mimetype === mimeType.YOUTUBE">
           <!-- <img [src]="loadYoutubeImg(content.metaData.identifier)" alt="" *ngIf="content.metaData.mimetype === mimeType.YOUTUBE && !content.play"> -->
-          <img [src]="(content?.metaData?.thumbnail && !content.metaData.identifier.startsWith('do_')) ? 'assets/images/siet.png' : 'assets/images/Video.png'" alt="" *ngIf="content.metaData.mimetype === mimeType.MP4">
-          <img [src]="(content?.metaData?.thumbnail && !content.metaData.identifier.startsWith('do_')) ? 'assets/images/siet.png' : 'assets/images/PDF.png'" alt="" *ngIf="content.metaData.mimetype === mimeType.PDF">
-          <img [src]="(content?.metaData?.thumbnail && !content.metaData.identifier.startsWith('do_')) ? 'assets/images/siet.png' : 'assets/images/LINK.png'" alt="" *ngIf="content.metaData.mimetype === mimeType.LINK">
+          <img [src]="(content?.metaData?.thumbnail && !content.metaData.identifier.startsWith('do_')) ? (content?.metaData?.thumbnail) : 'assets/images/Video.png'" alt="" *ngIf="content.metaData.mimetype === mimeType.MP4">
+          <img [src]="(content?.metaData?.thumbnail && !content.metaData.identifier.startsWith('do_')) ? (content?.metaData?.thumbnail) : 'assets/images/PDF.png'" alt="" *ngIf="content.metaData.mimetype === mimeType.PDF">
+          <img [src]="(content?.metaData?.thumbnail && !content.metaData.identifier.startsWith('do_')) ? (content?.metaData?.thumbnail) : 'assets/images/LINK.png'" alt="" *ngIf="content.metaData.mimetype === mimeType.LINK">
 
           <img [src]="(content?.metaData?.thumbnail =='' && !content.metaData.identifier.startsWith('do_')) ? 'https://ejaaduipitara.ncert.gov.in/assets/img/cards.jpg' : ''" alt="">
 
