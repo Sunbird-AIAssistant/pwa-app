@@ -10,9 +10,9 @@
     "Posters": "पोस्टर",
     "Search": "यहाँ तलाश करें ",
     "Home": "होम",
-    "Katha Sakhi": "कथा सखी",
-    "Teacher Tara": "टीचर तारा ",
-    "Parent Tara": "पेरेंट तारा",
+    "Katha Sakhi": "कथा GEMS",
+    "Teacher Tara": "टीचर GEMS",
+    "Parent Tara": "पेरेंट GEMS",
     "Like": "पसंद करें ",
     "Share": "शेयर करें",
     "Add to My Pitara": "मेरे पिटारा में जोड़े",
@@ -83,8 +83,5 @@
     "Later": "Later",
     "Restart Now": "Restart Now",
     "Learning":"सीखना",
-    "online courses":"ऑनलाइन कोर्सेस",
-    "Parent GEMS": "Parent GEMS",
-    "Story GEMS": "Story GEMS",
-    "Teacher GEMS": "Teacher GEMS"
+    "online courses":"ऑनलाइन कोर्सेस"
 }
