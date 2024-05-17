@@ -17,6 +17,7 @@ import confetti from 'canvas-confetti';
 import getYouTubeID from 'get-youtube-id';
 import { UploadLocalComponent } from 'src/app/components/upload-local/upload-local.component';
 import { NewPlaylistModalComponent } from 'src/app/components/new-playlist-modal/new-playlist-modal.component';
+import { iDbService } from '../../services/db/idb.service';
 
 @Component({
   selector: 'app-view-all',
@@ -24,6 +25,7 @@ import { NewPlaylistModalComponent } from 'src/app/components/new-playlist-modal
   styleUrls: ['./view-all.page.scss'],
 })
 export class ViewAllPage implements OnInit {
+  
   contentList: Array<any> = [];
   type = '';
   playlists: Array<any> = [];
@@ -49,7 +51,9 @@ export class ViewAllPage implements OnInit {
     private platform: Platform,
     private location: Location,
     private modalCtrl: ModalController,
-    private utilService: UtilService
+    private utilService: UtilService,
+    private idbService: iDbService
+
   ) {
     let extras = this.router.getCurrentNavigation()?.extras;
     if (extras) {
@@ -73,23 +77,48 @@ export class ViewAllPage implements OnInit {
   }
 
   async getPlaylistContent() {
-    await this.playListService.getAllPlayLists('guest').then((result) => {
-      if (result) {
-        this.playlists = result;
-      }
-    }).catch((error) => {
-      console.log('error', error)
-    })
+     await this.idbService.getValuePlayList('playList').then((res)=>{
+     // console.log(res?.value);
+        // this.playlists  = res?.values;
+        console.log(this.playlists);
+        this.playlists.map((e) => e.metaData = (typeof e.metaData === 'string') ? JSON.parse(e.metaData) : e.metaData)
+        this.playlists = this.getContentImgPath(this.playlists);
+       
+
+    });
+    // await this.playListService.getAllPlayLists('guest').then((result) => {
+    //   if (result) {
+    //     this.playlists = result;
+    //   }
+    // }).catch((error) => {
+    //   console.log('error', error)
+    // })
   }
 
   async getRecentlyviewedContent() {
-    await this.contentService.getRecentlyViewedContent('guest').then((result) => {
-      this.contentList = result;
-      this.contentList.map((e) => e.metaData = (typeof e.metaData === 'string') ? JSON.parse(e.metaData) : e.metaData)
-      this.contentList = this.getContentImgPath(this.contentList);
-    }).catch((err) => {
-      console.log('error', err)
-    })
+    await this.idbService.getValuePlayList('playList').then((values)=>{
+      // if () {
+      //   // Sort the values array in descending order based on a timestamp or identifier
+         // Replace 'timestamp' with your actual property
+      //   const latestData = values[0]; // Access the first element of the sorted array
+      //   console.log(latestData); // Latest data retrieved from the array
+      
+        this.contentList  = values;
+        this.contentList.map((e) => e.metaData = (typeof e.metaData === 'string') ? JSON.parse(e.metaData) : e.metaData)
+        this.contentList = this.getContentImgPath(this.contentList);
+       
+    //  }
+        
+
+    });
+
+    // await this.contentService.getRecentlyViewedContent('guest').then((result) => {
+    //   this.contentList = result;
+    //   this.contentList.map((e) => e.metaData = (typeof e.metaData === 'string') ? JSON.parse(e.metaData) : e.metaData)
+    //   this.contentList = this.getContentImgPath(this.contentList);
+    // }).catch((err) => {
+    //   console.log('error', err)
+    // })
   }
 
 
@@ -238,6 +267,7 @@ export class ViewAllPage implements OnInit {
       if (isSelected) {
         ele['isSelected'] = true;
         this.selectedContents.push(ele);
+        this.idbService.save('playList', this.selectedContents);
       }
     })
     return contents;

@@ -10,6 +10,7 @@ import { PlaylistService } from 'src/app/services/playlist/playlist.service';
 import {PlayerType} from 'src/app/appConstants';
 import { OnTabViewWillEnter } from 'src/app/tabs/on-tabs-view-will-enter';
 import getYouTubeID from 'get-youtube-id';
+import { iDbService } from '../../services/db/idb.service';
 
 @Component({
   selector: 'app-mypitara',
@@ -25,6 +26,7 @@ export class MyPitaraPage implements OnTabViewWillEnter{
     private contentService: ContentService,
     private router: Router,
     private playListService: PlaylistService,
+    private idbService: iDbService,
     private modalCtrl: ModalController) {
   }
 
@@ -53,27 +55,52 @@ export class MyPitaraPage implements OnTabViewWillEnter{
 
   async getPlaylistContent() {
     this.playlists = [];
-    await this.playListService.getAllPlayLists('guest').then((result: Array<PlayList>) => {
-      this.playlists = result;
-    }).catch((error) => {
-      console.log('error', error)
-    })
+    // await this.playListService.getAllPlayLists('guest').then((result: Array<PlayList>) => {
+    //   this.playlists = result;
+    // }).catch((error) => {
+    //   console.log('error', error)
+    // })
+    await this.idbService.getValuePlayList('playList').then((res)=>{
+      // console.log(res?.value);
+         this.playlists  = res;
+         console.log(this.playlists);
+        //  this.playlists.map((e) => e.metaData = (typeof e.metaData === 'string') ? JSON.parse(e.metaData) : e.metaData)
+        //  this.playlists = this.getContentImgPath(this.playlists);
+        
+ 
+     });
   }
 
   async getRecentlyviewedContent() {
-    await this.contentService.getRecentlyViewedContent('guest').then((result) => {
-      this.contentList = result;
-      this.contentList.forEach((ele: any) => {
-        if (ele.metaData.mimetype === PlayerType.YOUTUBE) {
-          ele.metaData['thumbnail'] = this.loadYoutubeImg(ele.metaData)
-        } else {
-          ele.metaData['thumbnail'] = (ele.metaData.thumbnail && !ele?.metaData.identifier?.startsWith('do_')) ? ele.metaData.thumbnail : ContentUtil.getImagePath(ele.metaData.mimeType || ele.metaData.mimetype)
-        }
-      })
-      console.log('contentList', this.contentList);
-    }).catch((err) => {
-      console.log('error', err)
-    })
+    await this.idbService.getValueGuestRecentContent('guest').then((values)=>{
+      // if () {
+      //   // Sort the values array in descending order based on a timestamp or identifier
+         // Replace 'timestamp' with your actual property
+      //   const latestData = values[0]; // Access the first element of the sorted array
+      //   console.log(latestData); // Latest data retrieved from the array
+      
+        this.contentList  = values;
+        this.contentList.map((e) => e.metaData = (typeof e.metaData === 'string') ? JSON.parse(e.metaData) : e.metaData)
+             console.log('contentList', this.contentList);
+
+    //  }
+        
+
+    });
+
+    // await this.contentService.getRecentlyViewedContent('guest').then((result) => {
+    //   this.contentList = result;
+    //   this.contentList.forEach((ele: any) => {
+    //     if (ele.metaData.mimetype === PlayerType.YOUTUBE) {
+    //       ele.metaData['thumbnail'] = this.loadYoutubeImg(ele.metaData)
+    //     } else {
+    //       ele.metaData['thumbnail'] = (ele.metaData.thumbnail && !ele?.metaData.identifier?.startsWith('do_')) ? ele.metaData.thumbnail : ContentUtil.getImagePath(ele.metaData.mimeType || ele.metaData.mimetype)
+    //     }
+    //   })
+    //   console.log('contentList', this.contentList);
+    // }).catch((err) => {
+    //   console.log('error', err)
+    // })
   }
   
   createList() {

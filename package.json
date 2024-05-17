@@ -57,6 +57,7 @@
     "cordova.plugins.diagnostic": "^7.1.4",
     "crypto-js": "^4.2.0",
     "dayjs": "^1.11.10",
+    "dexie": "^4.0.4",
     "get-youtube-id": "^1.0.1",
     "ionicons": "^7.0.0",
     "jquery": "^3.7.1",

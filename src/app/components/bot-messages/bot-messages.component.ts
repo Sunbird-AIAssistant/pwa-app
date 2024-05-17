@@ -10,6 +10,7 @@ import { TelemetryGeneratorService } from 'src/app/services/telemetry/telemetry.
 import { CorrelationData } from 'src/app/services/telemetry/models/telemetry';
 import { ChatMessage } from 'src/app/services/bot/db/models/chat.message';
 import { v4 as uuidv4 } from "uuid";
+import { iDbService } from '../../services/db/idb.service';
 
 @Component({
   selector: 'app-bot-messages',
@@ -40,7 +41,8 @@ export class BotMessagesComponent  implements OnInit, AfterViewInit {
     private translate: TranslateService,
     private telemetryGeneratorService: TelemetryGeneratorService,
     private storage: StorageService,
-    private platform: Platform
+    private platform: Platform,
+    private idbService: iDbService
   ) { 
     this.defaultLoaderMsg = {identifier: "", message: this.translate.instant('Loading...'), messageType: 'text', displayMsg: this.translate.instant('Loading...'), type: 'received', time: '', timeStamp: '', readMore: false, likeMsg: false, dislikeMsg: false, requestId: ""};
     this.botMessages = [];
@@ -104,8 +106,16 @@ export class BotMessagesComponent  implements OnInit, AfterViewInit {
   async initialiseBot() {
     this.botMessages = [];
     let textMsg = `WELCOME_TO_${this.config.type.toUpperCase()}_SAKHI`;
-    if(this.botMessages.length === 0)
-    this.botMessages.push({ messageType: 'text', displayMsg: textMsg, type: 'received'})
+  //  if(this.botMessages.length === 0){
+      await this.idbService.getValueBotMessage(this.config.type + 'Sakhi').then((res)=>{
+        if(res?.value){
+        this.botMessages = res?.value ? res?.value : [];
+        }
+        if(this.botMessages.length === 0){
+          this.botMessages.push({ messageType: 'text', displayMsg: textMsg, type: 'received'})
+          }
+    });
+   
     this.content.scrollToBottom(300).then(() => {
       this.content.scrollToBottom(300)
     });
@@ -181,6 +191,8 @@ export class BotMessagesComponent  implements OnInit, AfterViewInit {
       ts: message.timeStamp,
       reaction: -1
     }
+    this.idbService.saveBotMessageSakhi(this.config.type +'Sakhi', this.botMessages)
+
     // this.messageApi.saveChatMessage(chatMessage).then();
   }
 
@@ -456,6 +468,8 @@ export class BotMessagesComponent  implements OnInit, AfterViewInit {
           this.messageApi.updateMessageReactions(bot.identifier, 0);
           this.telemetryGeneratorService.generateInteractTelemetry('TOUCH', 'message-disliked', "bot", `${this.config.type}-sakhi`, undefined, undefined, undefined, cdata);
         }
+        this.idbService.saveBotMessageSakhi(this.config.type +'Sakhi', this.botMessages)
+
       }
     })
   }
