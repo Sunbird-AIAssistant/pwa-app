@@ -9,6 +9,7 @@ import { ContentEntry } from '../content/db/content.schema';
 import { TelemetryProcessedEntry } from '../telemetry/db/telemetry.processed.schema';
 import { ContentReactionsEntry } from '../content/db/content.reactions.schema';
 import { BotChatEntry } from '../bot/db/chat.schema';
+import { Capacitor } from '@capacitor/core';
 
 @Injectable({
   providedIn: 'root'
@@ -18,12 +19,24 @@ export class DbService {
   sqliteDBConnection!: SQLiteDBConnection;
   sqlitePlugin!: CapacitorSQLitePlugin;
   dbname!: string;
+  platform!: string;
+
   constructor() { }
 
   // Initilaise sqlite database
   async initializePlugin(): Promise<boolean> {
+
+    this.platform = Capacitor.getPlatform();
+
     this.sqlitePlugin = CapacitorSQLite;
     this.sqliteConnection = new SQLiteConnection(this.sqlitePlugin);
+
+    if( this.platform === 'web') {
+      await this.initWebStore();
+     }
+
+     // Initialize whatever database and/or MOCK_DATA you like
+
     await this.openDatabase(dbinfo.dbName, false, "no-encryption", dbinfo.version, false);
     await this.createTable(TelemetryConfigEntry.getCreateEntry());
     await this.createTable(TelemetryProcessedEntry.getCreateEntry());
@@ -35,6 +48,16 @@ export class DbService {
     await this.createTable(BotChatEntry.getCreateEntry());
     return true;
   }
+
+  async initWebStore(): Promise<void> {
+    try {
+    await this.sqliteConnection.initWebStore();
+    } catch(err: any) {
+    const msg = err.message ? err.message : err;
+    return Promise.reject(`initWebStore: ${err}`);
+    }
+}
+
 
   // opem database
   async openDatabase(dbName: string, encrypted: boolean, mode: string, version: number, readonly: boolean): Promise<boolean> {

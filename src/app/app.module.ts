@@ -1,4 +1,4 @@
-import { CUSTOM_ELEMENTS_SCHEMA, NgModule, isDevMode } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule, isDevMode, APP_INITIALIZER } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
@@ -35,6 +35,11 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 export function translateHttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient, './assets/i18n/', '.json');
 }
+
+export function initializeFactory(init: DbService) {
+  return () => init.initializePlugin();
+}
+
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -85,7 +90,13 @@ export function translateHttpLoaderFactory(httpClient: HttpClient) {
     BotApiService,
     DownlaodContentService,
     LocalNotificationService,
-    AppUpdateService
+    AppUpdateService,
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initializeFactory,
+      deps: [DbService],
+      multi: true
+      }
   ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]

@@ -19,6 +19,12 @@ const config: CapacitorConfig = {
       iconColor: "#488AFF",
       sound: "beep.wav",
     },
+
+      androidBiometric: {
+          biometricAuth : false,
+          biometricTitle : "Biometric login for capacitor sqlite",
+          biometricSubTitle : "Log in using your biometric"
+      },      
   }
 };
 

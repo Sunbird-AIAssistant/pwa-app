@@ -9,7 +9,7 @@ import { LangaugeSelectComponent } from './components/langauge-select/langauge-s
 import { Router } from '@angular/router';
 import { QrcodePopupComponent } from './components/qrcode-popup/qrcode-popup.component';
 import { SwUpdate } from '@angular/service-worker';
-
+import {  EnvironmentInjector, inject } from '@angular/core';
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -20,6 +20,8 @@ export class AppComponent implements OnInit {
   langModalOpen: boolean = false;
   languages: Array<any> = [];
   @ViewChild('mainContent', { read: IonRouterOutlet, static: false }) routerOutlet!: IonRouterOutlet;
+  public environmentInjector = inject(EnvironmentInjector);
+
   constructor(private headerService: AppHeaderService,
     private telemetryAutoSyncService: TelemetryAutoSyncService,
     private scannerService: ScannerService,
