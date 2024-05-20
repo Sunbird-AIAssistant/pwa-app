@@ -193,7 +193,7 @@ export class HomePage implements OnInit, OnTabViewWillEnter, OnDestroy {
       this.showSheenAnimation = false;
     }
     await NativeAudio.preload({
-      assetPath: 'public/assets/sounds/windchime.mp3',
+      assetPath: '/assets/sounds/windchime.mp3',
       assetId: 'windchime',
       volume: 1.0,
       audioChannelNum: 1,
@@ -281,7 +281,7 @@ export class HomePage implements OnInit, OnTabViewWillEnter, OnDestroy {
         this.addContentToMyPitara(result.data.content || content)
       } else if (result.data && result.data.type == 'like') {
         this.contentService.likeContent(result.data.content || content, 'guest', true)
-       /* if(result.data.content.metaData.isLiked) {
+        if(result.data.content.metaData.isLiked) {
           await NativeAudio.play({
             assetId: 'windchime',
           });
@@ -293,7 +293,7 @@ export class HomePage implements OnInit, OnTabViewWillEnter, OnDestroy {
             origin: { y: 0.5, x: 0.5 },
             colors: ['#a864fd', '#29cdff', '#78ff44', '#ff718d', '#fdff6a']
           });
-        }*/
+        }
         this.telemetryGeneratorService.generateInteractTelemetry('TOUCH', 'content-liked', 'home', 'home', new TelemetryObject(content?.metaData.identifier!, content?.metaData.mimetype!, ''));
       }
     });

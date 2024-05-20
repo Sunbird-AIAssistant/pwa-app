@@ -195,7 +195,7 @@ export class TelemetrySyncHandler {
             return of(undefined);
         }
         const apiRequest = new ApiRequest.Builder()
-            .withHost(config.api.BASE_URL)
+            .withHost(config.api.TELEMETRY_BASE_URL)
             .withPath(config.api.TELEMETRY_SYNC)
             .withType(ApiHttpRequestType.POST)
             .withBearerToken(true)
