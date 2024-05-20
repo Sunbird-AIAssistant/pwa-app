@@ -56,7 +56,30 @@ export class PermissionsService {
       }
     } else {
       // eslint-disable-next-line no-console
-      console.warn('requesting permission in browser')
+      console.warn('requesting permission in browser');
+      await this.requestWebPermissions(permissions);
+    }
+  }
+
+  private async requestWebPermissions(permissions: PermissionTypes[]) {
+    if (permissions.indexOf(PermissionTypes.CAMERA) >= 0) {
+      await this.requestWebPermission('camera');
+    }
+    if (permissions.indexOf(PermissionTypes.MICROPHONE) >= 0) {
+      await this.requestWebPermission('microphone');
+    }
+  }
+
+  private async requestWebPermission(permissionName: string) {
+    try {
+      const result = await navigator.permissions.query({ name: permissionName as PermissionName });
+      if (result.state === 'granted' || result.state === 'prompt') {
+        console.log(`${permissionName} permission granted`);
+      } else {
+        console.error(`${permissionName} permission denied`);
+      }
+    } catch (error) {
+      console.error(`Error requesting ${permissionName} permission`, error);
     }
   }
 
