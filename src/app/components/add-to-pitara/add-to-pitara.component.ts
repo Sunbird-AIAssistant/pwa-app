@@ -30,7 +30,6 @@ export class AddToPitaraComponent  implements OnInit {
   }
 
   async getAllPlaylists(name?: string) {
-    if (name !== null && name !== undefined) {
       await this.playListService.getAllPlayLists('guest').then((result: Array<PlayList>) => {
         this.playlists = result;
         if (name) {
@@ -40,7 +39,6 @@ export class AddToPitaraComponent  implements OnInit {
       }).catch((error) => {
         console.log('error', error)
       })
-    }
     
   }
 
