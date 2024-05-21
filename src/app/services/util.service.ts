@@ -5,6 +5,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { DeviceSpecification } from './telemetry/models/telemetry';
 import * as SHA1 from 'crypto-js/sha1';
 import { LoadingController } from '@ionic/angular';
+import { Capacitor } from '@capacitor/core';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -27,7 +29,17 @@ export class UtilService {
     return SHA1(deviceId.identifier).toString();
   }
   async getAppInfo(): Promise<AppInfo> {
-    return await App.getInfo();
+    if (Capacitor.getPlatform() === 'web') {
+      // Provide a mock response for the web platform
+      return {
+        name: 'Web App',
+        build: '1.0.0',
+      } as AppInfo;
+    } else {
+      // Call the native implementation
+      return await App.getInfo();
+    }
+    // return await App.getInfo();
   }
   
 
