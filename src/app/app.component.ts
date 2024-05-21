@@ -42,6 +42,7 @@ export class AppComponent implements OnInit {
   }
 
   async ngOnInit() {
+    this.findSiteSubDomain();
     this.headerService.headerConfigEmitted$.subscribe((config: HeaderConfig) => {
       this.headerConfig = config;
     });
@@ -52,6 +53,17 @@ export class AppComponent implements OnInit {
     this.autoSyncTelemetry()
     App.addListener('pause', () => this.telemetryAutoSyncService.pause());
     App.addListener('resume', () => this.telemetryAutoSyncService.continue());
+  }
+
+  findSiteSubDomain(){
+    const urlObj = new URL(document.baseURI);
+      // Extract the hostname
+      const hostname = urlObj.hostname; // e.g., "subdomain.example.com"
+      // Split the hostname by dots
+      const domainParts = hostname.split('.');
+      localStorage.setItem('subDomain', domainParts[0])
+      // Return the first part of the domain
+      console.log(domainParts[0]);
   }
 
   async handleHeaderEvents($event: any) {

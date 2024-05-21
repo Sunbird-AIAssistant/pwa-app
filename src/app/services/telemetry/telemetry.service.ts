@@ -76,6 +76,10 @@ export class TelemetryService {
     }
 
     private decorateAndPersist(telemetry: DJPTelemetry.Telemetry): Observable<any> {
+        let channelName: string = '';
+        const subDomain = localStorage.getItem('subDomain');
+
+        channelName = subDomain ?? (new URL(document.baseURI)).hostname;
         return zip(
             from(this.utilService.getAppInfo()),
             from(this.utilService.getDeviceId())
@@ -87,7 +91,7 @@ export class TelemetryService {
                     mergeMap((sid: string | undefined) => {
                         const telemetrySchema = this.decorator.prepare(this.decorator.decorate(
                             telemetry, sid ?? '', did, uuidv4(),
-                            version, 'ejp', []
+                            version, channelName, []
                         ), 1);
                         console.log('Telemetry Generated', telemetry);
 
