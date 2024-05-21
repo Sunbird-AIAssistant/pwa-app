@@ -38,17 +38,16 @@ export class BotApiService {
       req.input = {
         language: lang,
         text: text,
-        audio: ""
+        audio: "",
+        context: botType 
       }
     } else if (audio !== "") {
       req.input = {
         language: lang,
         audio: audio,
-        text: ""
+        text: "",
+        context: botType 
       }
-    }
-    if (botType !== "story") {
-      req.input.context = botType 
     }
 
     let headers = new HttpHeaders()
