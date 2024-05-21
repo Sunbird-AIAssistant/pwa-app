@@ -194,7 +194,7 @@ export class BotMessagesComponent  implements OnInit, AfterViewInit {
     this.botMessages = JSON.parse(JSON.stringify(this.botMessages));
       this.botMessages.forEach(async (msg, i) => {
         if (result.responseCode === 200) {
-          let data = result.body;
+          let data = result.body.result;
           if(i == index-1 && msg.type === 'received') {
             msg.time = new Date().toLocaleTimeString('en', {hour: '2-digit', minute:'2-digit'})
             msg.timeStamp = Date.now();
