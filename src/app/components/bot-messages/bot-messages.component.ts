@@ -2,7 +2,7 @@ import { AfterViewInit, Component, ElementRef, EventEmitter, Input, NgZone, OnIn
 import { IonContent, Platform } from '@ionic/angular';
 import { BotMessage } from 'src/app/appConstants';
 import { AppHeaderService, BotApiService, RecordingService, StorageService } from 'src/app/services';
-import { Keyboard } from "@capacitor/keyboard";
+// import { Keyboard } from "@capacitor/keyboard";
 import { Directory, Filesystem } from '@capacitor/filesystem';
 import { TranslateService } from '@ngx-translate/core';
 import { VoiceRecorder } from 'capacitor-voice-recorder';
@@ -17,6 +17,7 @@ import { v4 as uuidv4 } from "uuid";
   styleUrls: ['./bot-messages.component.scss'],
 })
 export class BotMessagesComponent  implements OnInit, AfterViewInit {
+  @ViewChild('messageInput') messageInput: any;
   botMessages: Array<any> = [];
   textMessage: string = ''
   chat!: BotMessage;
@@ -59,10 +60,10 @@ export class BotMessagesComponent  implements OnInit, AfterViewInit {
         this.handleBackNavigation();
       }
     })
-    Keyboard.addListener('keyboardWillShow', () => {
-      console.log('keyboard will show');
-      this.content.scrollToBottom();
-    })
+    // Keyboard.addListener('keyboardWillShow', () => {
+    //   console.log('keyboard will show');
+    //   this.content.scrollToBottom();
+    // })
     this.record.startEndEvent$.subscribe((res: any) => {
       this.ngZone.run(() => {
         this.startRecording = res;
@@ -144,10 +145,11 @@ export class BotMessagesComponent  implements OnInit, AfterViewInit {
   }
 
   async handleMessage() {
+    this.messageInput.setFocus();
     this.ngZone.run(() => {
       this.chat = {identifier: "", message: '', messageType: 'text', type: 'sent', displayMsg: "", time: new Date().toLocaleTimeString('en', { hour: '2-digit', minute: '2-digit' }), timeStamp: '', readMore: false, likeMsg: false, dislikeMsg: false, requestId: ""}
       if (this.textMessage.replace(/\s/g, '').length > 0) {
-        Keyboard.hide();
+        // Keyboard.hide();
         this.chat.message = this.textMessage;
         this.chat.displayMsg = this.textMessage;
         this.chat.timeStamp = Date.now()
