@@ -32,6 +32,7 @@ export class BotMessagesComponent  implements OnInit, AfterViewInit {
   durationDisplay = '';
   disabled = false;
   audioRef!: HTMLAudioElement;
+  keyboardOpen: boolean = false;
   constructor(
     private record: RecordingService,
     private ngZone: NgZone,
@@ -90,6 +91,14 @@ export class BotMessagesComponent  implements OnInit, AfterViewInit {
       this.textMessage = this.config.notif.body;
       this.handleMessage();
     }
+  }
+
+  onInputFocus() {
+    this.keyboardOpen = true;
+  }
+
+  onInputBlur() {
+    this.keyboardOpen = false;
   }
 
   ionViewWillEnter() {

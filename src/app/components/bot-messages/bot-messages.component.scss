@@ -40,7 +40,7 @@ ion-content{
         }
     }
 }
-.bot-input{
+.bot-input {
     position: fixed;
     bottom: 0;
     width: 100%;
@@ -49,13 +49,13 @@ ion-content{
     box-shadow: 0px -0.33px 0px 0px #A6A6AA;
     display: flex;
     align-items: center;
-    ion-input{
+    ion-input {
         width: 90%;
     }
     ion-button {
         margin: 0;
     }
-    .input_record{
+    .input_record {
         width: 30%;
         display: flex;
         align-items: center;
@@ -63,7 +63,7 @@ ion-content{
             margin-left: 1rem;
         }
     }
-    .cancel-div{
+    .cancel-div {
         display: flex;
         width: 100%;
         margin-left: 1rem;
@@ -72,15 +72,15 @@ ion-content{
     .cancel-record {
         width: 90%;
     }
-    .audio-record-mic{
+    .audio-record-mic {
         width: 1.75rem;
         height: 1.75rem;
         fill: var(--ion-color-medium);
     }
-    .on-record{
+    .on-record {
         fill: var(--ion-color-primary) !important;
     }
-    .sc-ion-input-md-h{
+    .sc-ion-input-md-h {
         height: 2.25rem;
         min-height: auto;
         padding: 0 0.5rem !important;
@@ -89,7 +89,11 @@ ion-content{
         --highlight-color: gray !important;
         --highlight-color-focused: gray !important;
     }
+    .keyboard-open {
+        transform: translateY(-50%);
+    }
 }
+
 
 .audio_msg {
     display: flex;

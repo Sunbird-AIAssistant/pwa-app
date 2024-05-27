@@ -29,17 +29,29 @@
       </div>
     </div>
   </div>
-  <div class="bot-input">
-    <ion-input *ngIf="!startRecording" [disabled]="disabled" aria-label="" value="" [placeholder]="'Type here' | translate" (keyup.enter)="handleMessage()" fill="outline" shape="round" [(ngModel)]="textMessage"></ion-input>
+  <div class="bot-input" [ngClass]="keyboardOpen ? 'keyboard-open' : ''">
+    <ion-input
+      *ngIf="!startRecording"
+        [disabled]="disabled"
+        aria-label=""
+        value=""
+        [placeholder]="'Type here' | translate"
+        (keyup.enter)="handleMessage()"
+        fill="outline"
+        shape="round"
+        [(ngModel)]="textMessage"
+        (focus)="onInputFocus()"
+        (blur)="onInputBlur()">
+    </ion-input>
     <div class="input_record" *ngIf="startRecording">
-      <ion-icon aria-hidden="true" class="audio-record-mic on-record" name="mic"></ion-icon>
-      <ion-label >{{durationDisplay}}</ion-label>
+        <ion-icon aria-hidden="true" class="audio-record-mic on-record" name="mic"></ion-icon>
+        <ion-label >{{durationDisplay}}</ion-label>
     </div>
     <div #recordbtn [ngClass]="startRecording ? 'cancel-div' : ''">
-      <ion-label class="cancel-record" *ngIf="startRecording"><span> << {{'Swipe left to cancel' | translate }}</span></ion-label>
-      <ion-button [disabled]="disabled" fill="clear" size="small" (touchstart)="onLongPressStart()" (touchend)="onLongPressEnd()">
-        <ion-icon *ngIf="textMessage.length == 0" [scrollY]="true" aria-hidden="true" class="audio-record-mic right icon" src="assets/icon/bot-audio.svg"></ion-icon>
-      </ion-button>
+        <ion-label class="cancel-record" *ngIf="startRecording"><span> << {{'Swipe left to cancel' | translate }}</span></ion-label>
+        <ion-button [disabled]="disabled" fill="clear" size="small" (touchstart)="onLongPressStart()" (touchend)="onLongPressEnd()">
+            <ion-icon *ngIf="textMessage.length == 0" [scrollY]="true" aria-hidden="true" class="audio-record-mic right icon" src="assets/icon/bot-audio.svg"></ion-icon>
+        </ion-button>
     </div>
     <ion-icon *ngIf="textMessage.length > 0" class="audio-record-mic right icon" name="send" (click)="handleMessage()"></ion-icon>
   </div>
