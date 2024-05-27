@@ -29,19 +29,16 @@ export class AppComponent implements OnInit {
     private modalCtrl: ModalController,
     private router: Router,
     private swUpdate: SwUpdate) {
-      this.initializeApp();
-  }
-
-  initializeApp(): void {
-    if (this.swUpdate.available) {
-      this.swUpdate.available.subscribe(() => {
-        if (confirm('A new version is available. Load it?'))
-          window.location.reload();
-      });
-    }    
   }
 
   async ngOnInit() {
+    if (this.swUpdate.isEnabled) {
+      this.swUpdate.available.subscribe(() => {
+        if (confirm('New version available. Load New Version?')) {
+          window.location.reload();
+        }
+      });
+    }
     this.findSiteSubDomain();
     this.headerService.headerConfigEmitted$.subscribe((config: HeaderConfig) => {
       this.headerConfig = config;
