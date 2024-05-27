@@ -30,7 +30,7 @@
     </div>
   </div>
   <div class="bot-input">
-    <ion-input #messageInput *ngIf="!startRecording" [disabled]="disabled" aria-label="" value="" [placeholder]="'Type here' | translate" (keyup.enter)="handleMessage()" fill="outline" shape="round" [(ngModel)]="textMessage"></ion-input>
+    <ion-input *ngIf="!startRecording" [disabled]="disabled" aria-label="" value="" [placeholder]="'Type here' | translate" (keyup.enter)="handleMessage()" fill="outline" shape="round" [(ngModel)]="textMessage"></ion-input>
     <div class="input_record" *ngIf="startRecording">
       <ion-icon aria-hidden="true" class="audio-record-mic on-record" name="mic"></ion-icon>
       <ion-label >{{durationDisplay}}</ion-label>
