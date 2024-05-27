@@ -6,11 +6,12 @@ export const config = {
   api: {
     BASE_URL: 'https://school-api-dev.tekdinext.com/',
     BASE_URL_BOT: 'https://school-openai.tekdinext.com/',
+    TELEMETRY_BASE_URL: 'https://school-dev.tekdinext.com/',
     CONFIG: 'seeker/configuration',
     PAGE_SEARCH_API: 'content/search',
     CONTEXT_SEARCH: 'api/aiutility/v1/context',
     CONTENT_SEARCH_API: 'content/search',
-    TELEMETRY_SYNC: 'api/telemetry/v1',
+    TELEMETRY_SYNC: 'telemetry/v1/telemetry',
     BOT_QUERY_API: 'v1/query',
     SEARCH_API: 'content/search',
     CONFIRM_API: 'confirm',
