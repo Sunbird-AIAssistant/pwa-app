@@ -4,7 +4,7 @@ name: Deploy to dev server school-app
 on:
   push:
     branches:
-      - gharwal-english-medium-school
+      - main
 jobs:
    deploy:
     runs-on: ubuntu-latest
