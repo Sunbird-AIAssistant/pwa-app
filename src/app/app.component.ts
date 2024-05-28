@@ -29,16 +29,24 @@ export class AppComponent implements OnInit {
     private modalCtrl: ModalController,
     private router: Router,
     private swUpdate: SwUpdate) {
-      this.initializeApp();
+      this.swUpdate.versionUpdates.subscribe(evt => {
+        switch (evt.type) {
+          case 'VERSION_DETECTED':
+            console.log(`Downloading new app version: ${evt.version.hash}`);
+            break;
+          case 'VERSION_READY':
+            console.log(`Current app version: ${evt.currentVersion.hash}`);
+            console.log(`New app version ready for use: ${evt.latestVersion.hash}`);
+            break;
+          case 'VERSION_INSTALLATION_FAILED':
+            console.log(`Failed to install app version '${evt.version.hash}': ${evt.error}`);
+            break;
+        }
+      });
   }
 
   initializeApp(): void {
-    if (this.swUpdate.available) {
-      this.swUpdate.available.subscribe(() => {
-        if (confirm('A new version is available. Load it?'))
-          window.location.reload();
-      });
-    }    
+   
   }
 
   async ngOnInit() {

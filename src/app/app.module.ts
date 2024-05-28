@@ -31,6 +31,7 @@ import { DirectivesModule } from './directives/directives.module';
 import { DownlaodContentService } from './services/downlaod-content.service';
 import { AppUpdateService } from './services/app-update/app-update.service';
 import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../../configuration/environment.prod';
 
 export function translateHttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient, './assets/i18n/', '.json');
@@ -56,12 +57,14 @@ export function initializeFactory(init: DbService) {
     }),
     ComponentsModule,
     DirectivesModule,
-    ServiceWorkerModule.register('ngsw-worker.js', {
-      enabled: !isDevMode(),
-      // Register the ServiceWorker as soon as the application is stable
-      // or after 30 seconds (whichever comes first).
-      registrationStrategy: 'registerWhenStable:30000'
-    })],
+    // ServiceWorkerModule.register('ngsw-worker.js', {
+    //   enabled: !isDevMode(),
+    //   // Register the ServiceWorker as soon as the application is stable
+    //   // or after 30 seconds (whichever comes first).
+    //   registrationStrategy: 'registerWhenStable:30000'
+    // })
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
+  ],
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     StorageService,
