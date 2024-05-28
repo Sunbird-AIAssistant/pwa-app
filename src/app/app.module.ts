@@ -32,6 +32,7 @@ import { DownlaodContentService } from './services/downlaod-content.service';
 import { AppUpdateService } from './services/app-update/app-update.service';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../../configuration/environment.prod';
+import { SwUpdate } from '@angular/service-worker';
 
 export function translateHttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient, './assets/i18n/', '.json');
@@ -94,6 +95,7 @@ export function initializeFactory(init: DbService) {
     DownlaodContentService,
     LocalNotificationService,
     AppUpdateService,
+    SwUpdate,
     {
       provide: APP_INITIALIZER,
       useFactory: initializeFactory,

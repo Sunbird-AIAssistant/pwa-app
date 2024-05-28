@@ -10,6 +10,8 @@ import { Router } from '@angular/router';
 import { QrcodePopupComponent } from './components/qrcode-popup/qrcode-popup.component';
 import { SwUpdate } from '@angular/service-worker';
 import {  EnvironmentInjector, inject } from '@angular/core';
+import { AlertController } from '@ionic/angular';
+
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -28,27 +30,49 @@ export class AppComponent implements OnInit {
     private popoverCtrl: PopoverController,
     private modalCtrl: ModalController,
     private router: Router,
+    public alertController: AlertController,
     private swUpdate: SwUpdate) {
-      this.swUpdate.versionUpdates.subscribe(evt => {
-        switch (evt.type) {
-          case 'VERSION_DETECTED':
-            console.log(`Downloading new app version: ${evt.version.hash}`);
-            break;
-          case 'VERSION_READY':
-            console.log(`Current app version: ${evt.currentVersion.hash}`);
-            console.log(`New app version ready for use: ${evt.latestVersion.hash}`);
-            break;
-          case 'VERSION_INSTALLATION_FAILED':
-            console.log(`Failed to install app version '${evt.version.hash}': ${evt.error}`);
-            break;
-        }
-      });
+      this.initializeApp();
   }
 
   initializeApp(): void {
-   
+    this.swUpdate.versionUpdates.subscribe(evt => {
+      switch (evt.type) {
+        case 'VERSION_DETECTED':
+          console.log(`Downloading new app version: ${evt.version.hash}`);
+          this.presentUpdateAlert();
+          // if (confirm('A new version is available. Load it?'))
+          // window.location.reload();
+          break;
+        case 'VERSION_READY':
+          console.log(`Current app version: ${evt.currentVersion.hash}`);
+          console.log(`New app version ready for use: ${evt.latestVersion.hash}`);
+          break;
+        case 'VERSION_INSTALLATION_FAILED':
+          console.log(`Failed to install app version '${evt.version.hash}': ${evt.error}`);
+          break;
+      }
+    });
   }
 
+  async presentUpdateAlert() {
+    const alert = await this.alertController.create({
+      header: 'Update Available',
+      message: 'A new version of the application is available. Load it?',
+      buttons: [
+         {
+          text: 'Yes',
+          handler: () => {
+            window.location.reload();
+            // Add logic to load new version here
+          }
+        }
+      ]
+    });
+  
+    await alert.present();
+  }
+  
   async ngOnInit() {
     this.findSiteSubDomain();
     this.headerService.headerConfigEmitted$.subscribe((config: HeaderConfig) => {
