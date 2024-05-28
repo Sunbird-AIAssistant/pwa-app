@@ -1,9 +1,10 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AppHeaderService, UtilService } from '../../../app/services';
-import { MenuController } from '@ionic/angular';
+import { MenuController, ModalController } from '@ionic/angular';
 import { TelemetryGeneratorService } from 'src/app/services/telemetry/telemetry.generator.service';
 import { App } from '@capacitor/app';
 import { ConfigVariables } from '../../config';
+import { QrcodePopupComponent } from '../qrcode-popup/qrcode-popup.component';
 
 @Component({
   selector: 'app-application-header',
@@ -21,10 +22,12 @@ export class ApplicationHeaderComponent  implements OnInit {
   appVersion: string = ''
   appName: string = ""
   configVariables = ConfigVariables;
+
   constructor(private utilService: UtilService,
     private telemetryGeneratorService: TelemetryGeneratorService,
     public menuCtrl: MenuController,
-    public headerService: AppHeaderService
+    public headerService: AppHeaderService,
+    private modalCtrl: ModalController,
     ) {
       App.getInfo().then(val => {
         this.appVersion = `v${val.version}.${val.build}`
@@ -78,5 +81,19 @@ export class ApplicationHeaderComponent  implements OnInit {
   handleFilter(filter: any) {
     this.defaultFilter = filter;
     this.sideMenuItemEvent.emit({ filter });
+  }
+
+  async navigateToQRScreen() {
+    const modal = await this.modalCtrl.create({
+      component: QrcodePopupComponent,
+      cssClass: 'add-to-pitara',
+      breakpoints: [0, 1],
+      showBackdrop: false,
+      initialBreakpoint: 1,
+      handle: false,
+      handleBehavior: "none"
+    });
+    await modal.present();
+    modal.onDidDismiss();
   }
 }
