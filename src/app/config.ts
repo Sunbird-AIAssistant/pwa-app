@@ -1,8 +1,8 @@
 export const ConfigVariables = {
-    "tenantLogo": "assets/school/GEMS.svg",
-    "siteName": "Garhwal English Medium School",
+    "tenantLogo": "assets/school/THSM_128x128.svg",
+    "siteName": "Hummingbird School in Assam",
     "siteByLine": "Listen, Learn & Grow !!!",
-    "splashImage": "assets/school/GEMS.jpeg",
+    "splashImage": "assets/school/THSM_152x152.png",
     "headerFilters": [{
         "defaultFilter": {
             "id": "All",
@@ -53,8 +53,21 @@ export const ConfigVariables = {
             "id": "hi",
             "label": "हिंदी",
             "default": true
+        },
+        {
+            "id": "as",
+            "label": "অসমীয়া",
+            "default": false
+        },
+        {
+            "id": "bn",
+            "label": "বাংলা",
+            "default": true
         }
     ],
+    "kathaSakhiBotName": "Story Baideo",
+    "parentTaraBotName": "Parent Bondhu",
+    "teacherTaraBotName": "Teacher Bondhu",
     // "apiEndPoint": "/dsep/search",
     // "bookmark": "BookMark",
     // "rating": "Rating",
