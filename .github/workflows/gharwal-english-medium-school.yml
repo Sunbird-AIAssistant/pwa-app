@@ -1,5 +1,5 @@
 # Description: Front end deployment is not dockerised insted it directly copies build folder into var/www/
-
+# This deployment is for Humming-Bird-School
 name: Deploy to dev server school-app
 on:
   push:
