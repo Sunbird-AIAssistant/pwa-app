@@ -89,10 +89,6 @@ export class QrcodePopupComponent  implements OnInit {
     this.scanResult = null;
   }
 
-  stopScan() {
-    this.scanActive = false;
-  }
-
   async startScan() {
     // Not working on iOS standalone mode!
     const stream = await navigator.mediaDevices.getUserMedia({
@@ -109,6 +105,21 @@ export class QrcodePopupComponent  implements OnInit {
     this.videoElement.play();
     requestAnimationFrame(this.scan.bind(this));
   }
+
+   stopScan() {
+    this.scanActive = false;
+
+    const stream = this.videoElement.srcObject;
+    if (stream) {
+        const tracks = stream.getTracks();
+        tracks.forEach(function(track: MediaStreamTrack) {
+            track.stop();
+            console.log('Track stopped:', track.readyState);
+
+        });
+        this.videoElement.srcObject = null;
+    }
+    }
   
   async scan() {
     try {
@@ -140,9 +151,10 @@ export class QrcodePopupComponent  implements OnInit {
           inversionAttempts: 'dontInvert'
         });
     
-        if (code) {
+        if (code?.data) {
           this.scanActive = false;
           this.scanResult = code.data;
+          this.stopScan();
           this.showQrToast();
         } else {
           if (this.scanActive) {
