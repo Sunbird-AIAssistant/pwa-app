@@ -231,7 +231,7 @@ export class ViewAllPage implements OnInit {
   getContentImgPath(contents: Array<any>, isSelected?: boolean) : Array<any>{
     contents.forEach((ele) => {
       if (ele.metaData.mimetype === PlayerType.YOUTUBE) {
-        ele.metaData['thumbnail'] = this.loadYoutubeImg(ele.metaData);
+        ele.metaData['thumbnail'] = this.loadYoutubeImg(ele.metaData.thumbnail);
       } else {
         ele.metaData['thumbnail'] = (ele.metaData.thumbnail && !ele?.metaData.identifier?.startsWith('do_')) ? ele.mediaData.thumbnail : ContentUtil.getImagePath(ele.metaData.mimetype || ele.metaData.mimeType)
       }
