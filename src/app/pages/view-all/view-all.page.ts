@@ -84,7 +84,16 @@ export class ViewAllPage implements OnInit {
 
   async getRecentlyviewedContent() {
     await this.contentService.getRecentlyViewedContent('guest').then((result) => {
-      this.contentList = result;
+      let uniqueIds: any = {};
+      result.filter(item => {
+        if (!uniqueIds[item.contentIdentifier]) {
+            uniqueIds[item.contentIdentifier] = true;
+            this.contentList.push(item);
+            return true;
+        }
+        return false;
+    });
+     
       this.contentList.map((e) => e.metaData = (typeof e.metaData === 'string') ? JSON.parse(e.metaData) : e.metaData)
       this.contentList = this.getContentImgPath(this.contentList);
     }).catch((err) => {

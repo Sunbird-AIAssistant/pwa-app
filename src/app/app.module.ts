@@ -109,8 +109,16 @@ export function initializeFactory(init: DbService) {
 
 export class AppModule {
   constructor(private translate: TranslateService, private storage: StorageService) {
-    this.setDefaultLanguage();
-  }
+    this.storage.getData('lang').then(lang =>{
+      console.log(lang);
+      if(!lang)
+      {
+        this.setDefaultLanguage();
+      }
+    });
+
+}
+  
 
   private setDefaultLanguage() {
     this.storage.setData('lang', 'hi');
