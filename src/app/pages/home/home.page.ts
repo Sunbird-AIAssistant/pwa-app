@@ -116,6 +116,7 @@ export class HomePage implements OnInit, OnTabViewWillEnter, OnDestroy {
       if(val == 'language') {
         let lang = await this.storage.getData('lang');
         console.log('lang ', lang, this.selectedLang);
+        this.responseList = await this.searchService.postContentSearch(req, await this.storage.getData('lang'));
         if (this.selectedLang !== lang) {
           this.selectedLang = lang;
           this.showSheenAnimation = true;
@@ -144,7 +145,8 @@ export class HomePage implements OnInit, OnTabViewWillEnter, OnDestroy {
       this.serverError = false;
       this.showSheenAnimation = true;
       // try {
-        let lang = 'en';//await this.storage.getData('lang')
+        // let lang = 'en';//await this.storage.getData('lang')
+        let lang = await this.storage.getData('lang');
         let content = await this.configService.getAllContent(req, lang);
         this.mappUIContentList(content);
       // }
@@ -176,6 +178,7 @@ export class HomePage implements OnInit, OnTabViewWillEnter, OnDestroy {
     })
     this.networkConnected = await this.networkService.getNetworkStatus()
     let forceRefresh = await this.cacheService.getCacheTimeout();
+    let lang = await this.storage.getData('lang');
     if (forceRefresh) {
       this.getServerMetaConfig();
     } else if (!this.networkConnected) {
