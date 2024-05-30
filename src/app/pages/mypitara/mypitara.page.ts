@@ -65,14 +65,14 @@ export class MyPitaraPage implements OnTabViewWillEnter{
       this.contentList = result;
       this.contentList.forEach((ele: any) => {
         if (ele.metaData.mimetype === PlayerType.YOUTUBE) {
-          ele.metaData['thumbnail'] = this.loadYoutubeImg(ele.metaData)
+          // ele.metaData['thumbnail'] = this.loadYoutubeImg(ele.metaData.thumbnail)
+          ele.metaData['thumbnail'] = ele.metaData.thumbnail;
         } else {
           ele.metaData['thumbnail'] = (ele.metaData.thumbnail && !ele?.metaData.identifier?.startsWith('do_')) ? ele.metaData.thumbnail : ContentUtil.getImagePath(ele.metaData.mimeType || ele.metaData.mimetype)
         }
       })
-             console.log('contentList', this.contentList);
-}).catch((err) => {
-    console.log('error', err)
+    }).catch((err) => {
+      console.log('error', err)
     })
   }
   
