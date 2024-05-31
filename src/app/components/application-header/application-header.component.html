@@ -11,7 +11,8 @@
         </ion-button>
       </ion-buttons>
       <ion-title role="heading" [ngClass]="{'title_bb': headerConfig?.showbackButton, 'animate_title': headerConfig?.pageTitle == appName}" aria-level="1" 
-      *ngIf="!(headerConfig?.showbackButton && headerConfig?.actionButtons?.indexOf('search') >=0)">{{ configVariables.siteName }}</ion-title>
+      *ngIf="!(headerConfig?.showbackButton && (headerConfig?.actionButtons?.indexOf('search') >=0 || headerConfig?.actionButtons?.indexOf('edit') >=0))">{{ configVariables.siteName }}</ion-title>
+      <ion-title role="heading" aria-level="1" *ngIf="headerConfig?.actionButtons?.indexOf('edit') >=0">{{ headerConfig.pageTitle }}</ion-title>
       <ion-input type="search" *ngIf="headerConfig?.showbackButton && headerConfig?.actionButtons?.indexOf('search') >=0" #searchInput [placeholder]="'SEARCH_HINT' | translate"></ion-input>
       <ion-buttons slot="end" [hidden]="headerConfig?.showbackButton">
         <ion-button (click)="emitEvent($event, 'search')">
