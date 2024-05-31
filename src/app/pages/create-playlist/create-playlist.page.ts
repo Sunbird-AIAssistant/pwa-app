@@ -174,7 +174,8 @@ export class CreatePlaylistPage implements OnInit {
     this.selectedContents.forEach((ele) => {
       if (!ele.metaData['thumbnail']) {
         if (ele.metaData.mimetype === PlayerType.YOUTUBE) {
-          ele.metaData['thumbnail'] = this.loadYoutubeImg(ele.metaData);
+          // ele.metaData['thumbnail'] = this.loadYoutubeImg(ele.metaData);
+          ele.metaData['thumbnail'] = ele.metaData.thumbnail;
         } else {
           ele.metaData['thumbnail'] = (ele.metaData.thumbnail && !ele.metaData.identifier.startsWith('do_')) ? ele.metaData.thumbnail : ContentUtil.getImagePath(ele.metaData.mimetype || ele.metaData.mimeType)
         }

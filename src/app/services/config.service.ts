@@ -30,14 +30,16 @@ export class ConfigService {
   }
 
   async getAllContent(req: any, lang: any): Promise<any> {
-    console.log('req ', req);
+    let request = {
+      language: lang
+    }
     const apiRequest = new ApiRequest.Builder()
       .withHost(config.api.BASE_URL)
       .withPath(config.api.PAGE_SEARCH_API)
       .withType(ApiHttpRequestType.POST)
       .withBearerToken(true)
-      // .withBody(req)
-      // .withLanguge(lang)
+      .withBody(request)
+      .withLanguge(lang)
       .build()
     return lastValueFrom(this.apiService.fetch(apiRequest).pipe(
       map((apiResponse) => apiResponse.body.result),

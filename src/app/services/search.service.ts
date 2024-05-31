@@ -23,7 +23,7 @@ export class SearchService {
       }
     } else {
       request = {
-        "text": data.text,
+        "name": data.text,
         "language": data.currentLang
       }
     }
@@ -31,7 +31,7 @@ export class SearchService {
     console.log("body ", body);
     const apiRequest = new ApiRequest.Builder()
       .withHost(config.api.BASE_URL)
-      .withPath(config.api.CONTEXT_SEARCH)
+      .withPath(config.api.CONTENT_SEARCH_API)
       .withType(ApiHttpRequestType.POST)
       .withBody(body)
       .withBearerToken(true)
@@ -48,17 +48,24 @@ export class SearchService {
   }
 
   postContentSearch(data: any, lang: any): Promise<any> {
-    // let request = {
-    //   request: {
-    //     query: data.query,
-    //     filters: data.filter ?? ""
-    //   }
-    // }
+    let req : any= {};
+    if(data['name'])
+    {
+      req['name'] = data?.name;
+    }
+
+    if(data['category'])
+    {
+      req['category'] = data?.category;
+    }
+
+    req['language'] = lang;
+   
     const apiRequest = new ApiRequest.Builder()
       .withHost(config.api.BASE_URL)
       .withPath(config.api.CONTENT_SEARCH_API)
       .withType(ApiHttpRequestType.POST)
-      .withBody(data)
+      .withBody(req)
       .withBearerToken(true)
       .withLanguge(lang)
       .build()

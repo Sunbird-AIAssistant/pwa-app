@@ -11,15 +11,16 @@
         </ion-button>
       </ion-buttons>
       <ion-title role="heading" [ngClass]="{'title_bb': headerConfig?.showbackButton, 'animate_title': headerConfig?.pageTitle == appName}" aria-level="1" 
-      *ngIf="!(headerConfig?.showbackButton && headerConfig?.actionButtons?.indexOf('search') >=0)">{{ configVariables.siteName }}</ion-title>
+      *ngIf="!(headerConfig?.showbackButton && (headerConfig?.actionButtons?.indexOf('search') >=0 || headerConfig?.actionButtons?.indexOf('edit') >=0))">{{ configVariables.siteName }}</ion-title>
+      <ion-title role="heading" aria-level="1" *ngIf="headerConfig?.actionButtons?.indexOf('edit') >=0">{{ headerConfig.pageTitle }}</ion-title>
       <ion-input type="search" *ngIf="headerConfig?.showbackButton && headerConfig?.actionButtons?.indexOf('search') >=0" #searchInput [placeholder]="'SEARCH_HINT' | translate"></ion-input>
       <ion-buttons slot="end" [hidden]="headerConfig?.showbackButton">
         <ion-button (click)="emitEvent($event, 'search')">
           <ion-icon aria-hidden="true" src="assets/icon/search.svg"></ion-icon>
         </ion-button>
-        <ion-button (click)="navigateToQRScreen()">
+         <!-- <ion-button (click)="navigateToQRScreen()">
           <ion-icon aria-hidden="true" src="assets/icon/qr-scan.svg"></ion-icon>
-        </ion-button>
+        </ion-button> -->
         <ion-button (click)="emitEvent($event, 'profile')">
           <ion-icon aria-hidden="true" src="assets/icon/language-icon.svg"></ion-icon>
         </ion-button>

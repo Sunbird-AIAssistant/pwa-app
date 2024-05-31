@@ -50,6 +50,7 @@ export class HomePage implements OnInit, OnTabViewWillEnter, OnDestroy {
   selectedLang: any = "";
   appName: string = "";
   configVariables = ConfigVariables;
+  responseList: Array<any> = [];
   constructor(
     private headerService: AppHeaderService,
     private router: Router,
@@ -115,6 +116,7 @@ export class HomePage implements OnInit, OnTabViewWillEnter, OnDestroy {
       if(val == 'language') {
         let lang = await this.storage.getData('lang');
         console.log('lang ', lang, this.selectedLang);
+        this.responseList = await this.searchService.postContentSearch(req, await this.storage.getData('lang'));
         if (this.selectedLang !== lang) {
           this.selectedLang = lang;
           this.showSheenAnimation = true;
@@ -143,7 +145,7 @@ export class HomePage implements OnInit, OnTabViewWillEnter, OnDestroy {
       this.serverError = false;
       this.showSheenAnimation = true;
       // try {
-        let lang = 'en';//await this.storage.getData('lang')
+        let lang = await this.storage.getData('lang')
         let content = await this.configService.getAllContent(req, lang);
         this.mappUIContentList(content);
       // }
@@ -163,9 +165,11 @@ export class HomePage implements OnInit, OnTabViewWillEnter, OnDestroy {
       console.log(val);
       this.showSheenAnimation = true;
       try {
-        let res: any = await this.searchService.postContentSearch(req, await this.storage.getData('lang'));
-        console.log('Response', res);
-        this.mappUIContentList(res);
+        this.responseList  = [];
+        this.responseList = await this.searchService.postContentSearch(req, await this.storage.getData('lang'));
+        // let res: any = await this.searchService.postContentSearch(req, await this.storage.getData('lang'));
+        console.log('Response', this.responseList);
+        this.mappUIContentList(this.responseList);
       }
       catch (e) {
         console.log('error', e);
@@ -173,6 +177,7 @@ export class HomePage implements OnInit, OnTabViewWillEnter, OnDestroy {
     })
     this.networkConnected = await this.networkService.getNetworkStatus()
     let forceRefresh = await this.cacheService.getCacheTimeout();
+    let lang = await this.storage.getData('lang');
     if (forceRefresh) {
       this.getServerMetaConfig();
     } else if (!this.networkConnected) {

@@ -62,15 +62,23 @@ export class MyPitaraPage implements OnTabViewWillEnter{
 
   async getRecentlyviewedContent() {
     await this.contentService.getRecentlyViewedContent('guest').then((result) => {
-      this.contentList = result;
-      this.contentList.forEach((ele: any) => {
-        if (ele.metaData.mimetype === PlayerType.YOUTUBE) {
-          ele.metaData['thumbnail'] = this.loadYoutubeImg(ele.metaData)
-        } else {
-          ele.metaData['thumbnail'] = (ele.metaData.thumbnail && !ele?.metaData.identifier?.startsWith('do_')) ? ele.metaData.thumbnail : ContentUtil.getImagePath(ele.metaData.mimeType || ele.metaData.mimetype)
+      this.contentList = [];
+      let uniqueIds: any = {};
+      result.filter((item : any) => {
+        if (!uniqueIds[item.contentIdentifier]) {
+            uniqueIds[item.contentIdentifier] = true;
+            this.contentList.push(item);
+            if (item.metaData.mimetype === PlayerType.YOUTUBE) {
+              // item.metaData['thumbnail'] = this.loadYoutubeImg(item.metaData)
+              item.metaData['thumbnail'] = item.metaData.thumbnail;
+
+            } else {
+              item.metaData['thumbnail'] = (item.metaData.thumbnail && !item?.metaData.identifier?.startsWith('do_')) ? item.metaData.thumbnail : ContentUtil.getImagePath(item.metaData.mimeType || item.metaData.mimetype)
+            }
+            return true;
         }
-      })
-             console.log('contentList', this.contentList);
+        return false;
+      }); 
 }).catch((err) => {
     console.log('error', err)
     })

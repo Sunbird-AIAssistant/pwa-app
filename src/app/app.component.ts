@@ -41,8 +41,6 @@ export class AppComponent implements OnInit {
         case 'VERSION_DETECTED':
           console.log(`Downloading new app version: ${evt.version.hash}`);
           this.presentUpdateAlert();
-          // if (confirm('A new version is available. Load it?'))
-          // window.location.reload();
           break;
         case 'VERSION_READY':
           console.log(`Current app version: ${evt.currentVersion.hash}`);
