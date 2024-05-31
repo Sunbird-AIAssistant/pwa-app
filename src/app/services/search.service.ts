@@ -23,7 +23,7 @@ export class SearchService {
       }
     } else {
       request = {
-        "text": data.text,
+        "name": data.text,
         "language": data.currentLang
       }
     }
@@ -48,10 +48,19 @@ export class SearchService {
   }
 
   postContentSearch(data: any, lang: any): Promise<any> {
-    let req = {
-      category: data.category,
-      language: lang
+    let req : any= {};
+    if(data['name'])
+    {
+      req['name'] = data?.name;
     }
+
+    if(data['category'])
+    {
+      req['category'] = data?.category;
+    }
+
+    req['language'] = lang;
+   
     const apiRequest = new ApiRequest.Builder()
       .withHost(config.api.BASE_URL)
       .withPath(config.api.CONTENT_SEARCH_API)
