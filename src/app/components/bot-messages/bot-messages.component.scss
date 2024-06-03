@@ -41,7 +41,7 @@ ion-content{
     }
 }
 .bot-input {
-    position: fixed;
+    // position: fixed !important;
     bottom: 0;
     width: 100%;
     padding: 1rem;
@@ -94,6 +94,11 @@ ion-content{
     }
 }
 
+.keyboard-open {
+    transform: translateY(-50%);   }
+
+
+
 
 .audio_msg {
     display: flex;
@@ -142,3 +147,19 @@ ion-content{
     transform: scale(-1);
     margin-left: 0.75rem !important;
 }
+ion-content {
+    --padding-bottom: 60px; /* Adjust this value if needed to prevent the input from hiding */
+  }
+  
+  ion-footer {
+    ion-toolbar {
+      display: flex;
+      align-items: center;
+      ion-input {
+        flex: 1;
+      }
+      ion-button {
+        margin-left: 10px;
+      }
+    }
+  }
