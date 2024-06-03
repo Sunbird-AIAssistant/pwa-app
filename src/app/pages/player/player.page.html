@@ -4,7 +4,7 @@
       <ion-icon name="close"></ion-icon>
     </ion-fab-button>
   </ion-fab>
-  <!-- <div #pdf class="pdf-player" *ngIf="playerType==='pdf'"></div> -->
+  <div #pdf class="pdf-player" *ngIf="playerType==='pdf'"></div>
 
   <div #video class="video-player" *ngIf="playerType==='video'"></div>
 
@@ -18,7 +18,7 @@
     </div>
   </div>
 
-  <div *ngIf="playerType==='link' || playerType==='pdf' ">
+  <div *ngIf="playerType==='link'">
     <iframe
     [src]="srcUrl"
     title="External Website"

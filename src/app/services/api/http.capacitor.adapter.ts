@@ -88,8 +88,8 @@ export class HttpCapacitorAdapter implements HttpClient {
 
         if (mediaUrl.endsWith(".mp3")) {
             return 'audio/mp3' ; // // MP3 audio
-        // } else if (mediaUrl.endsWith(".pdf")) {
-        //     return 'application/pdf';             // PDF document
+        } else if (mediaUrl.endsWith(".pdf")) {
+            return 'application/pdf';             // PDF document
         } else if (mediaUrl.includes("youtube.com") || mediaUrl.includes("youtu.be")) {
             return 'video/x-youtube'; //            // YouTube video
         } else if (mediaUrl.endsWith(".mp4")) {
