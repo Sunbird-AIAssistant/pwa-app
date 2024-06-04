@@ -60,20 +60,70 @@ export class AppComponent implements OnInit {
     });
   }
 
-  @HostListener('window:popstate', ['$event'])
+ /* @HostListener('window:popstate', ['$event'])
   async onPopState(event: any) {
 
     console.log('Back button pressed', event);
+    // const currentPage = this.getCurrentPageName();
+    // alert(currentPage);
     const state = this.location.path(true);
+
+    // const navigationId = (state as any).navigationId;
+    // const previousUrl = navigationId - 1;
+    // history.pushState(null, document.title, window.location.href);
     console.log(state);
     const modal = await this.modalCtrl.getTop();
     if (modal) {
       history.pushState(null, document.title, window.location.href);
       modal.dismiss();
       this.optModalOpen = false;
-    } 
-  }
+    }  else if (state == '/tabs/home' || state == '/home') {
+      // alert('1'+  state);
 
+      // this.count++;
+      // setTimeout(() => {
+      //   this.count == 0;
+      // }, 1000);
+     // if (this.count == 2) {
+        let modal: any;
+          this.optModalOpen = true;
+          modal = await this.modalCtrl.create({
+            component: AppExitComponent,
+            cssClass: 'sheet-modal',
+            breakpoints: [0.2],
+            showBackdrop: false,
+            backdropDismiss: false,
+            initialBreakpoint: 0.2,
+            handle: false,
+            handleBehavior: "none"
+          });
+          await modal.present();
+        
+
+        modal.onDidDismiss().then((result: any) => {
+          this.optModalOpen = false;
+          if (result.data && result.data) {
+            App.exitApp();
+          }
+        });
+     // }
+
+    } else if (state == '/tabs/sakhi' || state == '/tabs/parent-sakhi' || state == '/tabs/teacher-sakhi') {
+      // alert('sakhi- '+  state);
+      this.location.back();
+
+      // this.router.navigate(['tabs/home']);
+      history.pushState(null, document.title, window.location.href);
+
+
+    } else {
+      // alert('back'+  state);
+
+      this.location.back();
+    }
+  
+  }
+*/
 
   async presentUpdateAlert() {
     const alert = await this.alertController.create({

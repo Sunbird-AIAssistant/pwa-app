@@ -101,6 +101,12 @@ export class ViewAllPage implements OnInit {
     })
   }
 
+  async ngOnDestroy() {
+    const modal = await this.modalCtrl.getTop();
+    if (modal) {
+      modal.dismiss();
+    }
+  }
 
   createList() {
     let result: { [x: string]: any; }[] = [];

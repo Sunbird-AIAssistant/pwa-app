@@ -84,6 +84,13 @@ export class MyPitaraPage implements OnTabViewWillEnter{
     })
   }
   
+  async ngOnDestroy() {
+    const modal = await this.modalCtrl.getTop();
+    if (modal) {
+      modal.dismiss();
+    }
+  }
+  
   createList() {
     this.router.navigate(['/create-playlist'])
   }
