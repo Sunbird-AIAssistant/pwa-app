@@ -1,6 +1,6 @@
 export const ConfigVariables = {
     "tenantLogo": "assets/school/GEMS.svg",
-    "siteName": "Garhwal English Medium School",
+    "siteName": "Garhwal English Medium",
     "siteByLine": "Listen, Learn & Grow !!!",
     "splashImage": "assets/school/GEMS.jpeg",
     "headerFilters": [{
