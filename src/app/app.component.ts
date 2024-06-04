@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, HostListener } from '@angular/core';
 import { AppHeaderService } from './services/app-header.service';
 import { HeaderConfig } from './appConstants';
 import { IonRouterOutlet, ModalController, PopoverController } from '@ionic/angular';
@@ -9,8 +9,11 @@ import { LangaugeSelectComponent } from './components/langauge-select/langauge-s
 import { Router } from '@angular/router';
 import { QrcodePopupComponent } from './components/qrcode-popup/qrcode-popup.component';
 import { SwUpdate } from '@angular/service-worker';
-import {  EnvironmentInjector, inject } from '@angular/core';
+import { EnvironmentInjector, inject } from '@angular/core';
 import { AlertController } from '@ionic/angular';
+import { Location } from '@angular/common';
+import { ActivatedRoute } from '@angular/router';
+import { AppExitComponent } from './components/app-exit/app-exit.component';
 
 @Component({
   selector: 'app-root',
@@ -20,6 +23,8 @@ import { AlertController } from '@ionic/angular';
 export class AppComponent implements OnInit {
   headerConfig!: HeaderConfig;
   langModalOpen: boolean = false;
+  count = 0;
+  optModalOpen = false;
   languages: Array<any> = [];
   @ViewChild('mainContent', { read: IonRouterOutlet, static: false }) routerOutlet!: IonRouterOutlet;
   public environmentInjector = inject(EnvironmentInjector);
@@ -31,8 +36,10 @@ export class AppComponent implements OnInit {
     private modalCtrl: ModalController,
     private router: Router,
     public alertController: AlertController,
+    private location: Location,
+    private route: ActivatedRoute,
     private swUpdate: SwUpdate) {
-      this.initializeApp();
+    this.initializeApp();
   }
 
   initializeApp(): void {
@@ -53,6 +60,21 @@ export class AppComponent implements OnInit {
     });
   }
 
+  @HostListener('window:popstate', ['$event'])
+  async onPopState(event: any) {
+
+    console.log('Back button pressed', event);
+    const state = this.location.path(true);
+    console.log(state);
+    const modal = await this.modalCtrl.getTop();
+    if (modal) {
+      history.pushState(null, document.title, window.location.href);
+      modal.dismiss();
+      this.optModalOpen = false;
+    } 
+  }
+
+
   async presentUpdateAlert() {
     const alert = await this.alertController.create({
       header: 'Update Available',
@@ -72,6 +94,8 @@ export class AppComponent implements OnInit {
   }
   
   async ngOnInit() {
+    history.pushState(null, document.title, window.location.href);
+
     this.findSiteSubDomain();
     this.headerService.headerConfigEmitted$.subscribe((config: HeaderConfig) => {
       this.headerConfig = config;
