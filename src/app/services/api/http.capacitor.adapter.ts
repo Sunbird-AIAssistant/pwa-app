@@ -88,8 +88,8 @@ export class HttpCapacitorAdapter implements HttpClient {
 
         if (mediaUrl.endsWith(".mp3")) {
             return 'audio/mp3' ; // // MP3 audio
-        // } else if (mediaUrl.endsWith(".pdf")) {
-        //     return 'application/pdf';             // PDF document
+        } else if (mediaUrl.endsWith(".pdf")) {
+            return 'application/pdf';             // PDF document
         } else if (mediaUrl.includes("youtube.com") || mediaUrl.includes("youtu.be")) {
             return 'video/x-youtube'; //            // YouTube video
         } else if (mediaUrl.endsWith(".mp4")) {
@@ -131,7 +131,8 @@ export class HttpCapacitorAdapter implements HttpClient {
 
             if (receivedData.data && receivedData.data.djp_contents !== null && receivedData.data.djp_contents !== undefined) {
                 receivedData.data.djp_contents.forEach((item : any) => {
-                    let mimetype = item?.url ?  this.checkMimieType(item?.url) : 'text/html';
+                    // let mimetype = item?.url ?  this.checkMimieType(item?.url) : 'text/html';
+                    let mimetype = this.checkMimieType(item?.url);
                 // Traverse through the items array of each provider
                 const content: SearchContentMetaData = {
                     agegroup: item.agegroup,

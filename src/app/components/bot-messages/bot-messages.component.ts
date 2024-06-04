@@ -33,6 +33,8 @@ export class BotMessagesComponent  implements OnInit, AfterViewInit {
   disabled = false;
   audioRef!: HTMLAudioElement;
   keyboardOpen: boolean = false;
+  keyboardHeight: number = 0;
+
   constructor(
     private record: RecordingService,
     private ngZone: NgZone,
@@ -60,10 +62,17 @@ export class BotMessagesComponent  implements OnInit, AfterViewInit {
         this.handleBackNavigation();
       }
     })
-    Keyboard.addListener('keyboardWillShow', () => {
-      console.log('keyboard will show');
-      this.content.scrollToBottom();
-    })
+
+    Keyboard.addListener('keyboardWillShow', (info) => {
+      this.keyboardHeight = info.keyboardHeight;
+      this.adjustForKeyboard();
+    });
+
+    Keyboard.addListener('keyboardWillHide', () => {
+      this.keyboardHeight = 0;
+      this.adjustForKeyboard();
+    });
+
     this.record.startEndEvent$.subscribe((res: any) => {
       this.ngZone.run(() => {
         this.startRecording = res;
@@ -85,6 +94,28 @@ export class BotMessagesComponent  implements OnInit, AfterViewInit {
     });
   }
 
+  private adjustForKeyboard() {
+    const inputElement = document.querySelector('ion-footer');
+    if (inputElement) {
+      (inputElement as HTMLElement).style.marginBottom = `${this.keyboardHeight}px`;
+    }
+
+    const contentElement = document.querySelector('ion-content');
+    if (contentElement) {
+      (contentElement as HTMLElement).style.bottom = `${this.keyboardHeight}px`;
+    }
+    this.scrollToBottom();
+  }
+
+
+  public scrollToBottom() {
+    this.keyboardOpen = true;
+
+    setTimeout(() => {
+      this.content.scrollToBottom(300);
+    }, 100);
+  }
+
   ngOnChanges() {
     console.log('ng onchanges ', this.config);
     if (this.config?.notification && this.config?.notif?.body) {
@@ -95,10 +126,20 @@ export class BotMessagesComponent  implements OnInit, AfterViewInit {
 
   onInputFocus() {
     this.keyboardOpen = true;
+    Keyboard.addListener('keyboardWillShow', () => {
+      setTimeout(() => this.scrollToBottom(), 300);
+    });
   }
 
   onInputBlur() {
     this.keyboardOpen = false;
+    Keyboard.removeAllListeners();
+
+  }
+
+  ngOnDestroy() {
+    // Remove keyboard event listeners
+    Keyboard.removeAllListeners();
   }
 
   ionViewWillEnter() {
