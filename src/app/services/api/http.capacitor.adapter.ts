@@ -55,6 +55,7 @@ interface SearchContentMetaData {
     thumbnail: string;
     status: string;
     url: string;
+    content_type: string;
 }
 
 @Injectable({
@@ -160,6 +161,7 @@ export class HttpCapacitorAdapter implements HttpClient {
                     lastupdatedon: item.lastupdatedon,
                     learningOutcomes: item.learningOutcomes,
                     status: item.status,
+                    content_type: item.content_type,
                     mimetype: mimetype, //"application/pdf" : "video/x-youtube", // You can populate this based on item properties
                     // mimetype: 'video/x-youtube'
                 };
