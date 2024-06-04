@@ -131,7 +131,8 @@ export class HttpCapacitorAdapter implements HttpClient {
 
             if (receivedData.data && receivedData.data.djp_contents !== null && receivedData.data.djp_contents !== undefined) {
                 receivedData.data.djp_contents.forEach((item : any) => {
-                    let mimetype = item?.url ?  this.checkMimieType(item?.url) : 'text/html';
+                    // let mimetype = item?.url ?  this.checkMimieType(item?.url) : 'text/html';
+                    let mimetype = this.checkMimieType(item?.url);
                 // Traverse through the items array of each provider
                 const content: SearchContentMetaData = {
                     agegroup: item.agegroup,
