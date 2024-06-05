@@ -69,6 +69,13 @@ export class TabsPage implements OnTabViewWillEnter{
     this.subscription.unsubscribe();
   }
 
+  async ngOnDestroy() {
+    const modal = await this.modalCtrl.getTop();
+    if (modal) {
+      modal.dismiss();
+    }
+  }
+
   ionTabsDidChange(event: any) {
     if(event.tab == 'story') {
       this.tabService.hide();

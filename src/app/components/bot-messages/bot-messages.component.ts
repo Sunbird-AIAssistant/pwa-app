@@ -140,6 +140,7 @@ export class BotMessagesComponent  implements OnInit, AfterViewInit {
   ngOnDestroy() {
     // Remove keyboard event listeners
     Keyboard.removeAllListeners();
+    this.handleBackNavigation();
   }
 
   ionViewWillEnter() {

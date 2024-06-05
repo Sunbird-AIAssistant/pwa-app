@@ -67,6 +67,13 @@ export class SearchPage implements OnInit, OnTabViewWillEnter {
     this.headerService.showStatusBar(false);
   }
 
+ async ngOnDestroy() {
+    const modal = await this.modalCtrl.getTop();
+    if (modal) {
+      modal.dismiss();
+    }
+  }
+
   async handleSearch(data?: any, audio: boolean = false) {
     if(audio) {
       this.showSheenAnimation = true;

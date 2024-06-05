@@ -102,12 +102,16 @@ export class HomePage implements OnInit, OnTabViewWillEnter, OnDestroy {
   //   await toast.present();
   // }
 
-  ngOnDestroy(): void {
+ async ngOnDestroy() {
     try {
       this.langChangeSubscription && this.langChangeSubscription.unsubscribe()  
       this.networkChangeSub && this.networkChangeSub.unsubscribe();
     } catch (error) {
       console.log(`error in unsubscribe`, error)
+    }
+    const modal = await this.modalCtrl.getTop();
+    if (modal) {
+      modal.dismiss();
     }
   }
 
