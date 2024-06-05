@@ -74,6 +74,13 @@ export class QrScanResultPage implements OnInit, OnTabViewWillEnter {
   //   this.headerService.showStatusBar();
   // }
 
+  async ngOnDestroy() {
+    const modal = await this.modalCtrl.getTop();
+    if (modal) {
+      modal.dismiss();
+    }
+  }
+
   async playContent(event: Event, content: Content) {
     this.contentService.markContentAsViewed(content)
     await this.router.navigate(['/player'], {state: {content}});
