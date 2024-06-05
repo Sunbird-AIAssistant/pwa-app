@@ -74,16 +74,14 @@ export class AppComponent implements OnInit {
         modal.dismiss();
       }
     // Add the popstate listener when the app initializes
-    if ((this.router.url === '/' || this.router.url === '/tabs/home') && !this.exitModalPresented && !modal)  {
+  /*  if ((this.router.url === '/' || this.router.url === '/tabs/home') && !this.exitModalPresented && !modal)  {
       history.pushState(null, '', location.href);
 
       
       await this.presentExitConfirmationModal();
 
       // Push state to keep the URL the same after the user decides not to exit
-    } else {
-     // window.history.back();
-    }
+    } */
   }
   }
 
