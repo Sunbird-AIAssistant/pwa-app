@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, HostListener } from '@angular/core';
 import { AppHeaderService } from './services/app-header.service';
 import { HeaderConfig } from './appConstants';
-import { IonRouterOutlet, ModalController, PopoverController } from '@ionic/angular';
+import { IonRouterOutlet, ModalController, PopoverController, Platform } from '@ionic/angular';
 import { TelemetryAutoSyncService } from './services/telemetry/telemetry.auto.sync.service';
 import { App } from '@capacitor/app';
 import { ScannerService } from './services/scan/scanner.service';
@@ -26,6 +26,8 @@ export class AppComponent implements OnInit {
   count = 0;
   optModalOpen = false;
   languages: Array<any> = [];
+  private exitModalPresented = false;
+
   @ViewChild('mainContent', { read: IonRouterOutlet, static: false }) routerOutlet!: IonRouterOutlet;
   public environmentInjector = inject(EnvironmentInjector);
 
@@ -38,11 +40,15 @@ export class AppComponent implements OnInit {
     public alertController: AlertController,
     private location: Location,
     private route: ActivatedRoute,
+    public platform: Platform,
     private swUpdate: SwUpdate) {
     this.initializeApp();
+    this.initialize();
+
   }
 
   initializeApp(): void {
+    history.pushState(null, '', location.href);
     this.swUpdate.versionUpdates.subscribe(evt => {
       switch (evt.type) {
         case 'VERSION_DETECTED':
@@ -58,6 +64,58 @@ export class AppComponent implements OnInit {
           break;
       }
     });
+  }
+
+  async initialize() {
+    window.onpopstate = async () => {
+      history.pushState(null, '', location.href);
+      const modal = await this.modalCtrl.getTop();
+      if (modal) {
+        modal.dismiss();
+      }
+    // Add the popstate listener when the app initializes
+    if ((this.router.url === '/' || this.router.url === '/tabs/home') && !this.exitModalPresented && !modal)  {
+      history.pushState(null, '', location.href);
+
+      
+      await this.presentExitConfirmationModal();
+
+      // Push state to keep the URL the same after the user decides not to exit
+    } else {
+     // window.history.back();
+    }
+  }
+  }
+
+ async presentExitConfirmationModal(){
+  this.exitModalPresented = true;
+  setTimeout(() => {
+    this.exitModalPresented = false;
+  }, 4000);
+    let modal: any;
+    this.optModalOpen = true;
+    modal = await this.modalCtrl.create({
+      component: AppExitComponent,
+      cssClass: 'sheet-modal',
+      breakpoints: [0.2],
+      showBackdrop: false,
+      backdropDismiss: false,
+      initialBreakpoint: 0.2,
+      handle: false,
+      handleBehavior: "none"
+    });
+    await modal.present();
+  
+
+  modal.onDidDismiss().then((result: any) => {
+    this.optModalOpen = false;
+    if (result.data && result.data) {
+      window.close();
+
+      App.exitApp();
+
+    }
+  });
   }
 
  /* @HostListener('window:popstate', ['$event'])
@@ -152,7 +210,6 @@ export class AppComponent implements OnInit {
     });
     this.headerService.filterConfigEmitted$.subscribe((val: any) => {
       this.languages = val.languages;
-      console.log(val, this.languages);
     })
     this.autoSyncTelemetry()
     App.addListener('pause', () => this.telemetryAutoSyncService.pause());
@@ -167,7 +224,6 @@ export class AppComponent implements OnInit {
       const domainParts = hostname.split('.');
       localStorage.setItem('subDomain', domainParts[0])
       // Return the first part of the domain
-      console.log(domainParts[0]);
   }
 
   async handleHeaderEvents($event: any) {

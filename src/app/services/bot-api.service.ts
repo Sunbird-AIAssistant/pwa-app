@@ -120,11 +120,9 @@ export class BotApiService {
       path: '',
       directory: Directory.Data
     });
-    console.log(audioFile);
     for (let index = 0; index < audioFile.files.length; index++) {
       const file = audioFile.files[index];
       if(file.uri.endsWith('.wav')) {
-        console.log('file uri ', file);
         const oneDay = 24 * 60 * 60 * 1000;
         if(file?.ctime) {
           if((Date.now() - file?.ctime) > oneDay) {
