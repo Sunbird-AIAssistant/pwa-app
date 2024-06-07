@@ -1,8 +1,8 @@
 {
-    "tenantLogo": "../school/GEMS.svg",
+    "tenantLogo": "assets/school/GEMS.svg",
     "siteName": "Garhwal English Medium",
     "siteByLine": "Listen, Learn & Grow !!!",
-    "splashImage": "../school/GEMS.jpeg",
+    "splashImage": "assets/school/GEMS.jpeg",
     "headerFilters": [{
         "defaultFilter": {
             "id": "All",
