@@ -1,6 +1,6 @@
 # Description: Front end deployment is not dockerised insted it directly copies build folder into  var/www/
 
-name: Deploy to dev server school-app 
+name: Deploy to dev server school-app humming-bird-school.
 on:
   push:
     branches:
@@ -21,3 +21,11 @@ jobs:
           script: |    
                cd ${{ secrets.TARGET_DIR_HUMMING_BIRD }}
                ./deploy.sh
+    -          
+      name: Notify on Slack channel
+      uses: iRoachie/slack-github-actions@v2.3.2
+      env:
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      with:
+        status: ${{ job.status }}
+      if: ${{ always() }}
