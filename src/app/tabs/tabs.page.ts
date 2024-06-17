@@ -16,13 +16,20 @@ import { ConfigVariables } from "../config";
 export class TabsPage implements OnTabViewWillEnter{
   subscription: any;
   optModalOpen = false;
-  configVariables = ConfigVariables;
+  configVariables: any;
   @ViewChild('tabRef', { static: false }) tabRef!: IonTabs;
   constructor(private platform: Platform,
     private router: Router,
     private tabService: TabsService,
     private telemetry: TelemetryGeneratorService,
     private modalCtrl: ModalController) {
+      ConfigVariables.then(config => {
+        console.log('Configuration:', config);
+        this.configVariables = config;
+        // Use the config data as needed
+      }).catch(error => {
+        console.error('Failed to load configuration:', error);
+      });
   }
 
   tabViewWillEnter(): void {

@@ -17,7 +17,7 @@ import { ConfigVariables } from "../../config";
   styleUrls: ['splash.page.scss'],
 })
 export class SplashPage implements OnInit {
-  configVariables = ConfigVariables;
+  configVariables : any;
   constructor(private appinitialise: AppInitializeService,
     private storage: StorageService,
     private router: Router,
@@ -33,6 +33,14 @@ export class SplashPage implements OnInit {
     }
     
   async ngOnInit() {
+    ConfigVariables.then(config => {
+      console.log('Configuration:', config);
+      this.configVariables = config;
+      // Use the config data as needed
+    }).catch(error => {
+      console.error('Failed to load configuration:', error);
+    });
+    
     this.headerService.showStatusBar(true);
     this.headerService.hideHeader();
     ApiModule.getInstance().init(await this.utilService.getDeviceId())
