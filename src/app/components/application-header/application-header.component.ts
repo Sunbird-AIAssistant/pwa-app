@@ -21,7 +21,7 @@ export class ApplicationHeaderComponent  implements OnInit {
   defaultFilter!: any;
   appVersion: string = ''
   appName: string = ""
-  configVariables = ConfigVariables;
+  configVariables : any;
 
   constructor(private utilService: UtilService,
     private telemetryGeneratorService: TelemetryGeneratorService,
@@ -33,6 +33,14 @@ export class ApplicationHeaderComponent  implements OnInit {
         this.appVersion = `v${val.version}.${val.build}`
         this.appName = val.name
       })
+
+      ConfigVariables.then(config => {
+        console.log('Configuration:', config);
+        this.configVariables = config;
+        // Use the config data as needed
+      }).catch(error => {
+        console.error('Failed to load configuration:', error);
+      });
     }
 
   async ngOnInit() {

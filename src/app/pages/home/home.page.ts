@@ -49,7 +49,7 @@ export class HomePage implements OnInit, OnTabViewWillEnter, OnDestroy {
   networkChangeSub: Subscription | null = null;
   selectedLang: any = "";
   appName: string = "";
-  configVariables = ConfigVariables;
+  configVariables : any;
   responseList: Array<any> = [];
   constructor(
     private headerService: AppHeaderService,
@@ -70,6 +70,15 @@ export class HomePage implements OnInit, OnTabViewWillEnter, OnDestroy {
     private lcoalNotifService: LocalNotificationService,
     private appUpdateService: AppUpdateService,
     private confirmService: ConfirmService) {
+
+      ConfigVariables.then(config => {
+        console.log('Configuration:', config);
+        this.configVariables = config;
+        // Use the config data as needed
+      }).catch(error => {
+        console.error('Failed to load configuration:', error);
+      });
+      
       App.getInfo().then(info => {this.appName = info.name});
     this.configContents = [];
     this.contentList = [];
@@ -103,19 +112,20 @@ export class HomePage implements OnInit, OnTabViewWillEnter, OnDestroy {
   // }
 
  async ngOnDestroy() {
+  const modal = await this.modalCtrl.getTop();
+  if (modal) {
+    modal.dismiss();
+  }
     try {
       this.langChangeSubscription && this.langChangeSubscription.unsubscribe()  
       this.networkChangeSub && this.networkChangeSub.unsubscribe();
     } catch (error) {
       console.log(`error in unsubscribe`, error)
     }
-    const modal = await this.modalCtrl.getTop();
-    if (modal) {
-      modal.dismiss();
-    }
   }
 
   async ngOnInit(): Promise<void> {
+
     this.headerService.headerEventEmitted$.subscribe(async (val) => {
       if(val == 'language') {
         let lang = await this.storage.getData('lang');

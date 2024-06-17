@@ -3,7 +3,7 @@
     <div class="header-content" *ngIf="headerConfig?.actionButtons[0] !== 'bot'">
       <ion-buttons slot="start" class="start-icon">
         <ion-button [hidden]="headerConfig?.showbackButton">
-          <ion-icon aria-hidden="true" class="pitara-icon" src="{{configVariables.tenantLogo}}"></ion-icon>
+          <ion-icon aria-hidden="true" class="pitara-icon" src="{{configVariables?.tenantLogo}}"></ion-icon>
         </ion-button>
         <!-- Back button image -->
         <ion-button [hidden]="!headerConfig?.showbackButton" (click)="emitEvent($event, 'back')">
@@ -11,8 +11,8 @@
         </ion-button>
       </ion-buttons>
       <ion-title role="heading" [ngClass]="{'title_bb': headerConfig?.showbackButton, 'animate_title': headerConfig?.pageTitle == appName}" aria-level="1" 
-      *ngIf="!(headerConfig?.showbackButton && (headerConfig?.actionButtons?.indexOf('search') >=0 || headerConfig?.actionButtons?.indexOf('edit') >=0))">{{ configVariables.siteName }}</ion-title>
-      <ion-title role="heading" aria-level="1" *ngIf="headerConfig?.actionButtons?.indexOf('edit') >=0">{{ headerConfig.pageTitle }}</ion-title>
+      *ngIf="!(headerConfig?.showbackButton && (headerConfig?.actionButtons?.indexOf('search') >=0 || headerConfig?.actionButtons?.indexOf('edit') >=0))">{{ configVariables?.siteName }}</ion-title>
+      <ion-title role="heading" aria-level="1" *ngIf="headerConfig?.actionButtons?.indexOf('edit') >=0">{{ headerConfig?.pageTitle }}</ion-title>
       <ion-input type="search" *ngIf="headerConfig?.showbackButton && headerConfig?.actionButtons?.indexOf('search') >=0" #searchInput [placeholder]="'SEARCH_HINT' | translate"></ion-input>
       <ion-buttons slot="end" [hidden]="headerConfig?.showbackButton">
         <ion-button (click)="emitEvent($event, 'search')">
@@ -36,13 +36,13 @@
     </div>
     <!--bot panel header-->
     <div class="bot-back-panel" *ngIf="headerConfig?.actionButtons[0] === 'bot'">
-      <div class="bot-back-panel-container" [ngClass]="headerConfig.pageTitle === 'Parent Tara' || headerConfig.pageTitle === 'Teacher Tara' ?  'question-bot' : '' "  (click)="emitEvent($event, 'back')">  <!--use the class "parent-bot" for parent bot panel-->
+      <div class="bot-back-panel-container" [ngClass]="headerConfig?.pageTitle === 'Parent Tara' || headerConfig?.pageTitle === 'Teacher Tara' ?  'question-bot' : '' "  (click)="emitEvent($event, 'back')">  <!--use the class "parent-bot" for parent bot panel-->
         <ion-icon aria-hidden="true" src="assets/icon/bot-back-icon.svg"></ion-icon>
-        <div class="bot-back-panel__title">{{headerConfig.pageTitle | translate}}</div>
+        <div class="bot-back-panel__title">{{headerConfig?.pageTitle | translate}}</div>
         <div class="logo">
-          <img *ngIf="headerConfig.pageTitle === 'Katha Sakhi'" src="../../../assets/images/story_sakhi.png" alt=""/>
-          <img *ngIf="headerConfig.pageTitle === 'Parent Tara'" src="../../../assets/images/parent_sakhi.png" alt=""/>
-          <img *ngIf="headerConfig.pageTitle === 'Teacher Tara'" src="../../../assets/images/teacher_sakhi.png" alt=""/>
+          <img *ngIf="headerConfig?.pageTitle === 'Katha Sakhi'" src="../../../assets/images/story_sakhi.png" alt=""/>
+          <img *ngIf="headerConfig?.pageTitle === 'Parent Tara'" src="../../../assets/images/parent_sakhi.png" alt=""/>
+          <img *ngIf="headerConfig?.pageTitle === 'Teacher Tara'" src="../../../assets/images/teacher_sakhi.png" alt=""/>
         </div>
       </div>
     </div>
@@ -75,7 +75,7 @@
   <ion-footer>
     <div class="footer_menu">
       <ion-label class="sb-menu-item" role="button" menuClose>{{"Version: " | translate}} {{appVersion}}</ion-label>
-      <ion-label role="button" menuClose><span>{{ configVariables.siteName }}</span></ion-label>
+      <ion-label role="button" menuClose><span>{{ configVariables?.siteName }}</span></ion-label>
     </div>
   </ion-footer>
 </ion-menu> 

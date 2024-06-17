@@ -1,10 +1,10 @@
 <ion-content>
   <ion-tabs #tabRef (ionTabsDidChange)="ionTabsDidChange($event)">
-    <ion-tab-button tab="home" href="/tabs/home" class="home-screen" style="--background: {{configVariables.footerColor}}">
+    <ion-tab-button tab="home" href="/tabs/home" class="home-screen" style="--background: {{configVariables?.footerColor}}">
       <ion-icon aria-hidden="true" src="assets/icon/home.svg"></ion-icon>
     </ion-tab-button>
   
-    <ion-tab-bar slot="bottom" class="tabbar" style="--background: {{configVariables.footerColor}}">
+    <ion-tab-bar slot="bottom" class="tabbar" style="--background: {{configVariables?.footerColor}}">
   
       <ion-tab-button tab="story" href="">
         <ion-icon aria-hidden="true" src="assets/icon/book.svg"></ion-icon>

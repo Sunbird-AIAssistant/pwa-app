@@ -121,7 +121,6 @@ export class HttpCapacitorAdapter implements HttpClient {
         ) {
             requestOptions['params']  = parametersOrData;
         }
-        console.log('requestOptions', requestOptions);
         
         this.http.request(requestOptions).then((response: HttpResponse) => {
             response.data = response.data;
@@ -198,7 +197,8 @@ export class HttpCapacitorAdapter implements HttpClient {
                 if (receivedData.data && receivedData.data.djp_contents !== null && receivedData.data.djp_contents !== undefined) {
                     apiResponse = {
                         body: {
-                            "result" : mappedContent},// response.data,
+                            "result" : mappedContent,
+                            'audioText': response?.data?.audioText},// response.data,
                         responseCode : 200,//response.status,
                         errorMesg : '',
                         headers : response.headers,
@@ -214,7 +214,6 @@ export class HttpCapacitorAdapter implements HttpClient {
                         requestHeaders: requestOptions.headers
                     }
                 }
-            console.log('apiResponse', apiResponse);
             observable.next(apiResponse);
             observable.complete();
         }
