@@ -8,17 +8,17 @@
   
       <ion-tab-button tab="story" href="">
         <ion-icon aria-hidden="true" src="assets/icon/book.svg"></ion-icon>
-        <ion-label>{{'Katha Sakhi' | translate }}</ion-label>
+        <ion-label>{{ configVariables?.kathaSakhiBotName }}</ion-label>
       </ion-tab-button>
   
       <ion-tab-button tab="parent-sakhi" href="">
         <ion-icon aria-hidden="true" src="assets/icon/parents.svg"></ion-icon>
-        <ion-label>{{'Parent Tara' | translate }}</ion-label>
+        <ion-label>{{ configVariables?.parentTaraBotName }}</ion-label>
       </ion-tab-button>
 
       <ion-tab-button tab="teacher-sakhi" href="">
         <ion-icon aria-hidden="true" src="assets/icon/teacher.svg"></ion-icon>
-        <ion-label>{{'Teacher Tara' | translate }}</ion-label>
+        <ion-label>{{ configVariables?.teacherTaraBotName }}</ion-label>
       </ion-tab-button>
   
       <ion-tab-button tab="my-pitara" href="/tabs/my-pitara">
