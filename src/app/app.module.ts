@@ -111,6 +111,8 @@ export class AppModule {
   constructor(private translate: TranslateService, private storage: StorageService) {
     this.findSiteSubDomain();
     this.storage.getData('lang').then(lang =>{
+      let currentLang = lang || 'hi'; // Use 'en' as a default if lang is undefined
+      this.translate.setDefaultLang(currentLang);
       console.log(lang);
       if(!lang)
       {
