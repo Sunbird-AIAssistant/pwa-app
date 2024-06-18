@@ -19,12 +19,12 @@ export class SearchService {
     if (audio) {
       request = {
         "audio": data.text,
-        // "language": data.currentLang
+        "language": data.currentLang
       }
     } else {
       request = {
         "name": data.text,
-        // "language": data.currentLang
+        "language": data.currentLang
       }
     }
     let body = JSON.stringify(request)
@@ -59,7 +59,7 @@ export class SearchService {
       req['category'] = data?.category;
     }
 
-    // req['language'] = lang;
+    req['language'] = lang;
    
     const apiRequest = new ApiRequest.Builder()
       .withHost(config.api.BASE_URL)
