@@ -15,19 +15,29 @@ export class SearchService {
   ) { }
 
   async postSearchContext(data: any, audio: boolean): Promise<any> {
-    let request = {};
+    let requestBody = {};
     if (audio) {
-      request = {
-        "audio": data.text,
-        "language": data.currentLang
+      requestBody = {
+        audio: data.text,
+        language: data.currentLang,
+        request: {
+          orderBy: {
+            "mimetype": "video/x-youtube"
+          }
+        }
       }
     } else {
-      request = {
-        "name": data.text,
-        "language": data.currentLang
+      requestBody = {
+        name: data.text,
+        language: data.currentLang,
+        request: {
+          orderBy: {
+            "mimetype": "video/x-youtube"
+          }
+        }
       }
     }
-    let body = JSON.stringify(request)
+    let body = JSON.stringify(requestBody)
     console.log("body ", body);
     const apiRequest = new ApiRequest.Builder()
       .withHost(config.api.BASE_URL)
@@ -48,24 +58,21 @@ export class SearchService {
   }
 
   postContentSearch(data: any, lang: any): Promise<any> {
-    let req : any= {};
-    if(data['name'])
-    {
-      req['name'] = data?.name;
+    let requestBody = {
+      name:  data?.name,
+      category: data?.category,
+      language: lang,
+      request: {
+        orderBy: {
+          "mimetype": "video/x-youtube"
+        },
+      }
     }
-
-    if(data['category'])
-    {
-      req['category'] = data?.category;
-    }
-
-    req['language'] = lang;
-   
     const apiRequest = new ApiRequest.Builder()
       .withHost(config.api.BASE_URL)
       .withPath(config.api.CONTENT_SEARCH_API)
       .withType(ApiHttpRequestType.POST)
-      .withBody(req)
+      .withBody(requestBody)
       .withBearerToken(true)
       .withLanguge(lang)
       .build()

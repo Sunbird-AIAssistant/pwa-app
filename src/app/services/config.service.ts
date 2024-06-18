@@ -30,15 +30,20 @@ export class ConfigService {
   }
 
   async getAllContent(req: any, lang: any): Promise<any> {
-    let request = {
-      language: lang
+    let requestBody = {
+      language: lang,
+      request: {
+        orderBy: {
+          "mimetype": "video/x-youtube"
+        }
+      }
     }
     const apiRequest = new ApiRequest.Builder()
       .withHost(config.api.BASE_URL)
       .withPath(config.api.PAGE_SEARCH_API)
       .withType(ApiHttpRequestType.POST)
       .withBearerToken(true)
-      .withBody(request)
+      .withBody(requestBody)
       .withLanguge(lang)
       .build()
     return lastValueFrom(this.apiService.fetch(apiRequest).pipe(
