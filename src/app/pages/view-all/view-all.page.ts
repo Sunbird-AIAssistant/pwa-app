@@ -97,7 +97,6 @@ export class ViewAllPage implements OnInit {
      
       this.contentList.map((e) => e.metaData = (typeof e.metaData === 'string') ? JSON.parse(e.metaData) : e.metaData)
       this.contentList = this.getContentImgPath(this.contentList);
-      console.log("0", this.contentList);
     }).catch((err) => {
       console.log('error', err)
     })
@@ -242,7 +241,6 @@ export class ViewAllPage implements OnInit {
     if (localContents.length) {
       localContents = this.getContentImgPath(localContents, true);
       this.contentList = localContents.concat(this.contentList);
-      console.log("1", this.contentList);
     }
   }
 
@@ -332,7 +330,6 @@ export class ViewAllPage implements OnInit {
           });
           localContents = this.getContentImgPath(localContents, true);
           this.contentList = localContents.concat(this.contentList);
-          console.log("2", this.contentList);
         } else if(type === 'diksha') {
           let arr = url.split('/')
           id = arr.filter((a: string) => a.startsWith('do_'))
@@ -352,7 +349,6 @@ export class ViewAllPage implements OnInit {
                     })
                     localContents = this.getContentImgPath(localContents, true);
                     this.contentList = localContents.concat(this.contentList);
-                    console.log("3", this.contentList);
                   }
                 })
               } else if(content.mediaType = "content") {
@@ -384,7 +380,6 @@ export class ViewAllPage implements OnInit {
                   localContents.push(localData)
                   localContents = this.getContentImgPath(localContents, true);
                   this.contentList = localContents.concat(this.contentList);
-                  console.log("4", this.contentList);
                 }
               }
             })
