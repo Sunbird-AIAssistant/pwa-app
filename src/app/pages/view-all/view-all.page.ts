@@ -65,9 +65,10 @@ export class ViewAllPage implements OnInit {
       this.headerService.deviceBackBtnEvent({ name: 'backBtn' })
     });
     this.headerService.headerEventEmitted$.subscribe((event) => {
-      if(event === 'back' && !this.navigated) {
-        this.navigated = true;
-        this.location.back();
+      if(event === 'back') {
+        this.router.navigate(['/tabs/my-pitara']);
+        // this.navigated = true;
+        // this.location.back();
       }
     })
     this.getRecentlyviewedContent()
