@@ -20,6 +20,7 @@ export class MyPitaraPage implements OnTabViewWillEnter{
   contentList: Array<any> = [];
   playlists: Array<any> = [];
   isNavigate = true;
+  mimeType = PlayerType;
 
   constructor(private headerService: AppHeaderService,
     private contentService: ContentService,
@@ -70,7 +71,7 @@ export class MyPitaraPage implements OnTabViewWillEnter{
             this.contentList.push(item);
             if (item.metaData.mimetype === PlayerType.YOUTUBE) {
               // item.metaData['thumbnail'] = this.loadYoutubeImg(item.metaData)
-              item.metaData['thumbnail'] = item.metaData.thumbnail;
+              item.metaData['thumbnail'] = 'assets/images/youtube-video.png';
 
             } else {
               item.metaData['thumbnail'] = (item.metaData.thumbnail && !item?.metaData.identifier?.startsWith('do_')) ? item.metaData.thumbnail : ContentUtil.getImagePath(item.metaData.mimeType || item.metaData.mimetype)

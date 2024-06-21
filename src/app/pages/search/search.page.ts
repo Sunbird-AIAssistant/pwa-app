@@ -59,7 +59,8 @@ export class SearchPage implements OnInit, OnTabViewWillEnter {
   ngOnInit() {}
 
   navigateBack() {
-    this.location.back();
+    // this.location.back();
+    this.router.navigate(['/tabs/home']);
   }
 
   ionViewWillEnter() {

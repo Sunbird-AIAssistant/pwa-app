@@ -30,6 +30,7 @@ export class ViewAllPage implements OnInit {
   deleteContent: any;
   selectedContents: Array<any> = [];
   optModalOpen: boolean = false;
+  mimeType = PlayerType;
   resolveNativePath = (path: string) =>
     new Promise((resolve, reject) => {
       (window as any).FilePath.resolveNativePath(path, resolve, (err: any) => {
@@ -64,9 +65,10 @@ export class ViewAllPage implements OnInit {
       this.headerService.deviceBackBtnEvent({ name: 'backBtn' })
     });
     this.headerService.headerEventEmitted$.subscribe((event) => {
-      if(event === 'back' && !this.navigated) {
-        this.navigated = true;
-        this.location.back();
+      if(event === 'back') {
+        this.router.navigate(['/tabs/my-pitara']);
+        // this.navigated = true;
+        // this.location.back();
       }
     })
     this.getRecentlyviewedContent()
