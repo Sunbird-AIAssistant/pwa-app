@@ -95,10 +95,13 @@ ion-content{
 }
 
 .keyboard-open {
-    transform: translateY(-50%);   }
+    transform: translateY(-50%);
+}
 
-
-
+.keyboard-closed {
+    transform: translateY(0);
+    transition: transform 0.3s ease; /* Optional: Add a transition for smoother movement */
+}
 
 .audio_msg {
     display: flex;

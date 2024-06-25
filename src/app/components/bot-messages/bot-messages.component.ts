@@ -134,7 +134,6 @@ export class BotMessagesComponent  implements OnInit, AfterViewInit {
   onInputBlur() {
     this.keyboardOpen = false;
     Keyboard.removeAllListeners();
-
   }
 
   ngOnDestroy() {
