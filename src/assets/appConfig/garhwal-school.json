@@ -3,6 +3,10 @@
     "siteName": "Garhwal English Medium",
     "siteByLine": "Listen, Learn & Grow !!!",
     "splashImage": "assets/school/GEMS.jpeg",
+    "defaultContentFilter": {
+        "key": "title",
+        "value": "Rice"
+    },
     "headerFilters": [{
         "defaultFilter": {
             "id": "All",

@@ -29,12 +29,15 @@ export class ConfigService {
     })
   }
 
-  async getAllContent(req: any, lang: any): Promise<any> {
+  async getAllContent(req: any, lang: any, defaultContentFilterKey: any, defaultContentFilterValue: any): Promise<any> {
     let requestBody = {
       language: lang,
       request: {
         orderBy: {
           "mimetype": "video/x-youtube"
+        },
+        filters: {
+          [defaultContentFilterKey] : defaultContentFilterValue
         }
       }
     }
