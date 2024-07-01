@@ -1,5 +1,5 @@
-import { Location } from '@angular/common';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Location, PlatformLocation } from '@angular/common';
+import { Component, OnInit, ViewChild, HostListener } from '@angular/core';
 import { Content } from 'src/app/appConstants';
 import { SearchService } from 'src/app/services/search.service';
 import { AppHeaderService, StorageService } from 'src/app/services';
@@ -48,8 +48,20 @@ export class SearchPage implements OnInit, OnTabViewWillEnter {
     private contentService: ContentService,
     private router: Router,
     private telemetryGeneratorService: TelemetryGeneratorService,
-    private storage: StorageService
-  ) { }
+    private storage: StorageService,
+    private platformLocation: PlatformLocation
+  ) {
+    this.platformLocation.onPopState(() => {
+      console.log('Back button pressed');
+    });
+  }
+
+  // Optional: Use HostListener to detect hardware back button on Android devices
+  @HostListener('window:popstate', ['$event'])
+  onPopState(event: any) {
+    console.log('Hardware back button pressed', event);
+    this.location.back();
+  }
   
   tabViewWillEnter(): void {
     this.headerService.hideHeader();
@@ -59,7 +71,6 @@ export class SearchPage implements OnInit, OnTabViewWillEnter {
   ngOnInit() {}
 
   navigateBack() {
-    // this.location.back();
     this.router.navigate(['/tabs/home']);
   }
 

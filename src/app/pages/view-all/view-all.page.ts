@@ -1,10 +1,10 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonModal, ModalController, Platform } from '@ionic/angular';
 import { AppHeaderService, UtilService } from 'src/app/services';
 import { ContentService } from 'src/app/services/content/content.service';
 import { PlaylistService } from 'src/app/services/playlist/playlist.service';
-import { Location } from '@angular/common';
+import { Location, PlatformLocation } from '@angular/common';
 import { MimeType, PlayerType } from 'src/app/appConstants';
 import { FilePicker } from '@capawesome/capacitor-file-picker';
 import { Content } from 'src/app/services/content/models/content';
@@ -50,14 +50,24 @@ export class ViewAllPage implements OnInit {
     private platform: Platform,
     private location: Location,
     private modalCtrl: ModalController,
-    private utilService: UtilService
+    private utilService: UtilService,
+    private platformLocation: PlatformLocation
   ) {
     let extras = this.router.getCurrentNavigation()?.extras;
     if (extras) {
       this.type = extras.state?.['type'];
     }
+    this.platformLocation.onPopState(() => {
+      console.log('Back button pressed');
+    });
   }
 
+  // Optional: Use HostListener to detect hardware back button on Android devices
+  @HostListener('window:popstate', ['$event'])
+  onPopState(event: any) {
+    console.log('Hardware back button pressed', event);
+    this.location.back();
+  }
 
   async ngOnInit(): Promise<void> {
     this.platform.backButton.subscribeWithPriority(11, async () => {
