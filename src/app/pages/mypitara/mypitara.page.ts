@@ -70,8 +70,8 @@ export class MyPitaraPage implements OnTabViewWillEnter{
             uniqueIds[item.contentIdentifier] = true;
             this.contentList.push(item);
             if (item.metaData.mimetype === PlayerType.YOUTUBE) {
-              // item.metaData['thumbnail'] = this.loadYoutubeImg(item.metaData)
-              item.metaData['thumbnail'] = 'assets/images/youtube-video.png';
+              item.metaData['thumbnail'] = this.loadYoutubeImg(item.metaData)
+              // item.metaData['thumbnail'] = 'assets/images/youtube-video.png';
 
             } else {
               item.metaData['thumbnail'] = (item.metaData.thumbnail && !item?.metaData.identifier?.startsWith('do_')) ? item.metaData.thumbnail : ContentUtil.getImagePath(item.metaData.mimeType || item.metaData.mimetype)
@@ -128,9 +128,13 @@ export class MyPitaraPage implements OnTabViewWillEnter{
 
   loadYoutubeImg(metaData: any): string {
     let id = metaData.identifier;
-    if(id && id.startsWith("do_")) {
-      id = getYouTubeID(metaData.url);
-    }
+    // if(id && id.startsWith("do_")) {
+    //   id = getYouTubeID(metaData.url);
+    // }
+
+    const regex = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+    const matches = metaData?.url.match(regex);
+    id= matches ? matches[1] : null;
     return `https://img.youtube.com/vi/${id}/mqdefault.jpg`;
   }
 

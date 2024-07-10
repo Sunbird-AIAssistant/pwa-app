@@ -52,7 +52,8 @@
         <div class="card__img" (click)="playContent($event, content)">
           <img [src]="(content?.metaData?.thumbnail && !content.metaData.identifier.startsWith('do_')) ? (content?.metaData?.thumbnail) : 'assets/images/Audio.png'" alt="" *ngIf="content.metaData.mimetype === mimeType.AUDIO">
           <!-- <img appThumbnail [appThumbnail]="'assets/images/yt.jpeg'" alt="" *ngIf="content.metaData.mimetype === mimeType.YOUTUBE"> -->
-          <img [src]="(content?.metaData?.thumbnail && !content.metaData.identifier.startsWith('do_')) ? (content?.metaData?.thumbnail) : 'assets/images/youtube-video.png'" alt="" *ngIf="content.metaData.mimetype === mimeType.YOUTUBE">
+          <img appThumbnail [appThumbnail]="content?.metaData" alt="" *ngIf="content?.metaData?.mimetype === mimeType.YOUTUBE && !content.play"> 
+          <!-- <img [src]="(content?.metaData?.thumbnail && !content.metaData.identifier.startsWith('do_')) ? (content?.metaData?.thumbnail) : 'assets/images/youtube-video.png'" alt="" *ngIf="content.metaData.mimetype === mimeType.YOUTUBE"> -->
           <!-- <img [src]="loadYoutubeImg(content.metaData.identifier)" alt="" *ngIf="content.metaData.mimetype === mimeType.YOUTUBE && !content.play"> -->
           <img [src]="(content?.metaData?.thumbnail && !content.metaData.identifier.startsWith('do_')) ? (content?.metaData?.thumbnail) : 'assets/images/Video.png'" alt="" *ngIf="content.metaData.mimetype === mimeType.MP4">
           <img [src]="(content?.metaData?.thumbnail && !content.metaData.identifier.startsWith('do_')) ? (content?.metaData?.thumbnail) : 'assets/images/PDF.png'" alt="" *ngIf="content.metaData.mimetype === mimeType.PDF">
