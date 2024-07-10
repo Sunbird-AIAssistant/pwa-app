@@ -69,10 +69,28 @@
             "default": true
         }
     ],
+    "titleCode": [
+        "en", "hi", "as", "bn"
+       ],
     "en": {
         "kathaSakhiBotName": "Story Baideo",
         "parentTaraBotName": "Parent Bondhu",
         "teacherTaraBotName": "Teacher Bondhu"
+       },
+       "hi": {
+        "kathaSakhiBotName": "कथा सखी",
+        "parentTaraBotName": "पेरेंट दोस्त",
+        "teacherTaraBotName": "टीचर दोस्त"
+       },
+       "as": {
+        "kathaSakhiBotName": "কাহিনী বাইদেউ",
+        "parentTaraBotName": "মাক-দেউতা বন্ধু",
+        "teacherTaraBotName": "শিক্ষক বন্ধু"
+       },
+       "bn": {
+        "kathaSakhiBotName": "গল্প বোন",
+        "parentTaraBotName": "অভিভাবক বন্ধু",
+        "teacherTaraBotName": "শিক্ষক বন্ধু"
        },
    
     "footerText": "Developed with ❤️ by Tekdi Technologies ",

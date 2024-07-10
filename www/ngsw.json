@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1720596823470,
+  "timestamp": 1720604936417,
   "index": "/index.html",
   "assetGroups": [
     {
@@ -532,8 +532,8 @@
     "/Doodles.5521a3972f72a279.svg": "32405cec21a4720c9ee4d0b942581502fb7a1974",
     "/NotoSans-Regular.69e81dad19259ab6.ttf": "71640601d4ff5ee3713b68228b564dcca13a4aaa",
     "/assets/add.svg": "33b920c2ac89d971404730406bc4df477ea1dabd",
-    "/assets/appConfig/garhwal-school.json": "d871cdd8a8f0125569c2677accef6d472618c7fe",
-    "/assets/appConfig/hummingbird-school.json": "8f61da0dcee803731df5053d8ee9479477b77231",
+    "/assets/appConfig/garhwal-school.json": "7b0ba8c83ddcb0b7044cfec48c54e45b6bae3c90",
+    "/assets/appConfig/hummingbird-school.json": "121b3da38a235f72a61445b5c514c5404c2da6d8",
     "/assets/appConfig/localhost.json": "c1509e154c9792fcae5ed31be0029089e1f9f435",
     "/assets/arrow-right.svg": "bb67048eb7cd7987f8e2e43511f11a7d962f5af3",
     "/assets/badge-2.svg": "fb752f1cd110fc328f39e25632e85fb830ffa324",
@@ -544,9 +544,9 @@
     "/assets/i18n/bn.json": "33945da479d0233dea4af1c8dffbc2c2529b6d52",
     "/assets/i18n/bo.json": "23c8a245444672ba7714300c01cc7ffd902fe572",
     "/assets/i18n/do.json": "f8c6442c3215835aa310a7bd1f3f09c02ad1ddc7",
-    "/assets/i18n/en.json": "9c989f59817d327e5557d461a4e71b1eea3823da",
+    "/assets/i18n/en.json": "963e27bd9f2437cbc7cbbd70f7433457891225de",
     "/assets/i18n/gu.json": "36f5795d0e876bc0589e8f2a05413ccba0643db4",
-    "/assets/i18n/hi.json": "c75fa4422ce485992e1d1bca5f839b9fd53ac483",
+    "/assets/i18n/hi.json": "5d8e96a8204a6ecd58d7c8e1430a4f50e5085e55",
     "/assets/i18n/kn.json": "a8721526f4d1acfd75ff70403d3770cae80f29c3",
     "/assets/i18n/ko.json": "1060cec6e8a9134995abb277be127cbf4795f135",
     "/assets/i18n/ks.json": "e551fabb0515d19d23c9fdd86431c23d6a5715bb",
