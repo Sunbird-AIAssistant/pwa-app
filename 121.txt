@@ -1,1 +1,1 @@
-Telemetry Health check
+Telemetry Health check demo version
