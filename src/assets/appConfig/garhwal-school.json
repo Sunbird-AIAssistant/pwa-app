@@ -59,6 +59,9 @@
             "default": true
         }
     ],
+    "titleCode": [
+        "en"
+       ],
     "en": {
         "kathaSakhiBotName": "Story GEMS",
         "parentTaraBotName": "Parent GEMS",
