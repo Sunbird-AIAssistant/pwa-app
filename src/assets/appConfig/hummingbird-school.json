@@ -4,8 +4,7 @@
     "siteByLine": "Listen, Learn & Grow !!!",
     "splashImage": "assets/school/THSM_152x152.png",
     "defaultContentFilter": {
-        "key": "agegroup",
-        "value": "3-6"
+      
     },
     "headerFilters": [{
         "defaultFilter": {
