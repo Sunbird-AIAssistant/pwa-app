@@ -59,9 +59,11 @@
             "default": true
         }
     ],
-    "kathaSakhiBotName": "Story GEMS",
-    "parentTaraBotName": "Parent GEMS",
-    "teacherTaraBotName": "Teacher GEMS",
+    "en": {
+        "kathaSakhiBotName": "Story GEMS",
+        "parentTaraBotName": "Parent GEMS",
+        "teacherTaraBotName": "Teacher GEMS"
+       },
     "footerText": "Developed with ❤️ by Tekdi Technologies ",
     "headerColor": "brown",
     "headerFontSize": "16",

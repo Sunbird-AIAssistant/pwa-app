@@ -69,9 +69,12 @@
             "default": true
         }
     ],
-    "kathaSakhiBotName": "Story Baideo",
-    "parentTaraBotName": "Parent Bondhu",
-    "teacherTaraBotName": "Teacher Bondhu",
+    "en": {
+        "kathaSakhiBotName": "Story Baideo",
+        "parentTaraBotName": "Parent Bondhu",
+        "teacherTaraBotName": "Teacher Bondhu"
+       },
+   
     "footerText": "Developed with ❤️ by Tekdi Technologies ",
     "headerColor": "brown",
     "headerFontSize": "16",
