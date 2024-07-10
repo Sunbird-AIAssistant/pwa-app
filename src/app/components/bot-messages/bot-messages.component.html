@@ -2,7 +2,10 @@
   <div class="bot-content" *ngIf="botMessages.length > 0">
     <div *ngFor="let msg of botMessages; let i = index">
       <div *ngIf="msg?.type !== ''" class="bot-content__message {{msg?.type}}" [ngClass]="i !==0 ? 'msg-block': ''">
-        <ion-text>{{msg?.displayMsg | translate }}</ion-text>
+        <!-- <ion-text>{{msg?.displayMsg | translate }}</ion-text> -->
+        <!-- <ion-text innerHTML={msg.displayMsg}></ion-text> -->
+        <ion-text [innerHTML]="msg.displayMsg"></ion-text>
+
         <ion-button *ngIf="msg?.readMore" fill="clear" size="small" (click)="readmore(msg)">{{'Read more...' | translate}}</ion-button>
         <div class="audio_msg" *ngIf="msg?.messageType == 'audio'" (click)="playFile(msg)">
           <div class="play_audio">

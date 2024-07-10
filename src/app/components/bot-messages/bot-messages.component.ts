@@ -10,13 +10,15 @@ import { TelemetryGeneratorService } from 'src/app/services/telemetry/telemetry.
 import { CorrelationData } from 'src/app/services/telemetry/models/telemetry';
 import { ChatMessage } from 'src/app/services/bot/db/models/chat.message';
 import { v4 as uuidv4 } from "uuid";
+// import DOMPurify from 'dompurify'; // Import DOMPurify to sanitize HTML
+import { ConfigVariables } from "../../config";
 
 @Component({
   selector: 'app-bot-messages',
   templateUrl: './bot-messages.component.html',
   styleUrls: ['./bot-messages.component.scss'],
 })
-export class BotMessagesComponent  implements OnInit, AfterViewInit {
+export class BotMessagesComponent implements OnInit, AfterViewInit {
   botMessages: Array<any> = [];
   textMessage: string = ''
   chat!: BotMessage;
@@ -34,6 +36,10 @@ export class BotMessagesComponent  implements OnInit, AfterViewInit {
   audioRef!: HTMLAudioElement;
   keyboardOpen: boolean = false;
   keyboardHeight: number = 0;
+  temp: string = '';
+  configVariables: any;
+  language: string = '';
+  isTitleChanged: boolean = false;
 
   constructor(
     private record: RecordingService,
@@ -44,10 +50,16 @@ export class BotMessagesComponent  implements OnInit, AfterViewInit {
     private telemetryGeneratorService: TelemetryGeneratorService,
     private storage: StorageService,
     private platform: Platform
-  ) { 
-    this.defaultLoaderMsg = {identifier: "", message: this.translate.instant('Loading...'), messageType: 'text', displayMsg: this.translate.instant('Loading...'), type: 'received', time: '', timeStamp: '', readMore: false, likeMsg: false, dislikeMsg: false, requestId: ""};
+  ) {
+    this.defaultLoaderMsg = { identifier: "", message: this.translate.instant('Loading...'), messageType: 'text', displayMsg: this.translate.instant('Loading...'), type: 'received', time: '', timeStamp: '', readMore: false, likeMsg: false, dislikeMsg: false, requestId: "" };
     this.botMessages = [];
     this.audioRef = new Audio();
+
+    ConfigVariables.then(config => {
+      this.configVariables = config;
+    }).catch(error => {
+      console.error('Failed to load configuration:', error);
+    });
   }
 
   ngOnInit() {
@@ -82,9 +94,9 @@ export class BotMessagesComponent  implements OnInit, AfterViewInit {
 
     document.addEventListener('visibilitychange', () => {
       if (document.visibilityState === 'hidden') {
-        if(this.audioRef) {
+        if (this.audioRef) {
           this.botMessages.forEach(msg => {
-            if(msg.audio) {
+            if (msg.audio) {
               msg.audio.play = false;
             }
           })
@@ -154,19 +166,39 @@ export class BotMessagesComponent  implements OnInit, AfterViewInit {
 
   async initialiseBot() {
     this.botMessages = [];
-    let textMsg = `WELCOME_TO_${this.config.type.toUpperCase()}_SAKHI`;
-    if(this.botMessages.length === 0)
-    this.botMessages.push({ messageType: 'text', displayMsg: textMsg, type: 'received'})
+    let botName = '';
+    this.language = await this.storage.getData('lang') || 'en';
+    this.isTitleChanged = this.configVariables.titleCode.includes(this.language);
+
+    if (this.config.type == 'story') {
+      botName = this.isTitleChanged ? this.configVariables[this.language].kathaSakhiBotName : " Katha Sakhi";
+    } else if (this.config.type == 'parent') {
+      botName = this.isTitleChanged ? this.configVariables[this.language].parentTaraBotName : "Parent Tara";
+    } else if (this.config.type == 'teacher') {
+      botName = this.isTitleChanged ? this.configVariables[this.language].teacherTaraBotName : "Teacher Tara";
+    }
+
+    let textMsg;
+    // let textMsg = `WELCOME_TO_${this.config.type.toUpperCase()}_SAKHI`;
+    this.translate.get(`WELCOME_TO_${this.config.type.toUpperCase()}_SAKHI`).subscribe((res: string) => {
+      textMsg = res.replace('${botName}', botName);
+    });
+
+
+
+
+    if (this.botMessages.length === 0)
+      this.botMessages.push({ messageType: 'text', displayMsg: textMsg, type: 'received' })
     this.content.scrollToBottom(300).then(() => {
       this.content.scrollToBottom(300)
     });
     await this.messageApi.getAllChatMessages(this.config.type).then((res) => {
       console.log('Bot response', res);
       res.forEach(chat => {
-        let msg = {identifier: "", message: '', messageType: '', type: '', displayMsg: "", audio: { file: '', duration: '', play: false }, time: new Date().toLocaleTimeString('en', { hour: '2-digit', minute: '2-digit' }), timeStamp: '', readMore: false, likeMsg: false, dislikeMsg: false, requestId: ""}
+        let msg = { identifier: "", message: '', messageType: '', type: '', displayMsg: "", audio: { file: '', duration: '', play: false }, time: new Date().toLocaleTimeString('en', { hour: '2-digit', minute: '2-digit' }), timeStamp: '', readMore: false, likeMsg: false, dislikeMsg: false, requestId: "" }
         msg.message = chat.message
         msg.identifier = chat.identifier
-        if(chat.message.length > 200 && (chat.message.length - 200 > 100)) {
+        if (chat.message.length > 200 && (chat.message.length - 200 > 100)) {
           msg.displayMsg = chat.message.substring(0, 200);
           msg.readMore = true;
         } else {
@@ -183,12 +215,12 @@ export class BotMessagesComponent  implements OnInit, AfterViewInit {
         if (chat.messageType == 'audio') {
           msg.audio.file = msg.type == 'sent' ? chat.mediaData : chat.mediaUrl
           msg.audio.duration = chat.duration ?? ""
-        } 
+        }
         this.botMessages.push(msg);
       })
       console.log("botMessages ", this.botMessages);
     });
-    if(this.config.notif) {
+    if (this.config.notif) {
       this.textMessage = this.config.notif.body;
       this.handleMessage();
     }
@@ -196,7 +228,7 @@ export class BotMessagesComponent  implements OnInit, AfterViewInit {
 
   async handleMessage() {
     this.ngZone.run(() => {
-      this.chat = {identifier: "", message: '', messageType: 'text', type: 'sent', displayMsg: "", time: new Date().toLocaleTimeString('en', { hour: '2-digit', minute: '2-digit' }), timeStamp: '', readMore: false, likeMsg: false, dislikeMsg: false, requestId: ""}
+      this.chat = { identifier: "", message: '', messageType: 'text', type: 'sent', displayMsg: "", time: new Date().toLocaleTimeString('en', { hour: '2-digit', minute: '2-digit' }), timeStamp: '', readMore: false, likeMsg: false, dislikeMsg: false, requestId: "" }
       if (this.textMessage.replace(/\s/g, '').length > 0) {
         Keyboard.hide();
         this.chat.message = this.textMessage;
@@ -242,12 +274,12 @@ export class BotMessagesComponent  implements OnInit, AfterViewInit {
     let index = this.botMessages.length;
     let lang = await this.storage.getData('lang');
     await this.messageApi.getBotMessage(text, audio, this.config.type, lang).then(result => {
-    this.botMessages = JSON.parse(JSON.stringify(this.botMessages));
+      this.botMessages = JSON.parse(JSON.stringify(this.botMessages));
       this.botMessages.forEach(async (msg, i) => {
         if (result.responseCode === 200) {
           let data = result.body.result;
-          if(i == index-1 && msg.type === 'received') {
-            msg.time = new Date().toLocaleTimeString('en', {hour: '2-digit', minute:'2-digit'})
+          if (i == index - 1 && msg.type === 'received') {
+            msg.time = new Date().toLocaleTimeString('en', { hour: '2-digit', minute: '2-digit' })
             msg.timeStamp = Date.now();
             msg.requestId = result.requestHeaders['X-Request-ID']
             if (data?.output) {
@@ -266,7 +298,7 @@ export class BotMessagesComponent  implements OnInit, AfterViewInit {
               if (data?.output?.audio) {
                 let duration = await this.fetchAudioDuration(data.output.audio);
                 console.log("duration ", duration);
-                let audioMsg = {identifier: "", message: '', messageType: '', displayMsg: "", audio: { file: '', duration: '', play: false }, type: 'received', time: new Date().toLocaleTimeString('en', { hour: '2-digit', minute: '2-digit' }), timeStamp: Date.now(), readMore: false, likeMsg: false, dislikeMsg: false, requestId: "" }
+                let audioMsg = { identifier: "", message: '', messageType: '', displayMsg: "", audio: { file: '', duration: '', play: false }, type: 'received', time: new Date().toLocaleTimeString('en', { hour: '2-digit', minute: '2-digit' }), timeStamp: Date.now(), readMore: false, likeMsg: false, dislikeMsg: false, requestId: "" }
                 audioMsg.audio = { file: data.output?.audio, duration: duration, play: false }
                 audioMsg.messageType = 'audio';
                 this.ngZone.run(() => {
@@ -285,7 +317,7 @@ export class BotMessagesComponent  implements OnInit, AfterViewInit {
         } else {
           msg.message = result.errorMesg ? result.errorMesg : result.data?.detail ? result.data.detail : "An unknown error occured, please try after sometime";
           msg.displayMsg = msg.message;
-          msg.time = new Date().toLocaleTimeString('en', {hour: '2-digit', minute:'2-digit'});
+          msg.time = new Date().toLocaleTimeString('en', { hour: '2-digit', minute: '2-digit' });
           msg.timeStamp = Date.now();
           this.saveChatMessage(msg);
           this.disabled = false;
@@ -294,17 +326,17 @@ export class BotMessagesComponent  implements OnInit, AfterViewInit {
     }).catch(e => {
       this.disabled = false;
       console.log('catch error ', e);
-      this.botMessages[index-1].message = "An unknown error occured, please try after sometime";
-      this.botMessages[index-1].displayMsg = "An unknown error occured, please try after sometime";
-      this.botMessages[index-1].time = new Date().toLocaleTimeString('en', {hour: '2-digit', minute:'2-digit'});
-      this.botMessages[index-1].timeStamp = Date.now();
-      if(e.body.detail.length > 0) {
+      this.botMessages[index - 1].message = "An unknown error occured, please try after sometime";
+      this.botMessages[index - 1].displayMsg = "An unknown error occured, please try after sometime";
+      this.botMessages[index - 1].time = new Date().toLocaleTimeString('en', { hour: '2-digit', minute: '2-digit' });
+      this.botMessages[index - 1].timeStamp = Date.now();
+      if (e.body.detail.length > 0) {
         if (e.body.detail[0].type === 'type_error.enum') {
-          this.botMessages[index-1].message = "Sorry, this language is not currently supported.";
-          this.botMessages[index-1].displayMsg = "Sorry, this language is not currently supported.";
+          this.botMessages[index - 1].message = "Sorry, this language is not currently supported.";
+          this.botMessages[index - 1].displayMsg = "Sorry, this language is not currently supported.";
         }
       }
-      this.saveChatMessage(this.botMessages[index-1]);
+      this.saveChatMessage(this.botMessages[index - 1]);
     })
   }
 
@@ -352,8 +384,8 @@ export class BotMessagesComponent  implements OnInit, AfterViewInit {
     this.audioRef.load();
     this.audioRef.preload = "auto"
     this.audioRef.controls = true;
-    this.audioRef.oncanplaythrough = () => { 
-      if(!audio.play) {
+    this.audioRef.oncanplaythrough = () => {
+      if (!audio.play) {
         this.audioRef.pause();
       } else {
         this.audioRef.play();
@@ -365,7 +397,7 @@ export class BotMessagesComponent  implements OnInit, AfterViewInit {
     this.audioRef.ontimeupdate = (ev: Event) => {
       // this.audioRef.currentTime = (ev.target as any)?.currentTime
     }
-    this.audioRef.onended = () => {audio.play = false; this.audioRef.pause();}
+    this.audioRef.onended = () => { audio.play = false; this.audioRef.pause(); }
   }
 
   handleBackNavigation() {
@@ -377,8 +409,8 @@ export class BotMessagesComponent  implements OnInit, AfterViewInit {
           result.text++;
         } else if (msg.messageType == 'audio') {
           result.audio++;
-          if(this.audioRef) {
-            if(msg.audio) {
+          if (this.audioRef) {
+            if (msg.audio) {
               msg.audio.play = false;
             }
             this.audioRef.pause();
@@ -386,9 +418,9 @@ export class BotMessagesComponent  implements OnInit, AfterViewInit {
         }
       });
       console.log('result count ', result);
-      this.botMessageEvent.emit({ audio: result.audio, text: result.text, duration: botDuration/1000 })
+      this.botMessageEvent.emit({ audio: result.audio, text: result.text, duration: botDuration / 1000 })
     } else {
-      this.botMessageEvent.emit({ audio: 0, text: 0, duration: botDuration/1000 })
+      this.botMessageEvent.emit({ audio: 0, text: 0, duration: botDuration / 1000 })
     }
     this.botMessages = [];
   }
@@ -420,7 +452,7 @@ export class BotMessagesComponent  implements OnInit, AfterViewInit {
 
   async onLongPressStart() {
     console.log('long press start');
-    if(await (await VoiceRecorder.hasAudioRecordingPermission()).value) {
+    if (await (await VoiceRecorder.hasAudioRecordingPermission()).value) {
       this.record.startRecognition('');
     } else {
       await VoiceRecorder.requestAudioRecordingPermission();
@@ -431,8 +463,8 @@ export class BotMessagesComponent  implements OnInit, AfterViewInit {
     console.log('long press end');
     await this.record.stopRecognition('audio').then(async result => {
       console.log('result on recorded data ', result);
-      if(result.value && result.value.recordDataBase64) {
-        this.chat = {identifier: "", message: '', messageType: '', displayMsg: "", audio: { file: '', duration: '', play: false }, type: 'sent', time: new Date().toLocaleTimeString('en', { hour: '2-digit', minute: '2-digit' }), timeStamp: '', readMore: false, likeMsg: false, dislikeMsg: false, requestId: "" }
+      if (result.value && result.value.recordDataBase64) {
+        this.chat = { identifier: "", message: '', messageType: '', displayMsg: "", audio: { file: '', duration: '', play: false }, type: 'sent', time: new Date().toLocaleTimeString('en', { hour: '2-digit', minute: '2-digit' }), timeStamp: '', readMore: false, likeMsg: false, dislikeMsg: false, requestId: "" }
         const recordData = result.value.recordDataBase64;
         console.log('..................', result, this.durationDisplay);
         const fileName = new Date().getTime() + '.wav';
@@ -467,36 +499,36 @@ export class BotMessagesComponent  implements OnInit, AfterViewInit {
   }
 
   fetchAudioDuration(url: string): Promise<any> {
-    const audioContext = new AudioContext(); 
+    const audioContext = new AudioContext();
     return fetch(url)
-    .then(response => response.arrayBuffer())
-    .then(buffer => audioContext.decodeAudioData(buffer)) 
-    .then(audioBuffer => { 
-      const duration = audioBuffer.duration; 
-      console.log(`The audio file duration is ${duration} seconds`); 
-      let minute = (Math.floor(duration/ 60)).toString().padStart(2, '0');
-      let seconds = Math.floor(duration % 60).toString().padStart(2, '0');
-      return minute + ':' + seconds;
-    }).catch (e => {
-      return '';
-    }); 
+      .then(response => response.arrayBuffer())
+      .then(buffer => audioContext.decodeAudioData(buffer))
+      .then(audioBuffer => {
+        const duration = audioBuffer.duration;
+        console.log(`The audio file duration is ${duration} seconds`);
+        let minute = (Math.floor(duration / 60)).toString().padStart(2, '0');
+        let seconds = Math.floor(duration % 60).toString().padStart(2, '0');
+        return minute + ':' + seconds;
+      }).catch(e => {
+        return '';
+      });
   }
 
   msgLiked(msg: BotMessage, type: string) {
     this.botMessages.forEach((bot, index) => {
-      if(msg.timeStamp == bot.timeStamp) {
+      if (msg.timeStamp == bot.timeStamp) {
         let reqId = {
           "id": msg.requestId,
           "type": "X-Request-ID"
         };
         let reqMsg = {
-          "id": this.botMessages[index-1].message,
+          "id": this.botMessages[index - 1].message,
           "type": "Request"
         }
         let cdata: CorrelationData[] = [];
         cdata.push(reqId)
-        if (this.botMessages[index-1].messageType == "text") cdata.push(reqMsg)
-        if(type == 'like') {
+        if (this.botMessages[index - 1].messageType == "text") cdata.push(reqMsg)
+        if (type == 'like') {
           bot.likeMsg = true;
           bot.dislikeMsg = false;
           this.messageApi.updateMessageReactions(bot.identifier, 1);
