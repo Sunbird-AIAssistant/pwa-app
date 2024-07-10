@@ -5,6 +5,8 @@ import { TelemetryGeneratorService } from 'src/app/services/telemetry/telemetry.
 import { App } from '@capacitor/app';
 import { ConfigVariables } from '../../config';
 import { QrcodePopupComponent } from '../qrcode-popup/qrcode-popup.component';
+import { StorageService } from 'src/app/services';
+import { LanguageService } from '../../components/langauge-select/language.service';
 
 @Component({
   selector: 'app-application-header',
@@ -22,11 +24,16 @@ export class ApplicationHeaderComponent  implements OnInit {
   appVersion: string = ''
   appName: string = ""
   configVariables : any;
+  isTitleChanged : boolean = false;
+  languageSubscription: any;
 
+  language: string = '';
   constructor(private utilService: UtilService,
     private telemetryGeneratorService: TelemetryGeneratorService,
     public menuCtrl: MenuController,
     public headerService: AppHeaderService,
+    private storage : StorageService,
+    private languageService: LanguageService,
     private modalCtrl: ModalController,
     ) {
       App.getInfo().then(val => {
@@ -43,8 +50,24 @@ export class ApplicationHeaderComponent  implements OnInit {
       });
     }
 
+    loadTabData(language: string) {
+      this.language = language;
+    this.isTitleChanged = this.configVariables.titleCode.includes(language);
+      console.log(`Loading data for language: ${language}`);
+      // Example data loading logic:
+    }
+
   async ngOnInit() {
     this.defaultFilter = {};
+    this.language = await this.storage.getData('lang') || 'en';
+    this.isTitleChanged = this.configVariables.titleCode.includes(this.language);
+
+    this.languageSubscription = this.languageService.currentLanguage$.subscribe(
+      (language) => {
+        this.loadTabData(language);
+      }
+    );
+
     this.headerService.filterConfigEmitted$.subscribe((val: any) => {
       this.filters = [];
       this.defaultFilter = val.defaultFilter;
