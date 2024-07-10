@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ModalController, NavParams } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import { StorageService } from 'src/app/services';
+import { LanguageService } from './language.service';
 
 @Component({
   selector: 'app-langauge-select',
@@ -14,6 +15,7 @@ export class LangaugeSelectComponent  implements OnInit {
   constructor(private translateService: TranslateService,
     private navParams: NavParams,
     private modalCtrl: ModalController,
+    private languageService: LanguageService,
     private storage: StorageService) { }
 
   async ngOnInit() {
@@ -34,6 +36,7 @@ export class LangaugeSelectComponent  implements OnInit {
       this.translateService.use(val);
     // }
     this.selectedLanguage = val;
+    this.languageService.setLanguage(val)
     this.dismissModal();
   }
 

@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, OnInit } from '@angular/core';
 import { IonTabs, ModalController, Platform } from '@ionic/angular';
 import { OnTabViewWillEnter } from './on-tabs-view-will-enter';
 import { Router } from '@angular/router';
@@ -7,21 +7,29 @@ import { TelemetryGeneratorService } from '../services/telemetry/telemetry.gener
 import { AppExitComponent } from '../components/app-exit/app-exit.component';
 import { App } from '@capacitor/app';
 import { ConfigVariables } from "../config";
+import { LanguageService } from '../components/langauge-select/language.service';
+import { StorageService } from 'src/app/services';
 
 @Component({
   selector: 'app-tabs',
   templateUrl: 'tabs.page.html',
   styleUrls: ['tabs.page.scss']
 })
-export class TabsPage implements OnTabViewWillEnter{
+export class TabsPage implements OnTabViewWillEnter, OnInit{
   subscription: any;
   optModalOpen = false;
   configVariables: any;
+  languageSubscription: any;
+  isTitleChanged : boolean = false;
+  language: string = '';
+
   @ViewChild('tabRef', { static: false }) tabRef!: IonTabs;
   constructor(private platform: Platform,
     private router: Router,
     private tabService: TabsService,
     private telemetry: TelemetryGeneratorService,
+    private languageService: LanguageService,
+    private storage : StorageService,
     private modalCtrl: ModalController) {
       ConfigVariables.then(config => {
         console.log('Configuration:', config);
@@ -34,6 +42,25 @@ export class TabsPage implements OnTabViewWillEnter{
 
   tabViewWillEnter(): void {
     this.tabService.show();
+  }
+
+    async ngOnInit() {
+      this.language = await this.storage.getData('lang') || 'en';
+      this.isTitleChanged = this.configVariables.titleCode.includes(this.language);
+      console.log(`Loading data for language: ${this.language}`);
+
+    this.languageSubscription = this.languageService.currentLanguage$.subscribe(
+      (language) => {
+        this.loadTabData(language);
+      }
+    );
+  }
+
+  loadTabData(language: string) {
+    this.language = language;
+  this.isTitleChanged = this.configVariables.titleCode.includes(language);
+    console.log(`Loading data for language: ${language}`);
+    // Example data loading logic:
   }
 
   // Prevent back naviagtion

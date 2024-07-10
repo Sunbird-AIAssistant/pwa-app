@@ -7,46 +7,48 @@
         "key": "agegroup",
         "value": "3-6"
     },
-    "headerFilters": [{
-        "defaultFilter": {
-            "id": "All",
-            "label": "All",
-            "query": "",
-            "filters": "All"
-        },
-        "additionalFilters": [
-            {
-                "id": "Stories",
-                "label": "Stories",
-                "query": "Stories",
-                "filters": "Stories"
+    "headerFilters": [
+        {
+            "defaultFilter": {
+                "id": "All",
+                "label": "All",
+                "query": "",
+                "filters": "All"
             },
-            {
-                "id": "Activities",
-                "label": "Activities",
-                "query": "Activities",
-                "filters": "Activities"
-            },
-            {
-                "id": "Songs",
-                "label": "Songs",
-                "query": "Songs",
-                "filters": "Songs"
-            },
-            {
-                "id": "Audio Books",
-                "label": "Audio Books",
-                "query": "Audio Books",
-                "filters": "Audio Books"
-            },
-            {
-                "id": "Handbooks",
-                "label": "Handbooks",
-                "query": "Handbooks",
-                "filters": "Handbooks"
-            }
-        ]
-    }],
+            "additionalFilters": [
+                {
+                    "id": "Stories",
+                    "label": "Stories",
+                    "query": "Stories",
+                    "filters": "Stories"
+                },
+                {
+                    "id": "Activities",
+                    "label": "Activities",
+                    "query": "Activities",
+                    "filters": "Activities"
+                },
+                {
+                    "id": "Songs",
+                    "label": "Songs",
+                    "query": "Songs",
+                    "filters": "Songs"
+                },
+                {
+                    "id": "Audio Books",
+                    "label": "Audio Books",
+                    "query": "Audio Books",
+                    "filters": "Audio Books"
+                },
+                {
+                    "id": "Handbooks",
+                    "label": "Handbooks",
+                    "query": "Handbooks",
+                    "filters": "Handbooks"
+                }
+            ]
+        }
+    ],
     "languages": [
         {
             "id": "en",
@@ -59,9 +61,15 @@
             "default": true
         }
     ],
-    "kathaSakhiBotName": "Story GEMS",
-    "parentTaraBotName": "Parent GEMS",
-    "teacherTaraBotName": "Teacher GEMS",
+    
+     "titleCode": [
+        "en"
+       ],
+    "en": {
+        "kathaSakhiBotName": "Story GEMS",
+        "parentTaraBotName": "Parent GEMS",
+        "teacherTaraBotName": "Teacher GEMS"
+       },
     "footerText": "Developed with ❤️ by Tekdi Technologies ",
     "headerColor": "brown",
     "headerFontSize": "16",
