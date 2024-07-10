@@ -60,12 +60,17 @@
         }
     ],
     "titleCode": [
-        "en"
+        "en", "hi"
        ],
     "en": {
         "kathaSakhiBotName": "Story GEMS",
         "parentTaraBotName": "Parent GEMS",
         "teacherTaraBotName": "Teacher GEMS"
+       },
+       "hi": {
+        "kathaSakhiBotName": "कथा GEMS",
+        "parentTaraBotName": "पेरेंट GEMS",
+        "teacherTaraBotName": "टीचर GEMS"
        },
     "footerText": "Developed with ❤️ by Tekdi Technologies ",
     "headerColor": "brown",
