@@ -4,8 +4,8 @@
     "siteByLine": "Listen, Learn & Grow !!!",
     "splashImage": "assets/school/GEMS.jpeg",
     "defaultContentFilter": {
-        "key": "title",
-        "value": "Rice"
+        "key": "agegroup",
+        "value": "3-6"
     },
     "headerFilters": [{
         "defaultFilter": {
