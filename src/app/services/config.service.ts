@@ -38,7 +38,9 @@ export class ConfigService {
         },
         filters: {
           [defaultContentFilterKey] : defaultContentFilterValue
-        }
+        },
+        fields: ["mimetype", "identifier","keywords","name",  "thumbnail", "media", "agegroup", "language", "sourceorg", "url", "domain", "category"]
+
       }
     }
     const apiRequest = new ApiRequest.Builder()

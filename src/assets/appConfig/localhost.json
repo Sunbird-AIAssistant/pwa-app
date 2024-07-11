@@ -3,10 +3,12 @@
     "siteName": "Garhwal English Medium",
     "siteByLine": "Listen, Learn & Grow !!!",
     "splashImage": "assets/school/GEMS.jpeg",
-    "defaultContentFilter": {
-        "key": "agegroup",
-        "value": "3-6"
-    },
+    "sub-domain": "dharmalife",
+    "defaultContentFilter": [{
+        "agegroup": "3-6",
+        "sourseorg": ["ABC"]
+    }
+    ],
     "headerFilters": [
         {
             "defaultFilter": {

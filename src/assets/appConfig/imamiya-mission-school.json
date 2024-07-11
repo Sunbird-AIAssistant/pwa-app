@@ -1,0 +1,100 @@
+{
+    "tenantLogo": "assets/school/IMS_128x128.svg",
+    "siteName": "Imamiya Mission School",
+    "siteByLine": "Listen, Learn & Grow !!!",
+    "splashImage": "assets/school/IMS_152x152.png",
+    "defaultContentFilter": {
+      
+    },
+    "headerFilters": [{
+        "defaultFilter": {
+            "id": "All",
+            "label": "All",
+            "query": "",
+            "filters": "All"
+        },
+        "additionalFilters": [
+            {
+                "id": "Stories",
+                "label": "Stories",
+                "query": "Stories",
+                "filters": "Stories"
+            },
+            {
+                "id": "Activities",
+                "label": "Activities",
+                "query": "Activities",
+                "filters": "Activities"
+            },
+            {
+                "id": "Songs",
+                "label": "Songs",
+                "query": "Songs",
+                "filters": "Songs"
+            },
+            {
+                "id": "Audio Books",
+                "label": "Audio Books",
+                "query": "Audio Books",
+                "filters": "Audio Books"
+            },
+            {
+                "id": "Handbooks",
+                "label": "Handbooks",
+                "query": "Handbooks",
+                "filters": "Handbooks"
+            }
+        ]
+    }],
+    "languages": [
+        {
+            "id": "en",
+            "label": "English",
+            "default": false
+        },
+        {
+            "id": "hi",
+            "label": "हिंदी",
+            "default": true
+        },
+        {
+            "id": "ur",
+            "label": "اردو",
+            "default": false
+        },
+        {
+            "id": "bo",
+            "label": "བོ་ཐི།",
+            "default": true
+        }
+    ],
+    "titleCode": [
+        "en", "hi", "ur", "bo"
+       ],
+    "en": {
+        "kathaSakhiBotName": "Kahani",
+        "parentTaraBotName": "Phama",
+        "teacherTaraBotName": "Gergan"
+       },
+       "hi": {
+        "kathaSakhiBotName": "कहानी",
+        "parentTaraBotName": "फामा",
+        "teacherTaraBotName": "गेर्गन"
+       },
+       "ur": {
+        "kathaSakhiBotName": "کہانی",
+        "parentTaraBotName": "فاما",
+        "teacherTaraBotName": "گرگن"
+       },
+       "bo": {
+        "kathaSakhiBotName": "ཀ་ཧ་ནི་",
+        "parentTaraBotName": "ཕ་མ།",
+        "teacherTaraBotName": "གྷེར་གྷན།"
+       },
+   
+    "footerText": "Developed with ❤️ by Tekdi Technologies ",
+    "headerColor": "brown",
+    "headerFontSize": "16",
+    "footerColor": "brown",
+    "footerFontSize": "16"
+}

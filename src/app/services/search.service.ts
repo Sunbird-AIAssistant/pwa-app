@@ -23,7 +23,9 @@ export class SearchService {
         request: {
           orderBy: {
             "mimetype": "video/x-youtube"
-          }
+          },
+          fields: ["mimetype", "identifier","keywords","name",  "thumbnail", "media", "agegroup", "language", "sourceorg", "url", "domain", "category"]
+
         }
       }
     } else {
@@ -33,7 +35,8 @@ export class SearchService {
         request: {
           orderBy: {
             "mimetype": "video/x-youtube"
-          }
+          },
+          fields: ["mimetype", "identifier","keywords","name",  "thumbnail", "media", "agegroup", "language", "sourceorg", "url", "domain", "category"]
         }
       }
     }
@@ -66,6 +69,8 @@ export class SearchService {
         orderBy: {
           "mimetype": "video/x-youtube"
         },
+        fields: ["mimetype", "identifier","keywords","name",  "thumbnail", "media", "agegroup", "language", "sourceorg", "url", "domain", "category"]
+
       }
     }
     const apiRequest = new ApiRequest.Builder()

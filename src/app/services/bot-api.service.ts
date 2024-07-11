@@ -12,17 +12,28 @@ import { BotChatEntry } from './bot/db/chat.schema';
 import { BotChatEntryMapper } from './bot/db/utils/bot.chat.entry.mapper';
 import { Directory, Filesystem } from '@capacitor/filesystem';
 import { HttpHeaders } from '@angular/common/http';
+import {ConfigVariables } from '../config';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BotApiService {
+  config: any;
+  domainConfig: any;
 
   constructor(
     private apiService: ApiService,
     private translate: TranslateService,
     private dbService: DbService
-  ) { }
+  ) { 
+    ConfigVariables.then(config => {
+      console.log('Configuration------->:', config);
+      this.domainConfig = config;
+      // Use the config data as needed
+    }).catch(error => {
+      console.error('Failed to load configuration:', error);
+    });
+  }
 
   async getBotMessage(text: string, audio: string, botType: string, lang: any): Promise<any> {
     console.log('text ', text, text !== "");
@@ -39,14 +50,14 @@ export class BotApiService {
         language: lang,
         text: text,
         audio: "",
-        context: botType 
+        context: this.domainConfig['sub-domain'] + '_' + botType  
       }
     } else if (audio !== "") {
       req.input = {
         language: lang,
         audio: audio,
         text: "",
-        context: botType 
+        context: this.domainConfig['sub-domain'] + '_' + botType 
       }
     }
 
