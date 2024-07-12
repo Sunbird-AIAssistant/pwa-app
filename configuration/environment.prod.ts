@@ -4,9 +4,7 @@ export const environment = {
 export const config = {
   api: {
     BASE_URL: 'https://school-api-dev.tekdinext.com/',
-    // BASE_URL_BOT: 'https://school-openai.tekdinext.com/',
-    BASE_URL_BOT: 'https://e97a-114-143-119-218.ngrok-free.app/',
-
+    BASE_URL_BOT: 'https://school-openai.tekdinext.com/',
     TELEMETRY_BASE_URL: 'https://school-dev.tekdinext.com/',
     CONFIG: 'seeker/configuration',
     PAGE_SEARCH_API: 'content/search',
@@ -17,7 +15,8 @@ export const config = {
     SEARCH_API: 'content/search',
     CONFIRM_API: 'confirm',
     BOT_SAKHI_API_PATH: 'v1/query',
-    BOT_ACTIVITY_API_PATH: 'v1/query',
+    BOT_ACTIVITY_API_PATH: 'api/activitybot/v1/query',
+
     REGISTER_DEVICE_API_PATH: 'api/registerMobileDevice',
     KEY: 'myjp-0.1',
     SECRET: '7tVOEu0xj0zYQiYtCYbauEkNC3NBXCpM'

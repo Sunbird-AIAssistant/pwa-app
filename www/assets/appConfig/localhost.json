@@ -5,10 +5,8 @@
     "splashImage": "assets/school/GEMS.jpeg",
     "sub-domain": "dharmalife",
     "defaultContentFilter": [{
-        "agegroup": "3-6",
-        "sourseorg": ["ABC"]
-    }
-    ],
+        "agegroup": ["3-6", "6-8"]
+    }],
     "headerFilters": [
         {
             "defaultFilter": {

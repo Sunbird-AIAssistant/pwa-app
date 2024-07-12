@@ -19,10 +19,27 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
 
   <meta name="theme-color" content="#1976d2">
+  <style>
+    #installButton {
+      display: none; /* Initially hide the button */
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
 </head>
 
 <body>
   <app-root></app-root>
+  <button id="installButton">Install PWA</button>
+
+  <script src="installPrompt.js">   console.log('hi-----');</script>
   <noscript>Please enable JavaScript to continue using this application.</noscript>
 </body>
 
