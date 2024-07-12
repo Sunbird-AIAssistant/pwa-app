@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1720774912802,
+  "timestamp": 1720775974182,
   "index": "/index.html",
   "assetGroups": [
     {
@@ -559,12 +559,12 @@
     "/Doodles.5521a3972f72a279.svg": "32405cec21a4720c9ee4d0b942581502fb7a1974",
     "/NotoSans-Regular.69e81dad19259ab6.ttf": "71640601d4ff5ee3713b68228b564dcca13a4aaa",
     "/assets/add.svg": "33b920c2ac89d971404730406bc4df477ea1dabd",
-    "/assets/appConfig/bright-future-english-school..json": "d0fac3bfe3dee80306e1c593a80bb433ffc794a7",
+    "/assets/appConfig/bright-future-english-school..json": "e27723e131f2513880147a96941463b022e9b568",
     "/assets/appConfig/garhwal-school.json": "d854b50b2be347ec5a027f40ec927bad8e27c4f8",
     "/assets/appConfig/hummingbird-school.json": "e9baea0810f4fcf1bec11b1594631e064e5b8e92",
-    "/assets/appConfig/imamiya-mission-school.json": "6efb560d6513c794574fdeb36454139d15520b30",
-    "/assets/appConfig/localhost.json": "c2a8a2f32d499a47db2f87375043f45ec4c22ce2",
-    "/assets/appConfig/turtuk-valley-school.json": "258e9e3a1a81ac4e3718f23227b30674efc5f98f",
+    "/assets/appConfig/imamiya-mission-school.json": "aec52a2a8febd525df15b3c6e24866e0394fee3c",
+    "/assets/appConfig/localhost.json": "e27723e131f2513880147a96941463b022e9b568",
+    "/assets/appConfig/turtuk-valley-school.json": "a7beadc220396658cba7d37349a7e4f4fdd148c7",
     "/assets/arrow-right.svg": "bb67048eb7cd7987f8e2e43511f11a7d962f5af3",
     "/assets/badge-2.svg": "fb752f1cd110fc328f39e25632e85fb830ffa324",
     "/assets/exit_to_app.svg": "9e8f3983dbb2ba7cfdbfeceacce0374eef54bdcb",

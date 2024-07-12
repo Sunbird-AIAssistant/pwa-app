@@ -1,12 +1,16 @@
 {
-    "tenantLogo": "assets/school/GEMS.svg",
-    "siteName": "Garhwal English Medium",
+    "tenantLogo": "assets/school/BFES_128x128.svg",
+    "siteName": "Bright Future English School",
     "siteByLine": "Listen, Learn & Grow !!!",
-    "splashImage": "assets/school/GEMS.jpeg",
-    "sub-domain": "dharmalife",
-    "defaultContentFilter": [{
-        "agegroup": ["3-6", "6-8"]
-    }],
+    "splashImage": "assets/school/BFES_152x152.png",
+    "defaultContentFilter": [
+        {
+            "agegroup": [
+                "3-6",
+                "6-8"
+            ]
+        }
+    ],
     "headerFilters": [
         {
             "defaultFilter": {
@@ -59,22 +63,32 @@
             "id": "hi",
             "label": "हिंदी",
             "default": true
+        },
+        {
+            "id": "as",
+            "label": "অসমীয়া",
+            "default": false
+        },
+        {
+            "id": "bn",
+            "label": "বাংলা",
+            "default": true
         }
     ],
-    
-     "titleCode": [
-        "en", "hi"
-       ],
+    "titleCode": [
+        "en",
+        "hi"
+    ],
     "en": {
-        "kathaSakhiBotName": "Story GEMS",
-        "parentTaraBotName": "Parent GEMS",
-        "teacherTaraBotName": "Teacher GEMS"
-       },
-       "hi": {
-        "kathaSakhiBotName": "कथा GEMS",
-        "parentTaraBotName": "पेरेंट GEMS",
-        "teacherTaraBotName": "टीचर GEMS"
-       },
+        "kathaSakhiBotName": "Katha Sangini",
+        "parentTaraBotName": "Parents Sangini,",
+        "teacherTaraBotName": "Shikshak Sangini,"
+    },
+    "hi": {
+        "kathaSakhiBotName": "कथा संगिनी",
+        "parentTaraBotName": "पेरेंट संगिनी",
+        "teacherTaraBotName": "टीचर संगिनी"
+    },
     "footerText": "Developed with ❤️ by Tekdi Technologies ",
     "headerColor": "brown",
     "headerFontSize": "16",
