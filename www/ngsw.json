@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1720782103080,
+  "timestamp": 1720782708220,
   "index": "/index.html",
   "assetGroups": [
     {
@@ -661,7 +661,7 @@
     "/assets/images/tenantLogo.svg": "82d35bcd66e6d221e5caddb745446f6b9f2effb4",
     "/assets/images/tenant_logo.png": "6c2585124d36883147f48283af9582b66ee933c5",
     "/assets/images/youtube-video.png": "303c2a2d9a4d3ad1e29de4390d85015b86332762",
-    "/assets/installPrompt.js": "cc3f8559081ee81122fbd6b1213b8f9b383f3850",
+    "/assets/installPrompt.js": "4fd1cbc466c48ea889b528d741044efc536631ec",
     "/assets/minus.svg": "dc53b5892394342e80568d81b5ee4ee914f1826a",
     "/assets/mock/onSearch.json": "99a02f4ecd0923cccd86379f74d49919cb796370",
     "/assets/mock/read.json": "db66b8a83a7ae14e14fb1f41743bc23e6a38b78b",
@@ -901,7 +901,7 @@
     "/assets/timer.svg": "57b27e5d93af2aabd1077ecd4c70bcab678f4472",
     "/assets/user.svg": "2dc572771661b2ccd3ea4ae06bf768778144cbec",
     "/common.6fb368d54d6a7f3d.js": "be07a45ebe95bc3a1fc57cc6d28f471f0505c026",
-    "/index.html": "da948a6775183775d4dd91490a1abfcfa07a4f92",
+    "/index.html": "c106e49712ca7a8bd082ece3f10f535865a24d8b",
     "/main.67b5fc537d7c7116.js": "f9e19335cf5b3bb5fc92e395219202ef46eabf71",
     "/manifest.webmanifest": "5a927f2c991153c4e1fb8dd9fd7845bbe00ba537",
     "/polyfills-core-js.c76198334f717402.js": "d6e270a2944b6a95a9b97dafd25599ba825e8d7f",
