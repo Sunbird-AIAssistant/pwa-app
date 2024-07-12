@@ -42,7 +42,7 @@ window.addEventListener('beforeinstallprompt', (e) => {
   }
 });
 
-document.querySelector('#installDialog .install').addEventListener('click', () => {
+function showInstallDialog() {
   hideInstallDialog();
   // Show the install prompt
   deferredPrompt.prompt();
@@ -55,7 +55,7 @@ document.querySelector('#installDialog .install').addEventListener('click', () =
     }
     deferredPrompt = null;
   });
-});
+};
 
 document.querySelector('#installDialog .cancel').addEventListener('click', () => {
   hideInstallDialog();
