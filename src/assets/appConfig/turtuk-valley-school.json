@@ -1,51 +1,51 @@
 {
-    "tenantLogo": "assets/school/THSM_128x128.svg",
+    "tenantLogo": "assets/school/TVS_128x128.svg",
     "siteName": "Turtuk Valley School",
     "siteByLine": "Listen, Learn & Grow !!!",
-    "splashImage": "assets/school/THSM_152x152.png",
-    "defaultContentFilter": {
-      
-    },
-    "headerFilters": [{
-        "defaultFilter": {
-            "id": "All",
-            "label": "All",
-            "query": "",
-            "filters": "All"
-        },
-        "additionalFilters": [
-            {
-                "id": "Stories",
-                "label": "Stories",
-                "query": "Stories",
-                "filters": "Stories"
+    "splashImage": "assets/school/TVS_152x152.png",
+    "defaultContentFilter": {},
+    "headerFilters": [
+        {
+            "defaultFilter": {
+                "id": "All",
+                "label": "All",
+                "query": "",
+                "filters": "All"
             },
-            {
-                "id": "Activities",
-                "label": "Activities",
-                "query": "Activities",
-                "filters": "Activities"
-            },
-            {
-                "id": "Songs",
-                "label": "Songs",
-                "query": "Songs",
-                "filters": "Songs"
-            },
-            {
-                "id": "Audio Books",
-                "label": "Audio Books",
-                "query": "Audio Books",
-                "filters": "Audio Books"
-            },
-            {
-                "id": "Handbooks",
-                "label": "Handbooks",
-                "query": "Handbooks",
-                "filters": "Handbooks"
-            }
-        ]
-    }],
+            "additionalFilters": [
+                {
+                    "id": "Stories",
+                    "label": "Stories",
+                    "query": "Stories",
+                    "filters": "Stories"
+                },
+                {
+                    "id": "Activities",
+                    "label": "Activities",
+                    "query": "Activities",
+                    "filters": "Activities"
+                },
+                {
+                    "id": "Songs",
+                    "label": "Songs",
+                    "query": "Songs",
+                    "filters": "Songs"
+                },
+                {
+                    "id": "Audio Books",
+                    "label": "Audio Books",
+                    "query": "Audio Books",
+                    "filters": "Audio Books"
+                },
+                {
+                    "id": "Handbooks",
+                    "label": "Handbooks",
+                    "query": "Handbooks",
+                    "filters": "Handbooks"
+                }
+            ]
+        }
+    ],
     "languages": [
         {
             "id": "en",
@@ -69,29 +69,31 @@
         }
     ],
     "titleCode": [
-        "en", "hi", "ur", "bo"
-       ],
+        "en",
+        "hi",
+        "ur",
+        "bo"
+    ],
     "en": {
         "kathaSakhiBotName": "Grunge Ngamstar",
         "parentTaraBotName": "Tsabkhane Ngamstar",
         "teacherTaraBotName": "Nangme Ngamstar"
-       },
-       "hi": {
+    },
+    "hi": {
         "kathaSakhiBotName": "ग्रंज नगमस्टार",
         "parentTaraBotName": "त्सबखाने नगमस्टार",
         "teacherTaraBotName": "नंगमे नगमस्टार"
-       },
-       "ur": {
+    },
+    "ur": {
         "kathaSakhiBotName": "گرنج ناگستر",
         "parentTaraBotName": "تسبخانے نگمسٹار",
         "teacherTaraBotName": "ننگمے نگمسٹار"
-       },
-       "bo": {
+    },
+    "bo": {
         "kathaSakhiBotName": "གྲུང་ངེ་ངམ་སྟར།",
         "parentTaraBotName": "ཚབ་ཁ་ནེ་ནམ་སྟར།",
         "teacherTaraBotName": "ནང་མེ་ངམ་སྟར།"
-       },
-   
+    },
     "footerText": "Developed with ❤️ by Tekdi Technologies ",
     "headerColor": "brown",
     "headerFontSize": "16",
