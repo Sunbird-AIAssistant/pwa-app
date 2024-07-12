@@ -3,9 +3,9 @@
     "siteName": "Imamiya Mission School",
     "siteByLine": "Listen, Learn & Grow !!!",
     "splashImage": "assets/school/IMS_152x152.png",
-    "defaultContentFilter": {
-      
-    },
+    "defaultContentFilter": [{
+        "agegroup": ["3-6", "6-8"]
+    }],
     "headerFilters": [{
         "defaultFilter": {
             "id": "All",
