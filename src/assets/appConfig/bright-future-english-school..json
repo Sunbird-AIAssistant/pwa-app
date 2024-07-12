@@ -3,49 +3,56 @@
     "siteName": "Bright Future English School",
     "siteByLine": "Listen, Learn & Grow !!!",
     "splashImage": "assets/school/BFES_152x152.png",
-    "defaultContentFilter": [{
-        "agegroup": ["3-6", "6-8"]
-    }],
-    "headerFilters": [{
-        "defaultFilter": {
-            "id": "All",
-            "label": "All",
-            "query": "",
-            "filters": "All"
-        },
-        "additionalFilters": [
-            {
-                "id": "Stories",
-                "label": "Stories",
-                "query": "Stories",
-                "filters": "Stories"
+    "defaultContentFilter": [
+        {
+            "agegroup": [
+                "3-6",
+                "6-8"
+            ]
+        }
+    ],
+    "headerFilters": [
+        {
+            "defaultFilter": {
+                "id": "All",
+                "label": "All",
+                "query": "",
+                "filters": "All"
             },
-            {
-                "id": "Activities",
-                "label": "Activities",
-                "query": "Activities",
-                "filters": "Activities"
-            },
-            {
-                "id": "Songs",
-                "label": "Songs",
-                "query": "Songs",
-                "filters": "Songs"
-            },
-            {
-                "id": "Audio Books",
-                "label": "Audio Books",
-                "query": "Audio Books",
-                "filters": "Audio Books"
-            },
-            {
-                "id": "Handbooks",
-                "label": "Handbooks",
-                "query": "Handbooks",
-                "filters": "Handbooks"
-            }
-        ]
-    }],
+            "additionalFilters": [
+                {
+                    "id": "Stories",
+                    "label": "Stories",
+                    "query": "Stories",
+                    "filters": "Stories"
+                },
+                {
+                    "id": "Activities",
+                    "label": "Activities",
+                    "query": "Activities",
+                    "filters": "Activities"
+                },
+                {
+                    "id": "Songs",
+                    "label": "Songs",
+                    "query": "Songs",
+                    "filters": "Songs"
+                },
+                {
+                    "id": "Audio Books",
+                    "label": "Audio Books",
+                    "query": "Audio Books",
+                    "filters": "Audio Books"
+                },
+                {
+                    "id": "Handbooks",
+                    "label": "Handbooks",
+                    "query": "Handbooks",
+                    "filters": "Handbooks"
+                }
+            ]
+        }
+    ],
     "languages": [
         {
             "id": "en",
@@ -69,19 +76,19 @@
         }
     ],
     "titleCode": [
-        "en", "hi"
-       ],
+        "en",
+        "hi"
+    ],
     "en": {
         "kathaSakhiBotName": "Katha Sangini",
         "parentTaraBotName": "Parents Sangini,",
         "teacherTaraBotName": "Shikshak Sangini,"
-       },
-       "hi": {
+    },
+    "hi": {
         "kathaSakhiBotName": "कथा संगिनी",
         "parentTaraBotName": "पेरेंट संगिनी",
         "teacherTaraBotName": "टीचर संगिनी"
-       },
-   
+    },
     "footerText": "Developed with ❤️ by Tekdi Technologies ",
     "headerColor": "brown",
     "headerFontSize": "16",
