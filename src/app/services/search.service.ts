@@ -4,15 +4,25 @@ import { config } from 'configuration/environment.prod';
 import { ApiService } from './api/api.service';
 import { ApiHttpRequestType, ApiRequest } from './api/model/api.request';
 import { ApiResponse } from './api/model/api.response';
+import { ConfigVariables } from "../config";
 
 @Injectable({
   providedIn: 'root'
 })
 export class SearchService {
+  configVariables: any;
 
   constructor(
     private apiService: ApiService
-  ) { }
+  ) { 
+    ConfigVariables.then(config => {
+      console.log('Configuration:', config);
+      this.configVariables = config;
+      // Use the config data as needed
+    }).catch(error => {
+      console.error('Failed to load configuration:', error);
+    });
+  }
 
   async postSearchContext(data: any, audio: boolean): Promise<any> {
     let requestBody = {};
@@ -24,7 +34,8 @@ export class SearchService {
           orderBy: {
             "mimetype": "video/x-youtube"
           },
-          fields: ["mimetype", "identifier","keywords","name",  "thumbnail", "media", "agegroup", "language", "sourceorg", "url", "domain", "category"]
+          filters: this.configVariables.defaultContentFilter[0]
+          // fields: ["mimetype", "identifier","keywords","name",  "thumbnail", "media", "agegroup", "language", "sourceorg", "url", "domain", "category"]
 
         }
       }
@@ -36,7 +47,8 @@ export class SearchService {
           orderBy: {
             "mimetype": "video/x-youtube"
           },
-          fields: ["mimetype", "identifier","keywords","name",  "thumbnail", "media", "agegroup", "language", "sourceorg", "url", "domain", "category"]
+          filters: this.configVariables.defaultContentFilter[0]
+          // fields: ["mimetype", "identifier","keywords","name",  "thumbnail", "media", "agegroup", "language", "sourceorg", "url", "domain", "category"]
         }
       }
     }
@@ -69,7 +81,9 @@ export class SearchService {
         orderBy: {
           "mimetype": "video/x-youtube"
         },
-        fields: ["mimetype", "identifier","keywords","name",  "thumbnail", "media", "agegroup", "language", "sourceorg", "url", "domain", "category"]
+        filters: this.configVariables.defaultContentFilter[0]
+
+        // fields: ["mimetype", "identifier","keywords","name",  "thumbnail", "media", "agegroup", "language", "sourceorg", "url", "domain", "category"]
 
       }
     }

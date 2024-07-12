@@ -50,14 +50,14 @@ export class BotApiService {
         language: lang,
         text: text,
         audio: "",
-        context: this.domainConfig['sub-domain'] + '_' + botType  
+        context: botType 
       }
     } else if (audio !== "") {
       req.input = {
         language: lang,
         audio: audio,
         text: "",
-        context: this.domainConfig['sub-domain'] + '_' + botType 
+        context: botType 
       }
     }
 

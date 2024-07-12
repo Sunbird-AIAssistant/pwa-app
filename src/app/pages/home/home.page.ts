@@ -160,7 +160,7 @@ export class HomePage implements OnInit, OnTabViewWillEnter, OnDestroy {
       this.showSheenAnimation = true;
       // try {
         let lang = await this.storage.getData('lang')
-        let content = await this.configService.getAllContent(req, lang, this.configVariables.defaultContentFilter.key, this.configVariables.defaultContentFilter.value);
+        let content = await this.configService.getAllContent(req, lang);
         this.mappUIContentList(content);
       // }
       // catch (e) {
