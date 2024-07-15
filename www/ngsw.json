@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1721035158320,
+  "timestamp": 1721038191991,
   "index": "/index.html",
   "assetGroups": [
     {
@@ -664,7 +664,7 @@
     "/assets/images/tenantLogo.svg": "82d35bcd66e6d221e5caddb745446f6b9f2effb4",
     "/assets/images/tenant_logo.png": "6c2585124d36883147f48283af9582b66ee933c5",
     "/assets/images/youtube-video.png": "303c2a2d9a4d3ad1e29de4390d85015b86332762",
-    "/assets/installPrompt.js": "c1b7843fa3394bb55d80006af0a588047f0fa650",
+    "/assets/installPrompt.js": "b3b89ce83214758ae5e53ca212b71d7516b9f11c",
     "/assets/minus.svg": "dc53b5892394342e80568d81b5ee4ee914f1826a",
     "/assets/mock/onSearch.json": "99a02f4ecd0923cccd86379f74d49919cb796370",
     "/assets/mock/read.json": "db66b8a83a7ae14e14fb1f41743bc23e6a38b78b",

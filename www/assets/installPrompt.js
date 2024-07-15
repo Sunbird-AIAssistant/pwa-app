@@ -3,6 +3,11 @@
 let deferredPrompt;
 
 (function() {
+  if (!isPWAInstalled()) {
+    // Automatically show the install prompt
+    showInstallPrompt();
+  }
+  
   function isPWAInstalled() {
     const isIOS = () => {
       const userAgent = window.navigator.userAgent.toLowerCase();
