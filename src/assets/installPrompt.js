@@ -3,10 +3,25 @@
 let deferredPrompt;
 
 function showInstallDialog() {
-  const overlay = document.getElementById('overlay');
-  const installDialog = document.getElementById('installDialog');
-  overlay.style.display = 'block';
-  installDialog.style.display = 'block';
+
+  const installButton = document.getElementById('installButton');
+  installButton.style.display = 'block';
+
+  installButton.addEventListener('click', () => {
+    // Hide the install button
+    installButton.style.display = 'none';
+    // Show the install prompt
+    deferredPrompt.prompt();
+    // Wait for the user to respond to the prompt
+    deferredPrompt.userChoice.then((choiceResult) => {
+      if (choiceResult.outcome === 'accepted') {
+        console.log('User accepted the install prompt');
+      } else {
+        console.log('User dismissed the install prompt');
+      }
+      deferredPrompt = null;
+    });
+  });
 }
 
 function hideInstallDialog() {
@@ -42,24 +57,6 @@ window.addEventListener('beforeinstallprompt', (e) => {
   }
 });
 
-document.querySelector('#installDialog .install').addEventListener('click', () => {
-  hideInstallDialog();
-  // Show the install prompt
-  deferredPrompt.prompt();
-  // Wait for the user to respond to the prompt
-  deferredPrompt.userChoice.then((choiceResult) => {
-    if (choiceResult.outcome === 'accepted') {
-      console.log('User accepted the install prompt');
-    } else {
-      console.log('User dismissed the install prompt');
-    }
-    deferredPrompt = null;
-  });
-});
-
-document.querySelector('#installDialog .cancel').addEventListener('click', () => {
-  hideInstallDialog();
-});
 
 window.addEventListener('appinstalled', () => {
   // Log install to analytics

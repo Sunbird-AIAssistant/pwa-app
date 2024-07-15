@@ -24,7 +24,7 @@
 <body>
   <app-root></app-root>
 
-  <script src="assets/installPrompt.js"></script>
+  <script src="/home/ttpl-rt-148/Documents/Push/pwa-app/src/assets/installPrompt.js"></script>
   <noscript>Please enable JavaScript to continue using this application.</noscript>
 </body>
 
@@ -102,7 +102,14 @@
 
 <body>
   <app-root></app-root>
-  <button id="installButton">Install PWA</button>
+  <div id="overlay"></div>
+  <div id="installDialog">
+    <p>Install this app on your device?</p>
+    <div class="buttons">
+      <button class="cancel">Cancel</button>
+      <button class="install">Install</button>
+    </div>
+  </div>
 
   <script src="assets/installPrompt.js"></script>
   <noscript>Please enable JavaScript to continue using this application.</noscript>
