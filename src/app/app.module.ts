@@ -33,6 +33,7 @@ import { AppUpdateService } from './services/app-update/app-update.service';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../../configuration/environment.prod';
 import { SwUpdate } from '@angular/service-worker';
+import { ConfigVariables } from "./config";
 
 export function translateHttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient, './assets/i18n/', '.json');
@@ -108,6 +109,8 @@ export function initializeFactory(init: DbService) {
 })
 
 export class AppModule {
+  configVariables: any;
+
   constructor(private translate: TranslateService, private storage: StorageService) {
     this.findSiteSubDomain();
     this.storage.getData('lang').then(lang =>{
@@ -119,12 +122,32 @@ export class AppModule {
         this.setDefaultLanguage();
       }
     });
+
+    ConfigVariables.then(config => {
+      console.log('Configuration:', config);
+      this.configVariables = config;
+      // Use the config data as needed
+    }).catch(error => {
+      console.error('Failed to load configuration:', error);
+    });
   }
 
   private setDefaultLanguage() {
+  
+
     this.storage.setData('lang', 'hi');
     this.translate.setDefaultLang('hi');
     this.translate.use("hi");
+
+    for(let i = 0; i <= this.configVariables?.languages.length; i++){
+    if(this.configVariables?.languages[i].default){
+     let dLang = this.configVariables?.languages[i].id;
+
+      this.storage.setData('lang', dLang);
+      this.translate.setDefaultLang(dLang);
+      this.translate.use(dLang);
+    }
+    }
   }
 
   private findSiteSubDomain(){
