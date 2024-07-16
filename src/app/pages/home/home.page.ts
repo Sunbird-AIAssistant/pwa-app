@@ -77,12 +77,12 @@ export class HomePage implements OnInit, OnTabViewWillEnter, OnDestroy {
 
         if(config?.['primaryCss']){
           config?.primaryCss?.primary && document.documentElement.style.setProperty('--ion-color-primary', config.primaryCss.primary);
-          config?.primaryCss?.shade && document.documentElement.style.setProperty('--ion-color-primary-shade', config?.['primaryCss']?.['shade']);
+          // config?.primaryCss?.shade && document.documentElement.style.setProperty('--ion-color-primary-shade', config?.['primaryCss']?.['shade']);
         }
 
         if(config?.['secondaryCss']){
-          config?.secondaryCss?.primary && document.documentElement.style.setProperty(' --ion-color-secondary', config?.['secondaryCss']?.['secondary']);
-          config?.secondaryCss?.shade && document.documentElement.style.setProperty(' --ion-color-secondary-shade', config?.['secondaryCss']?.['shade']);
+          config?.secondaryCss?.secondary && document.documentElement.style.setProperty('--ion-color-secondary', config?.['secondaryCss']?.['secondary']);
+          config?.secondaryCss?.shade && document.documentElement.style.setProperty('--ion-color-secondary-shade', config?.['secondaryCss']?.['shade']);
         }
 
         // Use the config data as needed
