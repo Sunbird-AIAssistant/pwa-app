@@ -90,8 +90,16 @@
         "teacherTaraBotName": "टीचर संगिनी"
     },
     "footerText": "Developed with ❤️ by Tekdi Technologies ",
-    "headerColor": "brown",
+    "headerColor": "blue",
     "headerFontSize": "16",
-    "footerColor": "brown",
-    "footerFontSize": "16"
+    "footerColor": "green",
+    "footerFontSize": "16",
+    "primaryCss" : {
+        "primary": "green",
+        "shade": "#b6393e"
+    },
+    "secondaryCss" : {
+        "secondary": "green",
+        "shade1": "#b6393e"
+    }
 }

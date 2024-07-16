@@ -90,7 +90,7 @@ span {
 
 .custom-header {
   ion-title {
-    color: #CF4147;
+    color: var(--ion-color-primary);
   }
   .title_bb {
     color: black;
@@ -150,7 +150,7 @@ ion-title {
 }
 
 .animate_title {
-  background-image: linear-gradient(-225deg, #FCB915 5%, #CF4147 29%, #B6393E 67%, #EC5050 100%);
+  background-image: linear-gradient(-225deg, #FCB915 5%, var(--ion-color-primary) 29%, #B6393E 67%, #EC5050 100%);
   background-size: auto auto;
   background-clip: border-box;
   background-size: 200% auto;
