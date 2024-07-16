@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8">
-  <title>GEMS</title>
+  <!-- <title>Application</title> -->
 
   <base href="/">
 
@@ -12,13 +12,40 @@
   <meta name="format-detection" content="telephone=no">
   <meta name="msapplication-tap-highlight" content="no">
 
-  <link rel="icon" type="image/png" href="assets/icon/favicon.png">
+  <link rel="icon" id="dynamic-favicon" type="image/png" href="assets/icon/favicon/favicon.png">
 
   <!-- add to homescreen for ios -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
 
   <meta name="theme-color" content="#1976d2">
+  <script>
+    // Function to get subdomain
+    function getSubdomain() {
+      const urlObj = new URL(document.baseURI);
+    // Extract the hostname
+    const hostname = urlObj.hostname; // e.g., "subdomain.example.com"
+    // Split the hostname by dots
+    const domainParts = hostname.split('.');
+        return domainParts[0];
+    }
+
+    // Function to set favicon based on subdomain
+    function setFavicon() {
+        const subdomain = getSubdomain();
+        console.log({subdomain});
+        const faviconElement = document.getElementById('dynamic-favicon');
+        if (subdomain !== null) {
+            faviconElement.href = `assets/icon/favicon/${subdomain}.png`;
+        } else {
+            faviconElement.href = 'assets/icon/favicon/favicon.png';
+        }
+    }
+
+    // Set favicon on page load
+    window.onload = setFavicon;
+</script>
+
   <style>
     #installButton {
       display: none; /* Initially hide the button */
@@ -37,10 +64,10 @@
 
 <body>
   <app-root></app-root>
-  <button id="installButton">Install PWA</button>
+  <button id="installButton">Install App</button>
 
   <script src="assets/installPrompt.js"></script>
   <noscript>Please enable JavaScript to continue using this application.</noscript>
-<script src="runtime.e410ad06846f19ec.js" type="module"></script><script src="polyfills.8aa0ed51fddab033.js" type="module"></script><script src="scripts.f969b614b9decf68.js" defer></script><script src="main.67b5fc537d7c7116.js" type="module"></script></body>
+<script src="runtime.79f94d9f87898daf.js" type="module"></script><script src="polyfills.8aa0ed51fddab033.js" type="module"></script><script src="scripts.f969b614b9decf68.js" defer></script><script src="main.0f9eb858713eb29a.js" type="module"></script></body>
 
 </html>
