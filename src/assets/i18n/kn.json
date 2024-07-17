@@ -85,7 +85,14 @@
     "Learning":"ಕಲಿಯುತ್ತಿರುವುದು",
     "online courses":"ಆನ್ಲೈನ್ ಕೋರ್ಸುಗಳು",
     "Upload from Youtube": "ಡಿಕ್ಷಾದಿಂದ ಅಪ್ಲೋಡ್ ಮಾಡಿ",
-    "Upload from Diksha":"ಡಿಕ್ಷಾದಿಂದ ಅಪ್ಲೋಡ್ ಮಾಡಿ"
+    "Upload from Diksha":"ಡಿಕ್ಷಾದಿಂದ ಅಪ್ಲೋಡ್ ಮಾಡಿ",
+    "Update Available": "ಅಪ್ಡೇಟ್ ಲಭ್ಯವಿದೆ",
+    "A new version of the application is available. Load it?": "ಅಪ್ಲಿಕೇಶನ್‌ನ ಹೊಸ ಆವೃತ್ತಿ ಲಭ್ಯವಿದೆ. ಅದನ್ನು ಲೋಡ್ ಮಾಡಬೇಕೆ?",
+    "Yes": "ಹೌದು",
+    "Add Diksha URL": "ಡಿಕ್ಷಾ URL ಸೇರಿಸಿ",
+    "Add Youtube URL": "YouTube URL ಸೇರಿಸಿ",
+    "Name": "ಹೆಸರು",
+    "Version": "ಆವೃತ್ತಿ"
 
 
 }

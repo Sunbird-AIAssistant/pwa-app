@@ -51,7 +51,7 @@ export class BotMessagesComponent implements OnInit, AfterViewInit {
     private storage: StorageService,
     private platform: Platform
   ) {
-    this.defaultLoaderMsg = { identifier: "", message: this.translate.instant('Loading...'), messageType: 'text', displayMsg: this.translate.instant('Loading...'), type: 'received', time: '', timeStamp: '', readMore: false, likeMsg: false, dislikeMsg: false, requestId: "" };
+    this.defaultLoaderMsg = { identifier: "", message: this.translate.instant('Loading....'), messageType: 'text', displayMsg: this.translate.instant('Loading...'), type: 'received', time: '', timeStamp: '', readMore: false, likeMsg: false, dislikeMsg: false, requestId: "" };
     this.botMessages = [];
     this.audioRef = new Audio();
 

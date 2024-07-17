@@ -6,7 +6,7 @@
     "bots": ["story", "parent", "teacher"],
     "defaultContentFilter": [{
         "agegroup": ["3-6", "6-8"],
-        "language":["English", "Hindi", "Urdu", "Bothi"]
+        "language":["English", "Hindi", "Urdu"]
     }],
     "headerFilters": [
         {

@@ -85,5 +85,12 @@
     "Learning":"सीखना",
     "online courses":"ऑनलाइन कोर्सेस",
     "Upload from Youtube": "YouTube से अपलोड करें",
-    "Upload from Diksha":"डिक्शा से अपलोड करें"
+    "Upload from Diksha":"डिक्शा से अपलोड करें",
+    "Update Available": "अपडेट उपलब्ध है",
+    "A new version of the application is available. Load it?": "एप्लिकेशन का नया संस्करण उपलब्ध है। क्या आप इसे लोड करना चाहेंगे?",
+    "Yes": "हाँ",
+    "Add Diksha URL": "Diksha URL जोड़ें",
+    "Add Youtube URL": "YouTube URL जोड़ें",
+    "Name": "नाम",
+    "Version": "संस्करण"
 }

@@ -85,5 +85,12 @@
     "Learning":"শিক্ষা",
     "online courses":"অনলাইন কোৰ্সসমূহ",
     "Upload from Youtube": "ইউটিউবত পোৱাৰ বাবে আপলোড কৰক",
-    "Upload from Diksha":"ডিকশাৰ পৰা আপলোড কৰক"
+    "Upload from Diksha":"ডিকশাৰ পৰা আপলোড কৰক",
+    "Update Available": "আপডেট উপলব্ধ",
+    "A new version of the application is available. Load it?": "অ্যাপ্লিকেশনৰ নতুন সংস্কৰণ উপলব্ধ। ইয়াৰ লোড কৰিব লাগিব?",
+    "Yes": "হয়",
+    "Add Diksha URL": "Diksha URL যোগ কৰক",
+    "Add Youtube URL": "ইউটিউব URL যোগ কৰক",
+    "Name": "নাম",
+    "Version": "সংস্কৰণ"
 }

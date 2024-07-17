@@ -84,5 +84,13 @@
     "Learning":"Learning",
     "online courses":"Online Courses",
     "Upload from Youtube": "Upload from Youtube",
-    "Upload from Diksha":"Upload from Diksha"
+    "Upload from Diksha":"Upload from Diksha",
+    "Update Available":"Update Available",
+    "A new version of the application is available. Load it?":"A new version of the application is available. Load it?",
+    "Yes": "Yes",
+    "Add Diksha URL": "Add Diksha URL",
+    "Add Youtube URL": "Add Youtube URL",
+    "Name": "Name",
+    "Version": "Version"
+    
 }
