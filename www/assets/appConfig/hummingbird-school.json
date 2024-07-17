@@ -96,5 +96,11 @@
     "headerColor": "brown",
     "headerFontSize": "16",
     "footerColor": "brown",
-    "footerFontSize": "16"
+    "footerFontSize": "16",
+    "primaryCss" : {
+        "primary": "#327a97"
+    },
+    "secondaryCss" : {
+        "secondary": "#327a97"
+    }
 }
