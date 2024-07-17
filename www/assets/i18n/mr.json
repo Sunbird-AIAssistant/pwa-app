@@ -83,5 +83,12 @@
     "Later": "Later",
     "Restart Now": "Restart Now",
     "Upload from Youtube": "YouTube पासून अपलोड करा",
-    "Upload from Diksha":"डिक्षा पासून अपलोड करा"
+    "Upload from Diksha":"डिक्षा पासून अपलोड करा",
+    "Update Available": "अपडेट उपलब्ध आहे",
+    "A new version of the application is available. Load it?": "अनुप्रयोगाच्या नवीन आवृत्ती उपलब्ध आहे. ते लोड करायचं का?",
+    "Yes": "हो",
+    "Add Diksha URL": "Diksha URL जोडा",
+    "Add Youtube URL": "यूट्यूब URL जोडा",
+    "Name": "नाव",
+    "Version": "संस्करण"
 }
