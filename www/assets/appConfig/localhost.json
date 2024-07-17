@@ -1,11 +1,19 @@
 {
-    "tenantLogo": "assets/school/TVS_128x128.svg",
-    "siteName": "Turtuk Valley School",
-    "siteByLine": "Listen, Learn & Grow !!!",
-    "splashImage": "assets/school/TVS_152x152.png",
-    "defaultContentFilter": [{
-        "agegroup": ["3-6", "6-8"]
-    }],
+    "tenantLogo": "assets/school/P_128x128.svg",
+    "siteName": "Prajayatna",
+    "siteByLine": "We learn. We live",
+    "splashImage": "assets/school/P_152x152.png",
+    "bots": ["teacher"],
+    "defaultContentFilter": [
+        {
+            "agegroup": [
+                "3-6",
+                "6-8"
+            ],
+            "language":["Kannada"]
+
+        }
+    ],
     "headerFilters": [
         {
             "defaultFilter": {
@@ -50,55 +58,27 @@
     ],
     "languages": [
         {
-            "id": "en",
-            "label": "English",
+            "id": "kn",
+            "label": "ಕನ್ನಡ",
             "default": true
-        },
-        {
-            "id": "hi",
-            "label": "हिंदी",
-            "default": false
-        },
-        {
-            "id": "ur",
-            "label": "اردو",
-            "default": false
-        },
-        {
-            "id": "bo",
-            "label": "བོ་ཐི།",
-            "default": false
         }
     ],
-    "titleCode": [
-        "en",
-        "hi",
-        "ur",
-        "bo"
+    "titleCode": [ "kn"
     ],
-    "en": {
-        "kathaSakhiBotName": "Grunge Ngamstar",
-        "parentTaraBotName": "Tsabkhane Ngamstar",
-        "teacherTaraBotName": "Nangme Ngamstar"
-    },
-    "hi": {
-        "kathaSakhiBotName": "ग्रंज नगमस्टार",
-        "parentTaraBotName": "त्सबखाने नगमस्टार",
-        "teacherTaraBotName": "नंगमे नगमस्टार"
-    },
-    "ur": {
-        "kathaSakhiBotName": "گرنج ناگستر",
-        "parentTaraBotName": "تسبخانے نگمسٹار",
-        "teacherTaraBotName": "ننگمے نگمسٹار"
-    },
-    "bo": {
-        "kathaSakhiBotName": "གྲུང་ངེ་ངམ་སྟར།",
-        "parentTaraBotName": "ཚབ་ཁ་ནེ་ནམ་སྟར།",
-        "teacherTaraBotName": "ནང་མེ་ངམ་སྟར།"
+    "kn": {
+        "teacherTaraBotName": "ಅಂಗನವಾಡಿ ಕಾರ್ಯಕರ್ತೆ"
     },
     "footerText": "Developed with ❤️ by Tekdi Technologies ",
-    "headerColor": "brown",
+    "headerColor": "#A71028",
     "headerFontSize": "16",
-    "footerColor": "brown",
-    "footerFontSize": "16"
+    "footerColor": "#A71028",
+    "footerFontSize": "16",
+    "primaryCss" : {
+        "primary": "#A71028",
+        "shade": "#EEAA1F"
+    },
+    "secondaryCss" : {
+        "secondary": "#EEAA1F",
+        "shade": "#e98021ff"
+    }
 }

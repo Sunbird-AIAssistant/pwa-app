@@ -3,12 +3,15 @@
     "siteName": "Bright Future English School",
     "siteByLine": "Listen, Learn & Grow !!!",
     "splashImage": "assets/school/BFES_152x152.png",
+    "bots": ["story", "parent", "teacher"],
     "defaultContentFilter": [
         {
             "agegroup": [
                 "3-6",
                 "6-8"
-            ]
+            ],
+            "language":["English", "Hindi"]
+
         }
     ],
     "headerFilters": [
@@ -62,16 +65,6 @@
         {
             "id": "hi",
             "label": "हिंदी",
-            "default": false
-        },
-        {
-            "id": "as",
-            "label": "অসমীয়া",
-            "default": false
-        },
-        {
-            "id": "bn",
-            "label": "বাংলা",
             "default": false
         }
     ],

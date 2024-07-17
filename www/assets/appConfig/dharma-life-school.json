@@ -3,12 +3,16 @@
     "siteName": "Dharma Life",
     "siteByLine": "Listen, Learn & Grow !!!",
     "splashImage": "assets/school/DL_152x152.png",
+    "bots": ["teacher"],
+
     "defaultContentFilter": [
         {
             "agegroup": [
                 "3-6",
                 "6-8"
-            ]
+            ],
+            "language":["English", "Hindi"]
+
         }
     ],
     "headerFilters": [
@@ -70,14 +74,10 @@
         "hi"
     ],
     "en": {
-        "kathaSakhiBotName": "Katha Sangini",
-        "parentTaraBotName": "Parents Sangini,",
-        "teacherTaraBotName": "Shikshak Sangini,"
+        "teacherTaraBotName": "Pre-School Teachers"
     },
     "hi": {
-        "kathaSakhiBotName": "कथा संगिनी",
-        "parentTaraBotName": "पेरेंट संगिनी",
-        "teacherTaraBotName": "टीचर संगिनी"
+        "teacherTaraBotName": "पूर्व-स्कूल शिक्षक"
     },
     "footerText": "Developed with ❤️ by Tekdi Technologies ",
     "headerColor": "#e98021ff",
