@@ -3,8 +3,11 @@
     "siteName": "Imamiya Mission School",
     "siteByLine": "Listen, Learn & Grow !!!",
     "splashImage": "assets/school/IMS_152x152.png",
+    "bots": ["story", "parent", "teacher"],
     "defaultContentFilter": [{
-        "agegroup": ["3-6", "6-8"]
+        "agegroup": ["3-6", "6-8"],
+        "language":["English","Urdu", "Hindi"]
+
     }],
     "headerFilters": [{
         "defaultFilter": {
@@ -50,12 +53,12 @@
         {
             "id": "en",
             "label": "English",
-            "default": false
+            "default": true
         },
         {
             "id": "hi",
             "label": "हिंदी",
-            "default": true
+            "default": false
         },
         {
             "id": "ur",
@@ -65,7 +68,7 @@
         {
             "id": "bo",
             "label": "བོ་ཐི།",
-            "default": true
+            "default": false
         }
     ],
     "titleCode": [

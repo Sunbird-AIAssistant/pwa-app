@@ -6,21 +6,21 @@
   
     <ion-tab-bar slot="bottom" class="tabbar" style="--background: {{configVariables?.footerColor}}">
   
-      <ion-tab-button tab="story" href="">
+      <ion-tab-button tab="story" href=""  *ngIf="configVariables?.bots?.includes('story')">
         <ion-icon aria-hidden="true" src="assets/icon/book.svg"></ion-icon>
         <ion-label *ngIf="isTitleChanged">{{ configVariables?.[language]?.kathaSakhiBotName }}</ion-label>
         <ion-label *ngIf="!isTitleChanged">{{'Katha Sakhi' | translate }}</ion-label>
 
       </ion-tab-button>
   
-      <ion-tab-button tab="parent-sakhi" href="">
+      <ion-tab-button tab="parent-sakhi" href="" *ngIf="configVariables?.bots?.includes('parent')">
         <ion-icon aria-hidden="true" src="assets/icon/parents.svg"></ion-icon>
         <ion-label *ngIf="isTitleChanged">{{ configVariables?.[language]?.parentTaraBotName }}</ion-label>
         <ion-label *ngIf="!isTitleChanged">{{'Parent Tara' | translate }}</ion-label>
 
       </ion-tab-button>
 
-      <ion-tab-button tab="teacher-sakhi" href="">
+      <ion-tab-button tab="teacher-sakhi" href="" *ngIf="configVariables?.bots?.includes('teacher')">
         <ion-icon aria-hidden="true" src="assets/icon/teacher.svg"></ion-icon>
         <ion-label *ngIf="isTitleChanged">{{ configVariables?.[language]?.teacherTaraBotName }}</ion-label>
         <ion-label *ngIf="!isTitleChanged">{{'Teacher Tara' | translate }}</ion-label>

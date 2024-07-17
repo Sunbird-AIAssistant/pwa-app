@@ -36,9 +36,10 @@
     </div>
     <!--bot panel header-->
     <div class="bot-back-panel" *ngIf="headerConfig?.actionButtons[0] === 'bot'">
-      <div class="bot-back-panel-container" [ngClass]="headerConfig?.pageTitle === 'Parent Tara' || headerConfig?.pageTitle === 'Teacher Tara' ?  'question-bot' : '' "  (click)="emitEvent($event, 'back')">  <!--use the class "parent-bot" for parent bot panel-->
+      <div class="bot-back-panel-container" [ngClass]="headerConfig?.pageTitle === 'Parent Tara' || headerConfig?.pageTitle === 'Teacher Tara' ?  'question-bot' : '' "  (click)="emitEvent($event, 'back')">  
+        <!--use the class "parent-bot" for parent bot panel-->
         <ion-icon aria-hidden="true" src="assets/icon/bot-back-icon.svg"></ion-icon>
-        <div *ngIf="!isTitleChanged" class="bot-back-panel__title">{{headerConfig?.pageTitle | translate}} -- </div>
+        <div *ngIf="!isTitleChanged" class="bot-back-panel__title">{{headerConfig?.pageTitle | translate}}</div>
         <ion-label *ngIf="isTitleChanged && headerConfig?.pageTitle === 'Katha Sakhi'"> {{ configVariables?.[language]?.kathaSakhiBotName }}
         </ion-label>
            <ion-label *ngIf="isTitleChanged && headerConfig?.pageTitle === 'Parent Tara'">{{ configVariables?.[language]?.parentTaraBotName }}</ion-label>

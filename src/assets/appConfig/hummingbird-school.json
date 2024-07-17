@@ -3,8 +3,11 @@
     "siteName": "Hummingbird School in Assam",
     "siteByLine": "Listen, Learn & Grow !!!",
     "splashImage": "assets/school/THSM_152x152.png",
+    "bots": ["story", "parent", "teacher"],
     "defaultContentFilter": [{
-        "agegroup": ["3-6", "6-8"]
+        "agegroup": ["3-6", "6-8"],
+        "language":["English", "Hindi", "Assamese", "Bengali"]
+
     }],
     "headerFilters": [{
         "defaultFilter": {
@@ -48,11 +51,6 @@
     }],
     "languages": [
         {
-            "id": "en",
-            "label": "English",
-            "default": false
-        },
-        {
             "id": "hi",
             "label": "हिंदी",
             "default": true
@@ -65,7 +63,12 @@
         {
             "id": "bn",
             "label": "বাংলা",
-            "default": true
+            "default": false
+        },
+        {
+            "id": "en",
+            "label": "English",
+            "default": false
         }
     ],
     "titleCode": [

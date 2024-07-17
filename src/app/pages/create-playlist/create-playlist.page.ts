@@ -14,6 +14,7 @@ import { ModalController } from '@ionic/angular';
 import { UploadLocalComponent } from 'src/app/components/upload-local/upload-local.component';
 import { NewPlaylistModalComponent } from 'src/app/components/new-playlist-modal/new-playlist-modal.component';
 import { Content } from 'src/app/services/content/models/content';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-create-playlist',
@@ -28,6 +29,7 @@ export class CreatePlaylistPage implements OnInit {
   disableCreateBtn: boolean = true;
   public files: PickedFile[] = [];
   navigateBack: boolean = false;
+
   resolveNativePath = (path : string) =>
   new Promise((resolve, reject) => {
     (window as any).FilePath.resolveNativePath(path, resolve, (err : any) => {
@@ -49,7 +51,8 @@ export class CreatePlaylistPage implements OnInit {
     private router: Router,
     private location: Location,
     private utilService: UtilService,
-    private modalCtrl: ModalController
+    private modalCtrl: ModalController,
+    private translate: TranslateService
   ) {
     let extras = this.router.getCurrentNavigation()?.extras;
     if (extras) {
@@ -200,7 +203,7 @@ export class CreatePlaylistPage implements OnInit {
       modal = await this.modalCtrl.create({
         component: UploadLocalComponent,
 //         componentProps: {uploadType: [{type: 'url', label: "Upload from Youtube"}, {type: 'file', label: 'Upload from Local Files' }, {type: 'diksha', label: 'Upload from Diksha' }]},
-        componentProps: {uploadType: [{type: 'url', label: "Upload from Youtube"}, {type: 'diksha', label: 'Upload from Diksha' }]},
+        componentProps: {uploadType: [{type: 'url', label: this.translate.instant("Upload from Youtube")}, {type: 'diksha', label: this.translate.instant("Upload from Diksha")}]},
         cssClass: 'sheet-modal',
         breakpoints: [0.25],
         showBackdrop: false,

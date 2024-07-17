@@ -3,8 +3,11 @@
     "siteName": "Garhwal English Medium",
     "siteByLine": "Listen, Learn & Grow !!!",
     "splashImage": "assets/school/GEMS.jpeg",
+    "bots": ["story", "parent", "teacher"],
     "defaultContentFilter": [{
-        "agegroup": ["3-6", "6-8"]
+        "agegroup": ["3-6", "6-8"],
+        "language":["English", "Hindi"]
+
     }],
     "headerFilters": [{
         "defaultFilter": {
