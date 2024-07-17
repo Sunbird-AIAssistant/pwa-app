@@ -57,12 +57,12 @@
         {
             "id": "en",
             "label": "English",
-            "default": false
+            "default": true
         },
         {
             "id": "hi",
             "label": "हिंदी",
-            "default": true
+            "default": false
         },
         {
             "id": "as",
@@ -72,7 +72,7 @@
         {
             "id": "bn",
             "label": "বাংলা",
-            "default": true
+            "default": false
         }
     ],
     "titleCode": [

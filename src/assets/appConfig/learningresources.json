@@ -1,0 +1,95 @@
+{
+    "tenantLogo": "assets/school/P_128x128.svg",
+    "siteName": "Prajayatna",
+    "siteByLine": "We learn. We live",
+    "splashImage": "assets/school/P_152x152.png",
+    "defaultContentFilter": [
+        {
+            "agegroup": [
+                "3-6",
+                "6-8"
+            ]
+        }
+    ],
+    "headerFilters": [
+        {
+            "defaultFilter": {
+                "id": "All",
+                "label": "All",
+                "query": "",
+                "filters": "All"
+            },
+            "additionalFilters": [
+                {
+                    "id": "Stories",
+                    "label": "Stories",
+                    "query": "Stories",
+                    "filters": "Stories"
+                },
+                {
+                    "id": "Activities",
+                    "label": "Activities",
+                    "query": "Activities",
+                    "filters": "Activities"
+                },
+                {
+                    "id": "Songs",
+                    "label": "Songs",
+                    "query": "Songs",
+                    "filters": "Songs"
+                },
+                {
+                    "id": "Audio Books",
+                    "label": "Audio Books",
+                    "query": "Audio Books",
+                    "filters": "Audio Books"
+                },
+                {
+                    "id": "Handbooks",
+                    "label": "Handbooks",
+                    "query": "Handbooks",
+                    "filters": "Handbooks"
+                }
+            ]
+        }
+    ],
+    "languages": [
+        {
+            "id": "en",
+            "label": "English",
+            "default": true
+        },
+        {
+            "id": "hi",
+            "label": "हिंदी",
+            "default": false
+        }
+    ],
+    "titleCode": [
+        "en",
+        "hi"
+    ],
+    "en": {
+        "kathaSakhiBotName": "Katha Sangini",
+        "parentTaraBotName": "Parents Sangini,",
+        "teacherTaraBotName": "Shikshak Sangini,"
+    },
+    "hi": {
+        "kathaSakhiBotName": "कथा संगिनी",
+        "parentTaraBotName": "पेरेंट संगिनी",
+        "teacherTaraBotName": "टीचर संगिनी"
+    },
+    "footerText": "Developed with ❤️ by Tekdi Technologies ",
+    "headerColor": "#A71028",
+    "headerFontSize": "16",
+    "footerColor": "#A71028",
+    "footerFontSize": "16",
+    "primaryCss" : {
+        "primary": "#A71028",
+        "shade": "#EEAA1F"
+    },
+    "secondaryCss" : {
+        "secondary": "#EEAA1F",
+        "shade": "#e98021ff"
+    }
+}

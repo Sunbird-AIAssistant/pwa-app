@@ -35,8 +35,11 @@
     <div class="playlist__header">
       <div class="">{{"My Playlist" | translate}}</div>
       <div class="playlist__header__button" (click)="viewAllCards('playlist')">
-        <ion-button>{{"New Playlist" | translate}} <ion-icon slot="end" aria-hidden="true"
-            src="../../../assets/icon/Add-circle-outline.svg"></ion-icon></ion-button>
+        <ion-button>{{"New Playlist" | translate}} 
+          <!-- <ion-icon slot="end" aria-hidden="true"
+            src="../../../assets/icon/Add-circle-outline.svg"></ion-icon> -->
+            <ion-icon name="add-circle-outline" slot="end" aria-hidden="true" class="secIcon"></ion-icon>
+          </ion-button>
       </div>
     </div>
       <div >

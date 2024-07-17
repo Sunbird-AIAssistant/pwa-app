@@ -1,16 +1,11 @@
 {
-    "tenantLogo": "assets/school/DL_128x128.svg",
-    "siteName": "Dharma Life",
+    "tenantLogo": "assets/school/TVS_128x128.svg",
+    "siteName": "Turtuk Valley School",
     "siteByLine": "Listen, Learn & Grow !!!",
-    "splashImage": "assets/school/DL_152x152.png",
-    "defaultContentFilter": [
-        {
-            "agegroup": [
-                "3-6",
-                "6-8"
-            ]
-        }
-    ],
+    "splashImage": "assets/school/TVS_152x152.png",
+    "defaultContentFilter": [{
+        "agegroup": ["3-6", "6-8"]
+    }],
     "headerFilters": [
         {
             "defaultFilter": {
@@ -57,39 +52,53 @@
         {
             "id": "en",
             "label": "English",
-            "default": false
+            "default": true
         },
         {
             "id": "hi",
             "label": "हिंदी",
-            "default": true
+            "default": false
+        },
+        {
+            "id": "ur",
+            "label": "اردو",
+            "default": false
+        },
+        {
+            "id": "bo",
+            "label": "བོ་ཐི།",
+            "default": false
         }
     ],
     "titleCode": [
         "en",
-        "hi"
+        "hi",
+        "ur",
+        "bo"
     ],
     "en": {
-        "kathaSakhiBotName": "Katha Sangini",
-        "parentTaraBotName": "Parents Sangini,",
-        "teacherTaraBotName": "Shikshak Sangini,"
+        "kathaSakhiBotName": "Grunge Ngamstar",
+        "parentTaraBotName": "Tsabkhane Ngamstar",
+        "teacherTaraBotName": "Nangme Ngamstar"
     },
     "hi": {
-        "kathaSakhiBotName": "कथा संगिनी",
-        "parentTaraBotName": "पेरेंट संगिनी",
-        "teacherTaraBotName": "टीचर संगिनी"
+        "kathaSakhiBotName": "ग्रंज नगमस्टार",
+        "parentTaraBotName": "त्सबखाने नगमस्टार",
+        "teacherTaraBotName": "नंगमे नगमस्टार"
+    },
+    "ur": {
+        "kathaSakhiBotName": "گرنج ناگستر",
+        "parentTaraBotName": "تسبخانے نگمسٹار",
+        "teacherTaraBotName": "ننگمے نگمسٹار"
+    },
+    "bo": {
+        "kathaSakhiBotName": "གྲུང་ངེ་ངམ་སྟར།",
+        "parentTaraBotName": "ཚབ་ཁ་ནེ་ནམ་སྟར།",
+        "teacherTaraBotName": "ནང་མེ་ངམ་སྟར།"
     },
     "footerText": "Developed with ❤️ by Tekdi Technologies ",
-    "headerColor": "#e98021ff",
+    "headerColor": "brown",
     "headerFontSize": "16",
-    "footerColor": "#e98021ff",
-    "footerFontSize": "16",
-    "primaryCss" : {
-        "primary": "#e98021ff",
-        "shade": "#186aaaff"
-    },
-    "secondaryCss" : {
-        "secondary": "#186aaaff",
-        "shade": "#e98021ff"
-    }
+    "footerColor": "brown",
+    "footerFontSize": "16"
 }
