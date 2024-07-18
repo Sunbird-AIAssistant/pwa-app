@@ -11,14 +11,12 @@ console.log(`Fetching configuration from: ${jsonUrl}`);
 
 export const ConfigVariables = fetch(jsonUrl)
   .then(response => {
-    console.log({ response });
     if (!response.ok) {
       throw new Error('Network response was not ok');
     }
     return response.json();
   })
   .then(data => {
-    console.log('Fetched data:', data);
     return data; // Return the fetched data so that it can be used by other parts of the application
   })
   .catch(error => {

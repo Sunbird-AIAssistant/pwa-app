@@ -72,7 +72,6 @@ export class HomePage implements OnInit, OnTabViewWillEnter, OnDestroy {
     private confirmService: ConfirmService) {
 
       ConfigVariables.then(config => {
-        console.log('Configuration:', config);
         this.configVariables = config;
 
         if(config?.['primaryCss']){
@@ -95,32 +94,11 @@ export class HomePage implements OnInit, OnTabViewWillEnter, OnDestroy {
     this.contentList = [];
     this.networkChangeSub = this.networkService.networkConnection$.subscribe(ev => {
       this.networkConnected = ev;
-      // if (this.networkConnected !== ev) {
-      //   if(this.networkConnected && !this.onlineState) {
-      //     console.log(ev);
-      //     this.onlineState = true;
-      //     this.presentToast(this.translateService.instant('INTERNET_AVAILABLE'), "success");
-      //     this.showSheenAnimation = true;
-      //     this.getServerMetaConfig();
-      //     this.offlineState = false;
-      //   } else if(!this.networkConnected && !this.offlineState) {
-      //     this.offlineState = true;
-      //     this.presentToast(this.translateService.instant('NO_INTERNET_TITLE'), "danger");
-      //     this.onlineState = false;
-      //   }
-      // }
+     
     })
   }
 
-  // async presentToast(msg: string, color: string) {
-  //   const toast = await this.toastController.create({
-  //     message: msg,
-  //     duration: 1000,
-  //     position: 'top',
-  //     color: color
-  //   });
-  //   await toast.present();
-  // }
+  
 
  async ngOnDestroy() {
   const modal = await this.modalCtrl.getTop();
@@ -140,7 +118,6 @@ export class HomePage implements OnInit, OnTabViewWillEnter, OnDestroy {
     this.headerService.headerEventEmitted$.subscribe(async (val) => {
       if(val == 'language') {
         let lang = await this.storage.getData('lang');
-        console.log('lang ', lang, this.selectedLang);
         this.responseList = await this.searchService.postContentSearch(req, await this.storage.getData('lang'));
         if (this.selectedLang !== lang) {
           this.selectedLang = lang;
@@ -193,7 +170,6 @@ export class HomePage implements OnInit, OnTabViewWillEnter, OnDestroy {
         this.responseList  = [];
         this.responseList = await this.searchService.postContentSearch(req, await this.storage.getData('lang'));
         // let res: any = await this.searchService.postContentSearch(req, await this.storage.getData('lang'));
-        console.log('Response', this.responseList);
         this.mappUIContentList(this.responseList);
       }
       catch (e) {

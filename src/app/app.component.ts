@@ -54,7 +54,6 @@ export class AppComponent implements OnInit {
     this.swUpdate.versionUpdates.subscribe(evt => {
       switch (evt.type) {
         case 'VERSION_DETECTED':
-          console.log(`Downloading new app version: ${evt.version.hash}`);
           this.presentUpdateAlert();
           break;
         case 'VERSION_READY':
@@ -162,13 +161,11 @@ export class AppComponent implements OnInit {
               scannedData === 'cancel_nav_back') {
                 return;
               }
-          console.log("Scan Result", scannedData);
           let scannenValue = ''
           const execArray = (new RegExp('(/dial/(?<djp>[a-zA-Z0-9]+)|(/QR/\\?id=(?<epathshala>[a-zA-Z0-9]+)))')).exec(scannedData);
           if (execArray && execArray.length > 1) {
             scannenValue = execArray?.groups![Object.keys(execArray?.groups!).find((key) => !!execArray?.groups![key])!]
           }
-          console.log('Scanned Value', scannenValue);
           if (scannenValue) {
             this.router.navigate(['/qr-scan-result'], {state: {scannedData: scannenValue}})
           } else {
@@ -203,7 +200,6 @@ export class AppComponent implements OnInit {
     });
     await modal.present();
     modal.onDidDismiss().then((_ => {
-      console.log('dismiss');
       this.langModalOpen = false
       this.headerService.sidebarEvent({name: 'language'});
     }));

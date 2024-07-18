@@ -49,7 +49,6 @@ export class LocalNotificationService {
     await LocalNotifications.addListener('localNotificationActionPerformed', (async notif => {
       let location = that.router['location']._locationStrategy._platformLocation._location;
       if(location.pathname !== '/parent-sakhi') {
-        console.log("router page ", location.pathname);
         that.tabService.hide();
         if(location.pathname === '/') {
           setTimeout(async () => {

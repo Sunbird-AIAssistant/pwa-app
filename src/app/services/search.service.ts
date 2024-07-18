@@ -16,7 +16,6 @@ export class SearchService {
     private apiService: ApiService
   ) { 
     ConfigVariables.then(config => {
-      console.log('Configuration:', config);
       this.configVariables = config;
       // Use the config data as needed
     }).catch(error => {

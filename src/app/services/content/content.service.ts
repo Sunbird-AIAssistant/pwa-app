@@ -245,7 +245,6 @@ export class ContentService {
     content.children.forEach((child: any) => {
       this.showAllChild(child);
     });
-    console.log('Results', this.results);
   }
 
   public readDikshaContents(identifier: string) {

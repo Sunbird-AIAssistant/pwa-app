@@ -42,7 +42,6 @@ export class ApplicationHeaderComponent  implements OnInit {
       })
 
       ConfigVariables.then(config => {
-        console.log('Configuration:', config);
         this.configVariables = config;
         // Use the config data as needed
       }).catch(error => {
@@ -53,8 +52,6 @@ export class ApplicationHeaderComponent  implements OnInit {
     loadTabData(language: string) {
       this.language = language;
     this.isTitleChanged = this.configVariables.titleCode.includes(language);
-      console.log(`Loading data for language: ${language}`);
-      // Example data loading logic:
     }
 
   async ngOnInit() {

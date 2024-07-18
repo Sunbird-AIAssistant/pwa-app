@@ -116,7 +116,6 @@ export class AppModule {
     this.storage.getData('lang').then(lang =>{
       let currentLang = lang || 'hi'; // Use 'en' as a default if lang is undefined
       this.translate.setDefaultLang(currentLang);
-      console.log(lang);
       if(!lang)
       {
         this.setDefaultLanguage();

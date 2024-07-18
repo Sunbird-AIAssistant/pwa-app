@@ -21,7 +21,6 @@ export class DownlaodContentService {
     const response = await fetch(url);
     // convert to a Blob
     const blob = await response.blob();
-    console.log('blob ', blob);
     // convert to base64 data, which the Filesystem plugin requires
     const base64Data = await this.convertBlobToBase64(blob) as string;
     try {

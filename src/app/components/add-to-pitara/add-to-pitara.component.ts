@@ -25,7 +25,6 @@ export class AddToPitaraComponent  implements OnInit {
 
    ngOnInit() {
     this.content = this.navParams.get('content')
-    console.log('this.content', this.content)
     this.getAllPlaylists()
   }
 
@@ -35,7 +34,6 @@ export class AddToPitaraComponent  implements OnInit {
         if (name) {
           this.selectedContentId = this.playlists.find((e) => e.name.toLowerCase()===name.toLowerCase()).identifier || this.playlists[0].identifier;
         }
-        console.log('playlists', this.playlists);
       }).catch((error) => {
         console.log('error', error)
       })

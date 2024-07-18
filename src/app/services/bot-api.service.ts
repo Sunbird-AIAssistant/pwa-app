@@ -27,7 +27,6 @@ export class BotApiService {
     private dbService: DbService
   ) { 
     ConfigVariables.then(config => {
-      console.log('Configuration------->:', config);
       this.domainConfig = config;
       // Use the config data as needed
     }).catch(error => {

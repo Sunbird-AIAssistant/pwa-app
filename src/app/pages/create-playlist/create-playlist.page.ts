@@ -79,7 +79,6 @@ export class CreatePlaylistPage implements OnInit {
     this.getContentImgPath();
     this.contentService.getRecentlyViewedContent('guest').then((result) => {
       this.contentList = result;
-      console.log('result', result)
     });
     this.headerService.headerEventEmitted$.subscribe((event) => {
       if (event === 'back' && this.status === 'edit' && !this.navigateBack) {
@@ -153,7 +152,6 @@ export class CreatePlaylistPage implements OnInit {
     await loader.present();
     for (let i=0; i<files.length; i++) {
       const path: string = await this.resolveNativePath(files[i].path!)as string;
-      console.log('path', path);
       const fileName = path.substring(path.lastIndexOf('/') + 1);
       this.selectedContents.push({
         source: 'local',
@@ -262,7 +260,6 @@ export class CreatePlaylistPage implements OnInit {
               let content = res.body?.result?.content;
               if(content.dialcodes?.length > 0) {
                 await this.contentService.getContents(content.dialcodes[0]).then(data => {
-                  console.log('content data ', data);
                   data.forEach(cont => {
                     cont.source = "local"
                     if(cont.metaData.mimetype == MimeType.PDF || cont.metaData.mimetype == MimeType.VIDEO) {

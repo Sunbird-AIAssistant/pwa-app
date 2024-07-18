@@ -47,8 +47,6 @@ export class TabsPage implements OnTabViewWillEnter, OnInit{
     async ngOnInit() {
       this.language = await this.storage.getData('lang') || 'en';
       this.isTitleChanged = this.configVariables.titleCode.includes(this.language);
-      console.log(`Loading data for language: ${this.language}`);
-
     this.languageSubscription = this.languageService.currentLanguage$.subscribe(
       (language) => {
         this.loadTabData(language);
@@ -59,8 +57,6 @@ export class TabsPage implements OnTabViewWillEnter, OnInit{
   loadTabData(language: string) {
     this.language = language;
   this.isTitleChanged = this.configVariables.titleCode.includes(language);
-    console.log(`Loading data for language: ${language}`);
-    // Example data loading logic:
   }
 
   // Prevent back naviagtion

@@ -4,7 +4,6 @@
 
 body {
     font-family: var(--ion-font-family);
-    //background-color: var(--ion-background-color) !important;
 }
 
 ion-content {
@@ -92,8 +91,6 @@ ion-modal.auto-height {
     --height: auto;
     --border-radius: 20px;
     --width: 90%;
-    /* --height: 50%; */
-    /* --border-radius: 16px; */
     --box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
 
     .ion-page {
@@ -127,21 +124,3 @@ ion-icon {
     color: var(--ion-color-secondary);
 }
 
-// .plyr--youtube.plyr--paused.plyr--playing.plyr--hide-controls.plyr__poster-enabled:not(.plyr--stopped) .plyr__poster {
-//     display: block !important;
-//     z-index: 2;
-//     position: absolute;
-//     opacity: 1;
-// }
-// .plyr--playing .plyr__poster {
-//     z-index: 2;
-//     position: absolute;
-//     opacity: 1;
-//     display: block !important;
-// }
-// .plyr--paused .plyr__poster {
-//     z-index: 2;
-//     position: absolute;
-//     opacity: 1;
-//     display: block !important;
-// }

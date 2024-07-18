@@ -83,10 +83,7 @@ export class HttpCapacitorAdapter implements HttpClient {
     {
        
         const mediaUrl = url;
-        // console.log(mediaUrl);
-        // console.log(mediaUrl.endsWith(".mp3"));
-
-
+      
         if (mediaUrl.endsWith(".mp3")) {
             return 'audio/mp3' ; // // MP3 audio
         } else if (mediaUrl.endsWith(".pdf")) {

@@ -93,7 +93,6 @@ export class TelemetryService {
                             telemetry, sid ?? '', did, uuidv4(),
                             version, channelName, []
                         ), 1);
-                        console.log('Telemetry Generated', telemetry);
 
                         return this.dbService.save(TelemetryConfigEntry.insertData(), telemetrySchema)
                     })

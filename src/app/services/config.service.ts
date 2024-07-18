@@ -14,7 +14,6 @@ export class ConfigService {
 
   constructor(private apiService: ApiService) {
     ConfigVariables.then(config => {
-      console.log('Configuration:', config);
       this.configVariables = config;
       // Use the config data as needed
     }).catch(error => {
@@ -30,7 +29,6 @@ export class ConfigService {
       .withBearerToken(true)
       .build();
     return lastValueFrom(this.apiService.fetch(apiRequest)).then((res: any) => {
-      console.log("res in config file ", res?.body.result);
       if (res?.body.result) {
         return res?.body.result;
       }

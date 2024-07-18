@@ -98,11 +98,9 @@ export class PlayerPage implements OnInit {
         this.playerConfig['metadata']['isAvailableLocally'] = (this.content?.source === 'local' || this.content?.type === 'local')? true : false;
         this.playerConfig['metadata']['baseDir']='';
         this.playerConfig['context']['cdata'] = this.cdata;
-        console.log('this.playerConfig', this.playerConfig)
         const pdfElement = document.createElement('sunbird-pdf-player');
         pdfElement.setAttribute('player-config', JSON.stringify(this.playerConfig));
         pdfElement.addEventListener('playerEvent', (event) => {
-          console.log("On playerEvent", event);
           this.playerEvents(event);
         });
         pdfElement.addEventListener('telemetryEvent', (event) => {

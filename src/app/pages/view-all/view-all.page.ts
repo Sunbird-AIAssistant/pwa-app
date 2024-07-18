@@ -127,7 +127,6 @@ export class ViewAllPage implements OnInit {
         result.push(e);
       }
     });
-    console.log('...................', result)
     this.router.navigate(['/create-playlist'], { state: { selectedContents: result } })
   }
 
@@ -350,11 +349,9 @@ export class ViewAllPage implements OnInit {
           id = arr.filter((a: string) => a.startsWith('do_'))
           try {
             await this.contentService.readDikshaContents(id[0]).then(async (res) => {
-              console.log('res ', res);
               let content = res.body?.result?.content;
               if(content.dialcodes?.length > 0) {
                 await this.contentService.getContents(content.dialcodes[0]).then(data => {
-                  console.log('content data ', data);
                   if(data.length > 0) {
                     data.forEach(cont => {
                       cont.source = "local"

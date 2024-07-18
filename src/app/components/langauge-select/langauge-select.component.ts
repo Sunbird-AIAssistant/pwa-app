@@ -28,7 +28,6 @@ export class LangaugeSelectComponent  implements OnInit {
 
   languageSelected(ev: any) {
     let val = ev.detail.value;
-    console.log('Current value:', JSON.stringify(val));
     this.storage.setData('lang', val);
     // if(val !== 'hi') {
     //   this.translateService.use('en');
