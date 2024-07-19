@@ -4,7 +4,7 @@ name: Deploy to dev server school-app
 on:
   push:
     branches:
-      - main 
+      - prod 
 jobs:
    deploy:
     runs-on: ubuntu-latest
@@ -14,12 +14,12 @@ jobs:
       name: Deploy Stack
       uses: appleboy/ssh-action@master
       with:
-          host: ${{ secrets.HOST_NAME_DEV }}
-          username: ${{ secrets.USERNAME_DEV }}
-          key: ${{ secrets.SSH_KEY_DEV }}
-          port: ${{ secrets.PORT_DEV }}
+          host: ${{ secrets.HOST_NAME_PROD }}
+          username: ${{ secrets.USERNAME_PROD }}
+          key: ${{ secrets.SSH_KEY_PROD }}
+          port: ${{ secrets.PORT_PROD }}
           script: |    
-               cd ${{ secrets.TARGET_DIR_DEV }}
+               cd ${{ secrets.TARGET_DIR_PROD }}
                ./deploy.sh
     -          
       name: Notify on Slack channel
