@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1721385542644,
+  "timestamp": 1721386691302,
   "index": "/index.html",
   "assetGroups": [
     {
@@ -131,7 +131,7 @@
         "/assets/appConfig/learningresources.json",
         "/assets/appConfig/localhost.json",
         "/assets/appConfig/sols-arc.json",
-        "/assets/appConfig/turtuk-Valley.json",
+        "/assets/appConfig/turtuk-valley.json",
         "/assets/arrow-right.svg",
         "/assets/badge-2.svg",
         "/assets/exit_to_app.svg",
@@ -600,7 +600,7 @@
     "/assets/appConfig/learningresources.json": "73f32e4da6e7fda0270969707021a8a06992181c",
     "/assets/appConfig/localhost.json": "a2fb2404e330e8c5538eb3722ba44df5688a2f00",
     "/assets/appConfig/sols-arc.json": "55e1948dd0da2ecad449ec90abf38124936b3508",
-    "/assets/appConfig/turtuk-Valley.json": "fd7dfd7e692ae3d0d1f55e084aadb9a6860978d0",
+    "/assets/appConfig/turtuk-valley.json": "fd7dfd7e692ae3d0d1f55e084aadb9a6860978d0",
     "/assets/arrow-right.svg": "bb67048eb7cd7987f8e2e43511f11a7d962f5af3",
     "/assets/badge-2.svg": "fb752f1cd110fc328f39e25632e85fb830ffa324",
     "/assets/exit_to_app.svg": "9e8f3983dbb2ba7cfdbfeceacce0374eef54bdcb",
