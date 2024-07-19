@@ -49,14 +49,14 @@ export class BotApiService {
         language: lang,
         text: text,
         audio: "",
-        context: botType 
+        context: localStorage.getItem('subDomain') + '_' + botType  
       }
     } else if (audio !== "") {
       req.input = {
         language: lang,
         audio: audio,
         text: "",
-        context: botType 
+        context: localStorage.getItem('subDomain') + '_' + botType  
       }
     }
 

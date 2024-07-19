@@ -6,10 +6,6 @@
     "bots": ["teacher"],
     "defaultContentFilter": [
         {
-            "agegroup": [
-                "3-6",
-                "6-8"
-            ],
             "language":["English","Marathi", "Hindi"]
         }
     ],
