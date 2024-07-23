@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1721643716498,
+  "timestamp": 1721727629022,
   "index": "/index.html",
   "assetGroups": [
     {
@@ -128,9 +128,9 @@
         "/assets/appConfig/gem-school.json",
         "/assets/appConfig/hummingbird.json",
         "/assets/appConfig/imamiya-mission.json",
+        "/assets/appConfig/inclued.json",
         "/assets/appConfig/learningresources.json",
         "/assets/appConfig/localhost.json",
-        "/assets/appConfig/sols-arc.json",
         "/assets/appConfig/turtuk-valley.json",
         "/assets/arrow-right.svg",
         "/assets/badge-2.svg",
@@ -597,9 +597,9 @@
     "/assets/appConfig/gem-school.json": "f5c1742fc3c8790d4857f5235b4b99cdad1ab054",
     "/assets/appConfig/hummingbird.json": "15dcd852e0bcf4833a3bc6d42f489e32e07643d2",
     "/assets/appConfig/imamiya-mission.json": "c4015311800670986e344a971dc49b9787783a64",
+    "/assets/appConfig/inclued.json": "55e1948dd0da2ecad449ec90abf38124936b3508",
     "/assets/appConfig/learningresources.json": "73f32e4da6e7fda0270969707021a8a06992181c",
     "/assets/appConfig/localhost.json": "f5c1742fc3c8790d4857f5235b4b99cdad1ab054",
-    "/assets/appConfig/sols-arc.json": "55e1948dd0da2ecad449ec90abf38124936b3508",
     "/assets/appConfig/turtuk-valley.json": "fd7dfd7e692ae3d0d1f55e084aadb9a6860978d0",
     "/assets/arrow-right.svg": "bb67048eb7cd7987f8e2e43511f11a7d962f5af3",
     "/assets/badge-2.svg": "fb752f1cd110fc328f39e25632e85fb830ffa324",
@@ -608,7 +608,7 @@
     "/assets/fonts/Roboto/Roboto-Regular.ttf": "56c5c0d38bde4c1f1549dda43db37b09c608aad3",
     "/assets/i18n/as.json": "8e072613a8c5d9bf633792b639cde320ff4039b6",
     "/assets/i18n/bn.json": "f4cc435baa588997ed5cff75f45acc8da3315d14",
-    "/assets/i18n/bo.json": "bfb72ebc9b53ea1d5666cf5c83a4f7517d1d71b6",
+    "/assets/i18n/bo.json": "cfe321b764ae79eb8f04ee3496c6af84a6e7a088",
     "/assets/i18n/do.json": "f8c6442c3215835aa310a7bd1f3f09c02ad1ddc7",
     "/assets/i18n/en.json": "e92c03659c43ca5a3ed4409454ff5f933b4633a2",
     "/assets/i18n/gu.json": "36f5795d0e876bc0589e8f2a05413ccba0643db4",
