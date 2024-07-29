@@ -49,7 +49,6 @@ export class SplashPage implements OnInit {
     this.storage.setData("sid", sid);
     this.appinitialise.initialize();
     setTimeout(async () => {
-      console.log('route');
       this.startTelemetry()
       this.router.navigate(['/tabs/home']);
     }, 2000);

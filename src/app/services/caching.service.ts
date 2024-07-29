@@ -28,7 +28,6 @@ export class CachingService {
     let firstTimeLoad = await this.storageService.getData('firstTimeLoad');
     let currenttimeStamp = new Date().getTime();
     let validTimeStamp = await this.storageService.getData('validTimeStamp');
-    console.log("***** ", validTimeStamp, JSON.parse(validTimeStamp!));
     if(currenttimeStamp > JSON.parse(validTimeStamp!)) {
       this.storageService.removeData('validTimeStamp');
       this.initStorage();

@@ -65,7 +65,6 @@ export class ViewAllPage implements OnInit {
   // Optional: Use HostListener to detect hardware back button on Android devices
   @HostListener('window:popstate', ['$event'])
   onPopState(event: any) {
-    console.log('Hardware back button pressed', event);
     this.location.back();
   }
 
@@ -233,7 +232,6 @@ export class ViewAllPage implements OnInit {
     await loader.present();
     for (let i=0; i<files.length; i++) {
       const path: string = await this.resolveNativePath(files[i].path!)as string;
-      console.log('path', path);
       const fileName = path.substring(path.lastIndexOf('/') + 1);
       localContents.push({
         source: 'local',

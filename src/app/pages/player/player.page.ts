@@ -40,7 +40,6 @@ export class PlayerPage implements OnInit {
     let extras = this.router.getCurrentNavigation()?.extras;
     if (extras) {
       this.content = extras.state?.['content'] as Content;
-      console.log('content received in player ', this.content);
       this.playerType = this.getPlayerType(this.content.metaData.mimetype);
       this.srcUrl = this.content.metaData.url.startsWith('https://') ? this.domSanitiser.bypassSecurityTrustResourceUrl(this.content.metaData.url) : this.domSanitiser.bypassSecurityTrustResourceUrl('https://'+this.content.metaData.url); 
       this.pageId = extras.state?.['pageid'];
@@ -104,7 +103,6 @@ export class PlayerPage implements OnInit {
           this.playerEvents(event);
         });
         pdfElement.addEventListener('telemetryEvent', (event) => {
-          console.log("On telemetryEvent", event);
           this.playerTelemetryEvents(event);
         });
         this.pdf.nativeElement.append(pdfElement);
@@ -123,7 +121,6 @@ export class PlayerPage implements OnInit {
         const epubElement = document.createElement('sunbird-video-player');
         epubElement.setAttribute('player-config', JSON.stringify(this.videoConfig));
         epubElement.addEventListener('playerEvent', (event) => {
-          console.log("On playerEvent", event);
           this.playerEvents(event);
         });
         epubElement.addEventListener('telemetryEvent', (event) => {
@@ -137,7 +134,6 @@ export class PlayerPage implements OnInit {
     }
     if (this.playerType != "link"){
     const player = new Plyr('#player', { autoplay: true});
-    console.log('player ', player);
   }
   }
 
@@ -153,7 +149,6 @@ export class PlayerPage implements OnInit {
 
   playerTelemetryEvents(event: any) {
     if (event?.detail?.eid === 'START' || event?.detail?.eid === 'END') {
-      console.log('....................', event)
       this.telemetryService.saveTelemetry(JSON.stringify(event.detail)).subscribe(
         (res: any) => console.log('response after telemetry', res),
       );

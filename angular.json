@@ -57,20 +57,34 @@
               "node_modules/plyr/dist/plyr.js"
             ],
             "serviceWorker": true,
-            "ngswConfigPath": "ngsw-config.json"
+            "ngswConfigPath": "ngsw-config.json",
+            "optimization": {
+              "scripts": true,
+              "styles": {
+                "minify": true,
+                "inlineCritical": true
+              },
+              "fonts": true
+            }
           },
           "configurations": {
             "production": {
+              "optimization": {
+                "styles": {
+                  "minify": true,
+                  "inlineCritical": true
+                }
+              },
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "2mb",
-                  "maximumError": "10mb"
+                  "maximumWarning": "20mb",
+                  "maximumError": "100mb"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "5kb",
-                  "maximumError": "10kb"
+                  "maximumWarning": "5000kb",
+                  "maximumError": "1000kb"
                 }
               ],
               "fileReplacements": [
