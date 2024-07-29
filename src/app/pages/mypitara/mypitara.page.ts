@@ -9,7 +9,6 @@ import { PlayList } from 'src/app/services/playlist/models/playlist.content';
 import { PlaylistService } from 'src/app/services/playlist/playlist.service';
 import {PlayerType} from 'src/app/appConstants';
 import { OnTabViewWillEnter } from 'src/app/tabs/on-tabs-view-will-enter';
-import getYouTubeID from 'get-youtube-id';
 
 @Component({
   selector: 'app-mypitara',
@@ -128,9 +127,7 @@ export class MyPitaraPage implements OnTabViewWillEnter{
 
   loadYoutubeImg(metaData: any): string {
     let id = metaData.identifier;
-    // if(id && id.startsWith("do_")) {
-    //   id = getYouTubeID(metaData.url);
-    // }
+
 
     const regex = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
     const matches = metaData?.url.match(regex);

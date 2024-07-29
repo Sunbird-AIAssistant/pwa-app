@@ -19,7 +19,7 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
-            "allowedCommonJsDependencies": ["crypto"],
+            "allowedCommonJsDependencies": ["crypto", "jsqr", "crypto-js", "get-youtube-id", "plyr", "crypto-js/md5", "dayjs", "crypto-js/sha1", "get-blob-duration"],
             "assets": [
               {
                 "glob": "**/*",

@@ -5,7 +5,6 @@ const domainParts = hostname.split('.');
 console.log(domainParts);
 const jsonFilename = domainParts[0] + '.json';
 const jsonUrl = `../assets/appConfig/${jsonFilename}`;
-// const jsonUrl = `../assets/appConfig/localhost.json`;
 
 console.log(`Fetching configuration from: ${jsonUrl}`);
 
