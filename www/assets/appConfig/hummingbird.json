@@ -81,17 +81,18 @@
        },
        "hi": {
         "kathaSakhiBotName": "कहानी बैदेओ",
-        "parentTaraBotName": "पेरेंट बन्धु",
-        "teacherTaraBotName": "टीचर बन्धु"
+        "parentTaraBotName": "पेरेंट बंधु",
+        "teacherTaraBotName": "टीचर बंधु"
        },
        "as": {
-        "kathaSakhiBotName": "অভিভাৱক বোন্ধু",
-        "parentTaraBotName": "অভিভাৱক বোন্ধু",
+        "kathaSakhiBotName": "গল্প বেডিয়ো",
+        "parentTaraBotName": "পেৰেণ্ট বন্ধু",
         "teacherTaraBotName": "শিক্ষক বন্ধু"
        },
        "bn": {
-        "kathaSakhiBotName": "গল্প বাইদেও",
-        "parentTaraBotName": "পিতা-মাতা বন্ধু",
+ 
+        "kathaSakhiBotName": "গল্প বেদেও",
+        "parentTaraBotName": "পেরেন্ট বন্ধু",
         "teacherTaraBotName": "শিক্ষক বন্ধু"
        },
    

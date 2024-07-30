@@ -3,11 +3,24 @@
     "siteName": "Turtuk Valley School",
     "siteByLine": "Listen, Learn & Grow !!!",
     "splashImage": "assets/school/TVS_152x152.png",
-    "bots": ["story", "parent", "teacher"],
-    "defaultContentFilter": [{
-        "agegroup": ["3-6", "6-8"],
-        "language":["English", "Hindi", "Urdu"]
-    }],
+    "bots": [
+        "story",
+        "parent",
+        "teacher"
+    ],
+    "defaultContentFilter": [
+        {
+            "agegroup": [
+                "3-6",
+                "6-8"
+            ],
+            "language": [
+                "English",
+                "Hindi",
+                "Urdu"
+            ]
+        }
+    ],
     "headerFilters": [
         {
             "defaultFilter": {
@@ -94,9 +107,9 @@
         "teacherTaraBotName": "ننگمے نگمسٹار"
     },
     "bo": {
-        "kathaSakhiBotName": "གྲུང་ངེ་ངམ་སྟར།",
-        "parentTaraBotName": "ཚབ་ཁ་ནེ་ནམ་སྟར།",
-        "teacherTaraBotName": "ནང་མེ་ངམ་སྟར།"
+        "kathaSakhiBotName": "གྲུང་མོས་ངམས་སྟར།",
+        "parentTaraBotName": "ཙབ་ཁ་ནེ་ངམས་སྟར།",
+        "teacherTaraBotName": "ནང་མེ་ངམས་སྟར།"
     },
     "footerText": "Developed with ❤️ by Tekdi Technologies ",
     "headerColor": "brown",
