@@ -35,8 +35,6 @@ export class BotApiService {
   }
 
   async getBotMessage(text: string, audio: string, botType: string, lang: any): Promise<any> {
-    console.log('text ', text, text !== "");
-    console.log('audio ', audio, audio !== "");
     let botApiPath = this.getBotApiPath(botType);
     let req: any = {
       input: {},

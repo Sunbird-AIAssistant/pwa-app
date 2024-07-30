@@ -78,7 +78,7 @@
         "ur",
         "bo"
     ],
-    "en": {
+     "en": {
         "kathaSakhiBotName": "Grunge Ngamstar",
         "parentTaraBotName": "Tsabkhane Ngamstar",
         "teacherTaraBotName": "Nangme Ngamstar"
@@ -94,9 +94,9 @@
         "teacherTaraBotName": "ننگمے نگمسٹار"
     },
     "bo": {
-        "kathaSakhiBotName": "གྲུང་ངེ་ངམ་སྟར།",
-        "parentTaraBotName": "ཚབ་ཁ་ནེ་ནམ་སྟར།",
-        "teacherTaraBotName": "ནང་མེ་ངམ་སྟར།"
+        "kathaSakhiBotName": "གྲུང་མོས་ངམས་སྟར།",
+        "parentTaraBotName": "ཙབ་ཁ་ནེ་ངམས་སྟར།",
+        "teacherTaraBotName": "ནང་མེ་ངམས་སྟར།"
     },
     "footerText": "Developed with ❤️ by Tekdi Technologies ",
     "headerColor": "brown",

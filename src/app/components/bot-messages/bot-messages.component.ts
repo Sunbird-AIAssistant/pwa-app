@@ -70,7 +70,6 @@ export class BotMessagesComponent implements OnInit, AfterViewInit {
     this.headerService.headerEventEmitted$.subscribe((name: any) => {
       if (name == "back" && !this.navigated) {
         this.navigated = true;
-        console.log('bot message back event ');
         this.handleBackNavigation();
       }
     })
@@ -129,7 +128,6 @@ export class BotMessagesComponent implements OnInit, AfterViewInit {
   }
 
   ngOnChanges() {
-    console.log('ng onchanges ', this.config);
     if (this.config?.notification && this.config?.notif?.body) {
       this.textMessage = this.config.notif.body;
       this.handleMessage();
@@ -193,7 +191,6 @@ export class BotMessagesComponent implements OnInit, AfterViewInit {
       this.content.scrollToBottom(300)
     });
     await this.messageApi.getAllChatMessages(this.config.type).then((res) => {
-      console.log('Bot response', res);
       res.forEach(chat => {
         let msg = { identifier: "", message: '', messageType: '', type: '', displayMsg: "", audio: { file: '', duration: '', play: false }, time: new Date().toLocaleTimeString('en', { hour: '2-digit', minute: '2-digit' }), timeStamp: '', readMore: false, likeMsg: false, dislikeMsg: false, requestId: "" }
         msg.message = chat.message
@@ -218,7 +215,6 @@ export class BotMessagesComponent implements OnInit, AfterViewInit {
         }
         this.botMessages.push(msg);
       })
-      console.log("botMessages ", this.botMessages);
     });
     if (this.config.notif) {
       this.textMessage = this.config.notif.body;
@@ -297,7 +293,6 @@ export class BotMessagesComponent implements OnInit, AfterViewInit {
               this.saveChatMessage(msg);
               if (data?.output?.audio) {
                 let duration = await this.fetchAudioDuration(data.output.audio);
-                console.log("duration ", duration);
                 let audioMsg = { identifier: "", message: '', messageType: '', displayMsg: "", audio: { file: '', duration: '', play: false }, type: 'received', time: new Date().toLocaleTimeString('en', { hour: '2-digit', minute: '2-digit' }), timeStamp: Date.now(), readMore: false, likeMsg: false, dislikeMsg: false, requestId: "" }
                 audioMsg.audio = { file: data.output?.audio, duration: duration, play: false }
                 audioMsg.messageType = 'audio';
@@ -325,7 +320,6 @@ export class BotMessagesComponent implements OnInit, AfterViewInit {
       })
     }).catch(e => {
       this.disabled = false;
-      console.log('catch error ', e);
       this.botMessages[index - 1].message = "An unknown error occured, please try after sometime";
       this.botMessages[index - 1].displayMsg = "An unknown error occured, please try after sometime";
       this.botMessages[index - 1].time = new Date().toLocaleTimeString('en', { hour: '2-digit', minute: '2-digit' });
@@ -417,7 +411,6 @@ export class BotMessagesComponent implements OnInit, AfterViewInit {
           }
         }
       });
-      console.log('result count ', result);
       this.botMessageEvent.emit({ audio: result.audio, text: result.text, duration: botDuration / 1000 })
     } else {
       this.botMessageEvent.emit({ audio: 0, text: 0, duration: botDuration / 1000 })
@@ -426,7 +419,6 @@ export class BotMessagesComponent implements OnInit, AfterViewInit {
   }
 
   async cancelRecording() {
-    console.log('cancel recording');
     await this.record.stopRecognition('audio').then(res => {
       console.log('res on recorded data ', res);
     });
@@ -503,7 +495,6 @@ export class BotMessagesComponent implements OnInit, AfterViewInit {
       .then(buffer => audioContext.decodeAudioData(buffer))
       .then(audioBuffer => {
         const duration = audioBuffer.duration;
-        console.log(`The audio file duration is ${duration} seconds`);
         let minute = (Math.floor(duration / 60)).toString().padStart(2, '0');
         let seconds = Math.floor(duration % 60).toString().padStart(2, '0');
         return minute + ':' + seconds;

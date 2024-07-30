@@ -42,7 +42,6 @@ export class AddToPitaraComponent  implements OnInit {
 
   playlistSelected(ev: any) {
     let val = ev.detail.value;
-    console.log('Current value:', JSON.stringify(val));
   }
 
   dismissModal() {
@@ -50,7 +49,6 @@ export class AddToPitaraComponent  implements OnInit {
   }
 
   async saveContent() {
-    console.log('/./.', this.selectedContentId);
     if (this.selectedContentId && this.content.metaData) {
       if(this.checked) {
         let res: any = await this.downlaodContentService.downlaodContent(this.content);

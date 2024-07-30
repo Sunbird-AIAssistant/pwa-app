@@ -165,29 +165,6 @@ export class HttpCapacitorAdapter implements HttpClient {
                 mappedContent.push(content);
             });
             }
-
-            // response.data.forEach((provider : any) => {
-            //     // Traverse through the items array of each provider
-            //     provider.items.forEach((item: any) => {
-            //         console.log("1");
-            //         // Map item properties to ContentMetaData interface format
-            //         const content: SearchContentMetaData = {
-            //             bpp_id: item.bpp_id,
-            //             bpp_uri: item.bpp_uri,
-            //             provider_id: item.provider_id,
-            //             provider_name: item.provider_name,
-            //             unique_id: item.unique_id,
-            //             id: item.id,
-            //             item_id: item.item_id,
-            //             title: item.title,
-            //             image_url: item?.image_url.length ? (item?.descriptor?.images[0].url.split("/"))[0] : '', // You can populate this based on item properties
-            //             description: item.description.long_desc || item.description.short_desc || ''
-            //         };
-            //         // Push the mapped object into the array
-            //         mappedContent.push(content);
-            //         console.log(mappedContent);
-            //     });
-            // });
             
             if(mappedContent){
                 let apiResponse: ApiResponse;

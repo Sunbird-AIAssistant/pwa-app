@@ -2,13 +2,8 @@
 const urlObj = new URL(document.baseURI);
 const hostname = urlObj.hostname; // e.g., "subdomain.example.com"
 const domainParts = hostname.split('.');
-console.log(domainParts);
 const jsonFilename = domainParts[0] + '.json';
 const jsonUrl = `../assets/appConfig/${jsonFilename}`;
-// const jsonUrl = `../assets/appConfig/localhost.json`;
-
-console.log(`Fetching configuration from: ${jsonUrl}`);
-
 export const ConfigVariables = fetch(jsonUrl)
   .then(response => {
     if (!response.ok) {

@@ -148,7 +148,6 @@ export class DbService {
       }
       stmt = `${query} (${keys.toString()}) VALUES (${qMarks.toString()});`;
       ret = await this.sqliteDBConnection.run(stmt, values);
-      console.log('ret', ret);
       if (ret.changes!.changes != 1) {
         return Promise.reject(`save: insert changes != 1`);
       }
@@ -163,7 +162,6 @@ export class DbService {
 
       stmt = `${query} ${setString} WHERE ${this.getWhereStatement(where)}`;
       const result = await this.sqliteDBConnection.query(stmt);
-      console.log('result', result);
     }
   
     return;

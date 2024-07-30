@@ -74,7 +74,7 @@
     "titleCode": [
         "en", "hi", "ur", "bo"
        ],
-    "en": {
+ "en": {
         "kathaSakhiBotName": "Kahani",
         "parentTaraBotName": "Phama",
         "teacherTaraBotName": "Gergan"
@@ -82,19 +82,18 @@
        "hi": {
         "kathaSakhiBotName": "कहानी",
         "parentTaraBotName": "फामा",
-        "teacherTaraBotName": "गेर्गन"
+        "teacherTaraBotName": "गेरगन"
        },
        "ur": {
         "kathaSakhiBotName": "کہانی",
         "parentTaraBotName": "فاما",
-        "teacherTaraBotName": "گرگن"
+        "teacherTaraBotName": "گرگان"
        },
        "bo": {
-        "kathaSakhiBotName": "ཀ་ཧ་ནི་",
-        "parentTaraBotName": "ཕ་མ།",
-        "teacherTaraBotName": "གྷེར་གྷན།"
+        "kathaSakhiBotName": "ཁ་ས་ཁའི",
+        "parentTaraBotName": "ཕ་མ",
+        "teacherTaraBotName": "གེར་གནན"
        },
-   
     "footerText": "Developed with ❤️ by Tekdi Technologies ",
     "headerColor": "brown",
     "headerFontSize": "16",

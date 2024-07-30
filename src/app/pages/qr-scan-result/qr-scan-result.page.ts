@@ -36,7 +36,6 @@ export class QrScanResultPage implements OnInit, OnTabViewWillEnter {
     let extras = this.router.getCurrentNavigation()?.extras;
     if(extras) {
       this.scanText = extras.state?.['scannedData'];
-      console.log('scan text ', this.scanText);
     }
   }
 
@@ -62,7 +61,6 @@ export class QrScanResultPage implements OnInit, OnTabViewWillEnter {
     this.headerService.showStatusBar(false);
     this.contentService.getContents(this.scanText).then((result) => {
       this.showSheenAnimation = false;
-      console.log('Result: ', result);
       this.configContents = result;
     }).catch(err => {
       this.showSheenAnimation = false;

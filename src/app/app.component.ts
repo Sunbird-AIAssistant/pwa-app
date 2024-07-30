@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, HostListener } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AppHeaderService } from './services/app-header.service';
 import { HeaderConfig } from './appConstants';
 import { IonRouterOutlet, ModalController, PopoverController, Platform } from '@ionic/angular';
@@ -58,7 +58,6 @@ export class AppComponent implements OnInit {
           break;
         case 'VERSION_READY':
           console.log(`Current app version: ${evt.currentVersion.hash}`);
-          console.log(`New app version ready for use: ${evt.latestVersion.hash}`);
           break;
         case 'VERSION_INSTALLATION_FAILED':
           console.log(`Failed to install app version '${evt.version.hash}': ${evt.error}`);
@@ -152,7 +151,6 @@ export class AppComponent implements OnInit {
   }
 
   async handleHeaderEvents($event: any) {
-    console.log('events', $event);
     if (($event as any).name == 'scan') {
       this.scannerService.requestPermission(
         (scannedData) => {

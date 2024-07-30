@@ -16,7 +16,6 @@ export class DownlaodContentService {
   async downlaodContent(content: any) {
     this.presentToast("Downloading ....");
     let arr = content.metaData.artifactUrl ? content.metaData.artifactUrl.split('/') : content.metaData.url.split("/");
-    console.log(arr, arr[arr.length-1]);
     let url = content.metaData.artifactUrl ?? content.metaData.url;
     const response = await fetch(url);
     // convert to a Blob

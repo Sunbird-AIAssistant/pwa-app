@@ -72,31 +72,8 @@ fs.readFile("android/app/src/main/res/values/styles.xml", 'utf-8', (err, data) =
     }
 })
 
-// update strings.xml
-// fs.readFile("android/app/src/main/res/values/strings.xml", 'utf-8', (err, data) => {
-//     if(err) {
-//         console.log(err)
-//     }
     fs.copyFile("configuration/strings.xml", "android/app/src/main/res/values/strings.xml", (err) => {
         if(err) {
             console.log(err)
         }
     })
-// })
-
-// fs.readFile(proguardPath, 'utf8', (err, data) => {
-//     if (err) {
-//         console.error(err);
-//         return;
-//     }
-//     console.log('update proguard ');
-//     if (data.match("# Please add ")) {
-
-//     } else {
-//         fs.appendFileSync(proguardPath, proguardTxt, (err) => {
-//             if (err) {
-//                 console.error("********* err", err);
-//             }
-//         });
-//     }
-// });
