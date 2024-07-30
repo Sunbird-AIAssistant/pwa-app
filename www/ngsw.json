@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1722324498498,
+  "timestamp": 1722324841722,
   "index": "/index.html",
   "assetGroups": [
     {
@@ -583,7 +583,7 @@
     "/Doodles.5521a3972f72a279.svg": "32405cec21a4720c9ee4d0b942581502fb7a1974",
     "/NotoSans-Regular.69e81dad19259ab6.ttf": "71640601d4ff5ee3713b68228b564dcca13a4aaa",
     "/assets/add.svg": "33b920c2ac89d971404730406bc4df477ea1dabd",
-    "/assets/appConfig/bright-future.json": "f988bb23a47222af8047b1003e8dad911cb11d87",
+    "/assets/appConfig/bright-future.json": "621cd598630a240bac64d0a4b3813f50729fc4a4",
     "/assets/appConfig/dharma-life-school.json": "eb97aa58346476276058c7e67cccfdb2cc757cba",
     "/assets/appConfig/gem-school.json": "87398ab79c8216fc0627c7d86bc12eeb45268388",
     "/assets/appConfig/hummingbird.json": "825faf6872c89dc426e66e2e72b93c21613dadb4",
