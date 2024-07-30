@@ -55,12 +55,12 @@
         {
             "id": "en",
             "label": "English",
-            "default": false
+            "default": true
         },
         {
             "id": "hi",
             "label": "हिंदी",
-            "default": true
+            "default": false
         },
         {
             "id": "mr",
@@ -68,7 +68,17 @@
             "default": false
         }
     ],
-    "titleCode": [ ],
+    "titleCode": [  "en",
+    "hi", "mr"],
+    "en": {
+        "teacherTaraBotName": "Teachers"
+    },
+    "hi": {
+        "teacherTaraBotName": "टीचर"
+    },
+    "mr": {
+        "teacherTaraBotName": "शिक्षक"
+    },
     "footerText": "Developed with ❤️ by Tekdi Technologies ",
     "headerColor": "#A71028",
     "headerFontSize": "16",
