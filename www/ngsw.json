@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1722260033151,
+  "timestamp": 1722320153969,
   "index": "/index.html",
   "assetGroups": [
     {
@@ -586,7 +586,7 @@
     "/assets/appConfig/bright-future.json": "f988bb23a47222af8047b1003e8dad911cb11d87",
     "/assets/appConfig/dharma-life-school.json": "eb97aa58346476276058c7e67cccfdb2cc757cba",
     "/assets/appConfig/gem-school.json": "f5c1742fc3c8790d4857f5235b4b99cdad1ab054",
-    "/assets/appConfig/hummingbird.json": "15dcd852e0bcf4833a3bc6d42f489e32e07643d2",
+    "/assets/appConfig/hummingbird.json": "66a4bc833da2302f31269c2b1df14f22ed7ab07a",
     "/assets/appConfig/imamiya-mission.json": "c4015311800670986e344a971dc49b9787783a64",
     "/assets/appConfig/inclued.json": "55e1948dd0da2ecad449ec90abf38124936b3508",
     "/assets/appConfig/learningresources.json": "73f32e4da6e7fda0270969707021a8a06992181c",
