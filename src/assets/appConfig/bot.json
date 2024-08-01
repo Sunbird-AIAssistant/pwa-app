@@ -1,0 +1,90 @@
+{
+    "tenantLogo": "assets/school/DL_128x128.svg",
+    "siteName": "Dharma Life",
+    "siteByLine": "Listen, Learn & Grow !!!",
+    "splashImage": "assets/school/DL_152x152.png",
+    "bots": ["teacher"],
+
+    "defaultContentFilter": [
+        {
+            "language":["English", "Hindi"]
+        }
+    ],
+    "headerFilters": [
+        {
+            "defaultFilter": {
+                "id": "All",
+                "label": "All",
+                "query": "",
+                "filters": "All"
+            },
+            "additionalFilters": [
+                {
+                    "id": "Stories",
+                    "label": "Stories",
+                    "query": "Stories",
+                    "filters": "Stories"
+                },
+                {
+                    "id": "Activities",
+                    "label": "Activities",
+                    "query": "Activities",
+                    "filters": "Activities"
+                },
+                {
+                    "id": "Songs",
+                    "label": "Songs",
+                    "query": "Songs",
+                    "filters": "Songs"
+                },
+                {
+                    "id": "Audio Books",
+                    "label": "Audio Books",
+                    "query": "Audio Books",
+                    "filters": "Audio Books"
+                },
+                {
+                    "id": "Handbooks",
+                    "label": "Handbooks",
+                    "query": "Handbooks",
+                    "filters": "Handbooks"
+                }
+            ]
+        }
+    ],
+    "languages": [
+        {
+            "id": "en",
+            "label": "English",
+            "default": true
+        },
+        {
+            "id": "hi",
+            "label": "हिंदी",
+            "default": false
+        }
+    ],
+    "titleCode": [
+        "en",
+        "hi"
+    ],
+    "en": {
+        "teacherTaraBotName": "Pre-School Teachers"
+    },
+    "hi": {
+        "teacherTaraBotName": "पूर्व-स्कूल शिक्षक"
+    },
+    "footerText": "Developed with ❤️ by Tekdi Technologies ",
+    "headerColor": "#e98021ff",
+    "headerFontSize": "16",
+    "footerColor": "#e98021ff",
+    "footerFontSize": "16",
+    "primaryCss" : {
+        "primary": "#e98021ff",
+        "shade": "#186aaaff"
+    },
+    "secondaryCss" : {
+        "secondary": "#186aaaff",
+        "shade": "#e98021ff"
+    }
+}

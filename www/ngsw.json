@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1722339249265,
+  "timestamp": 1722517052547,
   "index": "/index.html",
   "assetGroups": [
     {
@@ -123,6 +123,7 @@
         "/Doodles.5521a3972f72a279.svg",
         "/NotoSans-Regular.69e81dad19259ab6.ttf",
         "/assets/add.svg",
+        "/assets/appConfig/bot.json",
         "/assets/appConfig/bright-future.json",
         "/assets/appConfig/dharma-life-school.json",
         "/assets/appConfig/gem-school.json",
@@ -171,6 +172,7 @@
         "/assets/icon/delete.svg",
         "/assets/icon/dislike.svg",
         "/assets/icon/edit.svg",
+        "/assets/icon/favicon/bot.png",
         "/assets/icon/favicon/bright-future.png",
         "/assets/icon/favicon/favicon.png",
         "/assets/icon/favicon/gem-school.png",
@@ -583,6 +585,7 @@
     "/Doodles.5521a3972f72a279.svg": "32405cec21a4720c9ee4d0b942581502fb7a1974",
     "/NotoSans-Regular.69e81dad19259ab6.ttf": "71640601d4ff5ee3713b68228b564dcca13a4aaa",
     "/assets/add.svg": "33b920c2ac89d971404730406bc4df477ea1dabd",
+    "/assets/appConfig/bot.json": "eb97aa58346476276058c7e67cccfdb2cc757cba",
     "/assets/appConfig/bright-future.json": "621cd598630a240bac64d0a4b3813f50729fc4a4",
     "/assets/appConfig/dharma-life-school.json": "eb97aa58346476276058c7e67cccfdb2cc757cba",
     "/assets/appConfig/gem-school.json": "87398ab79c8216fc0627c7d86bc12eeb45268388",
@@ -631,6 +634,7 @@
     "/assets/icon/delete.svg": "22b1f2b2df45bc6e6c67312844c8f14ff8ef4184",
     "/assets/icon/dislike.svg": "d646e2cf7e1b6a795ce1788e1cfe55231ff17922",
     "/assets/icon/edit.svg": "9f97724fe0c77c0b3b5d5e90a01dbd553a14a1eb",
+    "/assets/icon/favicon/bot.png": "9436b12ef468a70096330d58d2daebd08901457f",
     "/assets/icon/favicon/bright-future.png": "7d56e89f52c6372f83747c1f1728844b79e60dbc",
     "/assets/icon/favicon/favicon.png": "7798b8e0eb61d7375c245af78bbf5c916932bf13",
     "/assets/icon/favicon/gem-school.png": "81ba6adb67b608b4d7e7c65006e097164beca674",
