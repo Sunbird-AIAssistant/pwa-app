@@ -36,7 +36,7 @@
     </ion-item>
   </ion-list>
   <!-- Cards -->
-  <ion-list *ngIf="!showSheenAnimation && configContents.length > 0">
+  <ion-list id="content-list" *ngIf="!showSheenAnimation && configContents.length > 0">
     <div class="cards-container" *ngFor="let content of configContents; let i = index">
       <!-- <div class="bot-section" *ngIf="i === 5">
         <div class="image" (click)="navigateToSakhi('story')">
