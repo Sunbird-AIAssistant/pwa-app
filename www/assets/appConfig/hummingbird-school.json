@@ -53,7 +53,7 @@
         {
             "id": "hi",
             "label": "हिंदी",
-            "default": true
+            "default": false
         },
         {
             "id": "as",
@@ -68,7 +68,7 @@
         {
             "id": "en",
             "label": "English",
-            "default": false
+            "default": true
         }
     ],
     "titleCode": [
@@ -80,18 +80,19 @@
         "teacherTaraBotName": "Teacher Bondhu"
        },
        "hi": {
-        "kathaSakhiBotName": "कथा सखी",
-        "parentTaraBotName": "पेरेंट दोस्त",
-        "teacherTaraBotName": "टीचर दोस्त"
+        "kathaSakhiBotName": "कहानी बैदेओ",
+        "parentTaraBotName": "पेरेंट बन्धु",
+        "teacherTaraBotName": "टीचर बन्धु"
        },
        "as": {
-        "kathaSakhiBotName": "কাহিনী বাইদেউ",
-        "parentTaraBotName": "মাক-দেউতা বন্ধু",
+        "kathaSakhiBotName": "গল্প বেডিয়ো",
+        "parentTaraBotName": "পেৰেণ্ট বন্ধু",
         "teacherTaraBotName": "শিক্ষক বন্ধু"
        },
        "bn": {
-        "kathaSakhiBotName": "গল্প বোন",
-        "parentTaraBotName": "অভিভাবক বন্ধু",
+ 
+        "kathaSakhiBotName": "গল্প বেদেও",
+        "parentTaraBotName": "পেরেন্ট বন্ধু",
         "teacherTaraBotName": "শিক্ষক বন্ধু"
        },
    
