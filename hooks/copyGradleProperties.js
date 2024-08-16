@@ -9,7 +9,6 @@ const appName = properties['app_name'];
 const appid = properties['app_id'];
 const verCode = properties['app_version_code'];
 
-console.log("****** gradle properties ", properties);
 let appId = `applicationId "${appid}"`;
 let appendStr = '\t\tapplicationId app_id \n' +
     '\t\tresValue("string", "app_name", "${app_name}") \n' +  
@@ -103,7 +102,6 @@ fs.readFile("android/variables.gradle", 'utf-8', (err, data) => {
         return;
     }
     if(data.match("minSdkVersion = 22")) {
-        console.log("exist ");
         let updatedData = data.replace('minSdkVersion = 22', 'minSdkVersion = 23')
         fs.writeFile("android/variables.gradle", updatedData, (err) => {
             if (err) {
