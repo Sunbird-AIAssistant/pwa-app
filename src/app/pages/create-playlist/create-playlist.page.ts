@@ -256,7 +256,6 @@ export class CreatePlaylistPage implements OnInit {
           id = arr.filter((a: string) => a.startsWith('do_'))
           try {
             await this.contentService.readDikshaContents(id[0]).then(async (res: any) => {
-              console.log('res ', res);
               let content = res.body?.result?.content;
               if(content.dialcodes?.length > 0) {
                 await this.contentService.getContents(content.dialcodes[0]).then(data => {

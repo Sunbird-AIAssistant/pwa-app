@@ -2,6 +2,7 @@
   <div class="bot-section" *ngIf="!playlists.length">
     <div class="bot-section__text">{{ 'Add content to the playlist' | translate}}</div>
   </div>
+  <div id="content-list">
   <div class="cards-container" *ngFor="let content of playlists; let i = index">
     <div class="card" *ngIf="content?.metaData">
       <div class="card__img" (click)="playContent(content)">
@@ -40,4 +41,5 @@
       </div>
     </div>
   </div>
+</div>
 </ion-content>

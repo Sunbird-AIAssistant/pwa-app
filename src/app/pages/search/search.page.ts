@@ -59,7 +59,6 @@ export class SearchPage implements OnInit, OnTabViewWillEnter {
   // Optional: Use HostListener to detect hardware back button on Android devices
   @HostListener('window:popstate', ['$event'])
   onPopState(event: any) {
-    console.log('Hardware back button pressed', event);
     this.location.back();
   }
   
@@ -133,7 +132,6 @@ export class SearchPage implements OnInit, OnTabViewWillEnter {
 
     let req = { "name" : res?.context ?? this.searchKeywords };
     await this.searchApi.postContentSearch(req, await this.storage.getData('lang')).then(searchRes => {
-      console.log('searchRes ', searchRes);
       this.telemetryGeneratorService.generateSearchTelemetry(audio ? 'audio': 'text', audio ? '' : this.searchKeywords, searchRes.length, 'search', '' )
       this.disabled = false;
       if(searchRes.length > 0) {
@@ -229,7 +227,6 @@ export class SearchPage implements OnInit, OnTabViewWillEnter {
   }
 
   async onLongPressStart() {
-    console.log('long press on search start');
     this.searchKeywords = "";
     if(await (await VoiceRecorder.hasAudioRecordingPermission()).value) {
       this.record.startRecognition('search');
@@ -281,7 +278,6 @@ export class SearchPage implements OnInit, OnTabViewWillEnter {
   }
 
   async onLongPressEnd() {
-    console.log('long press on search end');
     await this.record.stopRecognition('search').then(async res => {
       if(this.modalPresent) {
         this.modalPresent = false;

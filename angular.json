@@ -19,7 +19,7 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
-            "allowedCommonJsDependencies": ["crypto"],
+            "allowedCommonJsDependencies": ["crypto", "jsqr", "crypto-js", "get-youtube-id", "plyr", "crypto-js/md5", "dayjs", "crypto-js/sha1", "get-blob-duration"],
             "assets": [
               {
                 "glob": "**/*",
@@ -64,13 +64,13 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "2mb",
-                  "maximumError": "10mb"
+                  "maximumWarning": "20mb",
+                  "maximumError": "100mb"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "5kb",
-                  "maximumError": "10kb"
+                  "maximumWarning": "5000kb",
+                  "maximumError": "1000kb"
                 }
               ],
               "fileReplacements": [

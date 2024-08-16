@@ -32,7 +32,6 @@ export class RecordingService implements OnInit {
       gestureName: 'swipe',
       direction: 'x',
       onStart: (ev) => { 
-        console.log('swipe left start ', ev); 
         Haptics.impact({style: ImpactStyle.Light});
       },
       onMove: (ev) => { 
@@ -41,7 +40,6 @@ export class RecordingService implements OnInit {
         this.cancelRecording = true;
       },
       onEnd: ev => {
-        console.log('swipe left end ', ev);
         Haptics.impact({style: ImpactStyle.Light});
         this.recording = false;
         this.recordEvent.next(false);

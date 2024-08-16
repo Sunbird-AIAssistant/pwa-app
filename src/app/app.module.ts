@@ -123,9 +123,7 @@ export class AppModule {
     });
 
     ConfigVariables.then(config => {
-      console.log('Configuration:', config);
       this.configVariables = config;
-      // Use the config data as needed
     }).catch(error => {
       console.error('Failed to load configuration:', error);
     });
@@ -138,7 +136,7 @@ export class AppModule {
     this.translate.setDefaultLang('hi');
     this.translate.use("hi");
 
-    for(let i = 0; i <= this.configVariables?.languages.length; i++){
+    for(let i = 0; i < this.configVariables?.languages.length; i++){
     if(this.configVariables?.languages[i].default){
      let dLang = this.configVariables?.languages[i].id;
 

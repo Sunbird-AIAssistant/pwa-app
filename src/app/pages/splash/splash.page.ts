@@ -34,9 +34,7 @@ export class SplashPage implements OnInit {
     
   async ngOnInit() {
     ConfigVariables.then(config => {
-      console.log('Configuration:', config);
       this.configVariables = config;
-      // Use the config data as needed
     }).catch(error => {
       console.error('Failed to load configuration:', error);
     });
@@ -49,7 +47,6 @@ export class SplashPage implements OnInit {
     this.storage.setData("sid", sid);
     this.appinitialise.initialize();
     setTimeout(async () => {
-      console.log('route');
       this.startTelemetry()
       this.router.navigate(['/tabs/home']);
     }, 2000);

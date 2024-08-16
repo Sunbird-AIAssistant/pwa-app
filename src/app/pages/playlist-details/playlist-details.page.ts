@@ -28,7 +28,6 @@ export class PlaylistDetailsPage implements OnInit, OnDestroy {
         playListcontent['metaData'] = JSON.parse(playListcontent['content_metadata'])
       });
       this.playlists = this.playContentObject['playListcontentList'];
-      console.log('playlists', this.playlists)
     }
   }
 

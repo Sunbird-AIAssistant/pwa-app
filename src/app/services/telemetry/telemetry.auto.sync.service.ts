@@ -26,7 +26,6 @@ export class TelemetryAutoSyncService {
             filter(() => this.shouldSync),
             tap(() => this.telemetryService.sync().pipe(
                 tap((stat) => {
-                    // console.log('AUTO_SYNC_INVOKED_SYNC----------------------------------------------', stat);
                 }),
                 catchError((e) => {
                     console.error(e);

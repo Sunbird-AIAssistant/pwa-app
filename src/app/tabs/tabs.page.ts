@@ -32,7 +32,6 @@ export class TabsPage implements OnTabViewWillEnter, OnInit{
     private storage : StorageService,
     private modalCtrl: ModalController) {
       ConfigVariables.then(config => {
-        console.log('Configuration:', config);
         this.configVariables = config;
         // Use the config data as needed
       }).catch(error => {

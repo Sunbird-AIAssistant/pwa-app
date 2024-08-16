@@ -35,8 +35,6 @@ export class BotApiService {
   }
 
   async getBotMessage(text: string, audio: string, botType: string, lang: any): Promise<any> {
-    console.log('text ', text, text !== "");
-    console.log('audio ', audio, audio !== "");
     let botApiPath = this.getBotApiPath(botType);
     let req: any = {
       input: {},
@@ -49,14 +47,14 @@ export class BotApiService {
         language: lang,
         text: text,
         audio: "",
-        context: botType 
+        context: localStorage.getItem('subDomain') + '_' + botType  
       }
     } else if (audio !== "") {
       req.input = {
         language: lang,
         audio: audio,
         text: "",
-        context: botType 
+        context: localStorage.getItem('subDomain') + '_' + botType  
       }
     }
 

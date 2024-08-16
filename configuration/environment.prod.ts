@@ -4,7 +4,7 @@ export const environment = {
 export const config = {
   api: {
     BASE_URL: 'https://school-api-dev.tekdinext.com/',
-    BASE_URL_BOT: 'https://school-openai.tekdinext.com/',
+    BASE_URL_BOT: 'https://aibot-prod.tekdinext.com/',
     TELEMETRY_BASE_URL: 'https://school-dev.tekdinext.com/',
     CONFIG: 'seeker/configuration',
     PAGE_SEARCH_API: 'content/search',
