@@ -114,8 +114,6 @@ export class QrcodePopupComponent  implements OnInit {
         const tracks = stream.getTracks();
         tracks.forEach(function(track: MediaStreamTrack) {
             track.stop();
-            console.log('Track stopped:', track.readyState);
-
         });
         this.videoElement.srcObject = null;
     }

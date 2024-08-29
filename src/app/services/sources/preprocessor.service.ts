@@ -16,7 +16,6 @@ export class PreprocessorService {
     config.forEach(obj => {
       this.contentConfig.push(obj);
     })
-    console.log('contentconfig ', this.contentConfig);
     this.sourceEvent.next(this.contentConfig);
   }
 }

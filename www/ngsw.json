@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1723622726578,
+  "timestamp": 1724912496644,
   "index": "/index.html",
   "assetGroups": [
     {
@@ -592,7 +592,7 @@
     "/assets/appConfig/hummingbird.json": "825faf6872c89dc426e66e2e72b93c21613dadb4",
     "/assets/appConfig/imamiya-mission.json": "76660cd74833d59164accf49fa7f1c6140e2230e",
     "/assets/appConfig/inclued.json": "01bf2b5ea8b66c660111539ea184edabfd8719fb",
-    "/assets/appConfig/learningresources.json": "73f32e4da6e7fda0270969707021a8a06992181c",
+    "/assets/appConfig/learningresources.json": "c853ee7474212243fded4af5f9d546e88eecc3ab",
     "/assets/appConfig/localhost.json": "f5c1742fc3c8790d4857f5235b4b99cdad1ab054",
     "/assets/appConfig/turtuk-valley.json": "26aaca3708ce23634fed9877bef6597408a960f8",
     "/assets/arrow-right.svg": "bb67048eb7cd7987f8e2e43511f11a7d962f5af3",
@@ -628,7 +628,7 @@
     "/assets/icon/arrow-back.svg": "f44ab88474123315fd3e6f58509e975b871fe2ae",
     "/assets/icon/audio-record.svg": "fcacdc334a6f0e8434cc8d542867867ec8b910b8",
     "/assets/icon/back.svg": "61de3d9458497f6023d63c1ac7489d19cdbe390e",
-    "/assets/icon/book.svg": "d083d5fbd4a988844a8dd86b76e82d80c8c1562b",
+    "/assets/icon/book.svg": "1d28769fd290e1854ea71f01b76815e79602e37f",
     "/assets/icon/bot-audio.svg": "b9e99af62534bad705f147bd33903a490f4071ba",
     "/assets/icon/bot-back-icon.svg": "b4a4c77cf3573092d1510d783c422540ae730072",
     "/assets/icon/delete.svg": "22b1f2b2df45bc6e6c67312844c8f14ff8ef4184",
@@ -649,7 +649,7 @@
     "/assets/icon/like.svg": "99e6982247c7666800e246fa3ab01edd416f6cd9",
     "/assets/icon/list.svg": "f5301a6d1557298bdfeeee49e58ce0a250223e43",
     "/assets/icon/mic.svg": "382dc0b912df3d0a41fe11b82c6550f486d95ac5",
-    "/assets/icon/parents.svg": "b2a77ac240c934e6b619ffc2806518e2ceccb691",
+    "/assets/icon/parents.svg": "806fdf13e928c2e2b481b81c519aec825a52f335",
     "/assets/icon/pause.svg": "73e3e19f04f9366367a4826487ac2b79ec39a0f0",
     "/assets/icon/pitara-blue.svg": "271148b3c65617ebbf772fc0910444f8ca0b7fcf",
     "/assets/icon/pitara1.svg": "d6f61f8ed4b6bc4eb3b2b48d4ef30320828110b9",
@@ -658,7 +658,7 @@
     "/assets/icon/sd-card.svg": "edd17d496d7864af8be06e56ee1dd8db8cad1c2b",
     "/assets/icon/search.svg": "cec3de04e0a8cd0af2c7a784a5b8931abc315c29",
     "/assets/icon/share.svg": "4ecf27a15c812050b50131dcd8e6136ccba36080",
-    "/assets/icon/teacher.svg": "b5f4a538b56e35c84b5c8f86b4b45071f3fe5c6c",
+    "/assets/icon/teacher.svg": "d43357fe3e6516a54a3a570f3ca7342e6492acb8",
     "/assets/icon/thumb-up.svg": "8e2c70681233964c0ae802332a987ce70c349a3f",
     "/assets/icon/upload.svg": "dd6bc468aafe8116d70d09e1ca8c450bb0c88779",
     "/assets/icon/waveform.svg": "d8c02682970200755796059339735be7c9dda53b",

@@ -52,7 +52,6 @@ export class SearchService {
       }
     }
     let body = JSON.stringify(requestBody)
-    console.log("body ", body);
     const apiRequest = new ApiRequest.Builder()
       .withHost(config.api.BASE_URL)
       .withPath(config.api.CONTENT_SEARCH_API)

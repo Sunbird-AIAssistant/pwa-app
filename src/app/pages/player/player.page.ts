@@ -124,7 +124,6 @@ export class PlayerPage implements OnInit {
           this.playerEvents(event);
         });
         epubElement.addEventListener('telemetryEvent', (event) => {
-          console.log("On telemetryEvent", event);
           this.playerTelemetryEvents(event);
         });
         this.video.nativeElement.append(epubElement);

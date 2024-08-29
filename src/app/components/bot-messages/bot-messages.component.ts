@@ -411,7 +411,6 @@ export class BotMessagesComponent implements OnInit, AfterViewInit {
           }
         }
       });
-      console.log('result count ', result);
       this.botMessageEvent.emit({ audio: result.audio, text: result.text, duration: botDuration / 1000 })
     } else {
       this.botMessageEvent.emit({ audio: 0, text: 0, duration: botDuration / 1000 })

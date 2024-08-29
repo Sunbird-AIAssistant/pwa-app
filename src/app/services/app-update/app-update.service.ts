@@ -20,7 +20,6 @@ export class AppUpdateService {
     async checkForUpdate() {
         const result = await AppUpdate.getAppUpdateInfo();
         // const result = await this.simulateCheckForUpdate(); // for testing
-        console.log('Update available:', result.updateAvailability === AppUpdateAvailability.UPDATE_AVAILABLE);
 
         if (result.updateAvailability === AppUpdateAvailability.UPDATE_AVAILABLE) {
             if (this.platform.is('android')) {
