@@ -64,16 +64,16 @@
         "teacherTaraBotName": "ಅಂಗನವಾಡಿ ಕಾರ್ಯಕರ್ತೆ"
     },
     "footerText": "Developed with ❤️ by Tekdi Technologies ",
-    "headerColor": "#A71028",
+    "headerColor": "#AB251B",
     "headerFontSize": "16",
-    "footerColor": "#A71028",
+    "footerColor": "#AB251B",
     "footerFontSize": "16",
     "primaryCss" : {
-        "primary": "#A71028",
-        "shade": "#EEAA1F"
+        "primary": "#AB251B",
+        "shade": "#FDB529"
     },
     "secondaryCss" : {
-        "secondary": "#EEAA1F",
+        "secondary": "#FDB529",
         "shade": "#e98021ff"
     }
 }
