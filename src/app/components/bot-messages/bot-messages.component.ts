@@ -177,10 +177,21 @@ export class BotMessagesComponent implements OnInit, AfterViewInit {
     }
 
     let textMsg;
+
+    if (this.config.type == 'story') {
+      textMsg = this.configVariables[this.language].storyBotMsg ? this.configVariables[this.language].storyBotMsg : "";
+    } else if (this.config.type == 'parent') {
+      textMsg = this.configVariables[this.language].parentBotMsg ? this.configVariables[this.language].parentBotMsg : "";
+    } else if (this.config.type == 'teacher') {
+      textMsg = this.configVariables[this.language].teacherBotMsg ? this.configVariables[this.language].teacherBotMsg : "";
+    }
+
+    if(!textMsg){
     // let textMsg = `WELCOME_TO_${this.config.type.toUpperCase()}_SAKHI`;
     this.translate.get(`WELCOME_TO_${this.config.type.toUpperCase()}_SAKHI`).subscribe((res: string) => {
       textMsg = res.replace('${botName}', botName);
     });
+  }
 
 
 
