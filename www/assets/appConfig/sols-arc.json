@@ -71,13 +71,18 @@
     "titleCode": [  "en",
     "hi", "mr"],
     "en": {
-        "teacherTaraBotName": "Teachers"
+        "teacherTaraBotName": "Teachers",
+        "teacherBotMsg": "Hi, it's <b>IncluEd</b> here \n \n Need tips on <b>understanding disabilities, managing behaviour, or making learning more inclusive</b>? Just ask! I'll share <b>quick<b/> and <b>easy advice to support every student</b>. Let's make teaching a bit easier together!"
     },
     "hi": {
-        "teacherTaraBotName": "टीचर"
+        "teacherTaraBotName": "टीचर",
+        "teacherBotMsg": "नमस्ते, यह <b>IncluEd</b> है \n \n <b>विकलांगताओं को समझने, व्यवहार प्रबंधन</b> या <b>अधिक समावेशी शिक्षण</b> पर सुझाव चाहिए? बस पूछें! मैं <b>शीघ्र</b> और <b>आसान सलाह साझा करूंगा जिससे हर छात्र को समर्थन मिलेगा</b>. चलिए, मिलकर शिक्षण को थोड़ा आसान बनाते हैं!"
+
     },
     "mr": {
-        "teacherTaraBotName": "शिक्षक"
+        "teacherTaraBotName": "शिक्षक",
+        "teacherBotMsg": "हाय, इथे <b>IncluEd</b> आहे \n \n <b>विकलांगतेचा समजून घेणे, वर्तन व्यवस्थापन</b> किंवा <b>अधिक समावेशक शिक्षण</b> याबाबत टिप्स पाहिजेत का? फक्त विचारा! मी <b>लवकर</b> आणि <b>सोपे सल्ले देईन जे प्रत्येक विद्यार्थ्याला मदत करतील</b>. चला, एकत्रितपणे शिक्षण थोडे सोपे करूया!"
+
     },
     "footerText": "Developed with ❤️ by Tekdi Technologies ",
     "headerColor": "#A71028",
