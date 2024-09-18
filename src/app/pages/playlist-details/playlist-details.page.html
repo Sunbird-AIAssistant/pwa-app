@@ -19,8 +19,10 @@
           <!-- <img [src]="loadYoutubeImg(content.metaData.identifier)" alt="" *ngIf="content.metaData.mimetype === mimeType.YOUTUBE && !content.play"> -->
           <img [src]="(content?.metaData?.thumbnail && !content.metaData.identifier.startsWith('do_')) ? (content?.metaData?.thumbnail) : 'assets/images/Video.png'" alt="" *ngIf="content.metaData.mimetype === mimeType.MP4">
           <img [src]="(content?.metaData?.thumbnail && !content.metaData.identifier.startsWith('do_')) ? (content?.metaData?.thumbnail) : 'assets/images/PDF.png'" alt="" *ngIf="content.metaData.mimetype === mimeType.PDF">
-          <img [src]="(content?.metaData?.thumbnail && !content.metaData.identifier.startsWith('do_')) ? (content?.metaData?.thumbnail) : 'assets/images/LINK.png'" alt="" *ngIf="content.metaData.mimetype === mimeType.LINK">
-          <img [src]="(content?.metaData?.thumbnail && !content.metaData.identifier.startsWith('do_')) ? content?.metaData?.thumbnail : 'assets/images/LINK.png'" alt="" *ngIf="content?.metaData?.mimetype === 'text/html'">
+          <!-- <img [src]="(content?.metaData?.thumbnail && !content.metaData.identifier.startsWith('do_')) ? (content?.metaData?.thumbnail) : 'assets/images/LINK.png'" alt="" *ngIf="content.metaData.mimetype === mimeType.LINK"> -->
+          <!-- <img [src]="(content?.metaData?.thumbnail && !content.metaData.identifier.startsWith('do_')) ? content?.metaData?.thumbnail : 'assets/images/LINK.png'" alt="" *ngIf="content?.metaData?.mimetype === 'text/html'"> -->
+          <img src="assets/images/LINK.png" alt="" *ngIf="content?.metaData?.mimetype === mimeType?.LINK">
+
           <img [src]="(content?.metaData?.thumbnail =='' && !content.metaData.identifier.startsWith('do_')) ? 'https://ejaaduipitara.ncert.gov.in/assets/img/cards.jpg' : ''" alt="">
           
         <!-- <ion-img *ngIf="content.metaData.thumbnail && !content.play" [src]="content.metaData.thumbnail" alt=""/>
