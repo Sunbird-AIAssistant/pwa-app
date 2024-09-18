@@ -2,7 +2,7 @@
     "tenantLogo": "assets/school/P_128x128.svg",
     "siteName": "Prajayatna",
     "siteByLine": "We learn. We live",
-    "splashImage": "assets/school/P_152x152.png",
+    "splashImage": "assets/school/P_512x512.png",
     "bots": ["teacher"],
     "defaultContentFilter": [
         {

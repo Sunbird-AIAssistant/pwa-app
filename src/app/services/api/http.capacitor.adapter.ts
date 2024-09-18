@@ -79,6 +79,11 @@ export class HttpCapacitorAdapter implements HttpClient {
         return this.invokeRequest(ApiHttpRequestType.POST, baseUrl + path, body, headers);
     }
 
+    isGoogleDriveLink(url: string): boolean {
+        return url.includes('drive.google.com') || url.includes('docs.google.com');
+      }
+      
+
     checkMimieType(url: any)
     {
        
@@ -92,10 +97,19 @@ export class HttpCapacitorAdapter implements HttpClient {
             return 'video/x-youtube'; //            // YouTube video
         } else if (mediaUrl.endsWith(".mp4")) {
             return 'video/mp4';            // MP4 video
-        } else {
+        } else if(this.isGoogleDriveLink(url)){
+            return 'text/html'; 
+        }
+        else{
             return 'text/html';
         }
     }
+   
+       getDriveFileId(url : string) {
+        const regex = /\/d\/([a-zA-Z0-9_-]+)\//;
+        const match = url.match(regex);
+        return match ? match[1] : null;
+      }
 
     private invokeRequest(type: ApiHttpRequestType, url: string, parametersOrData: any,
                           headers: { [key: string]: string }): Observable<ApiResponse> {
@@ -119,7 +133,7 @@ export class HttpCapacitorAdapter implements HttpClient {
             requestOptions['params']  = parametersOrData;
         }
         
-        this.http.request(requestOptions).then((response: HttpResponse) => {
+      this.http.request(requestOptions).then((response: HttpResponse) => {
             response.data = response.data;
              let receivedData = response.data;
 
@@ -129,7 +143,9 @@ export class HttpCapacitorAdapter implements HttpClient {
             if (receivedData.data && receivedData.data.djp_contents !== null && receivedData.data.djp_contents !== undefined) {
                 receivedData.data.djp_contents.forEach((item : any) => {
                     // let mimetype = item?.url ?  this.checkMimieType(item?.url) : 'text/html';
-                    let mimetype = this.checkMimieType(item?.url);
+                    let url =   this.isGoogleDriveLink(item?.url) ? item?.url.replace('/view', '/preview'): item?.url;
+                    let thumbnail =   item?.thumbnail != null && this.isGoogleDriveLink(item?.thumbnail) ? ""  : "";
+                    let mimetype = this.checkMimieType(url);
                 // Traverse through the items array of each provider
                 const content: SearchContentMetaData = {
                     agegroup: item.agegroup,
@@ -146,11 +162,11 @@ export class HttpCapacitorAdapter implements HttpClient {
                     provider_name: item.provider_name,
                     name: item.name,
                     description: item.description,
-                    thumbnail: item.thumbnail,
+                    thumbnail: thumbnail,
                     domain: item.domain,
                     unique_id: item.unique_id,
                     language: item.language,
-                    url: item.url,
+                    url: url,
                     sourceOrganisation: item.sourceorg,
                     midea: item.midea,
                     keywords: item.keywords,

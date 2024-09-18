@@ -205,6 +205,7 @@ export class MimeType {
         'application/vnd.ekstep.html-archive'
     ];
     public static readonly YOUTUBE = "video/x-youtube"
+  static LINK: string;
 }
 
 export const regDiksha = [{

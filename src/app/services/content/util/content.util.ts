@@ -53,6 +53,9 @@ export class ContentUtil {
       case 'youtube':
         mimeType = MimeType.YOUTUBE      
         break;
+        case 'link':
+          mimeType = MimeType.LINK      
+          break;
       default:
         break;
     }
@@ -65,7 +68,8 @@ export class ContentUtil {
       mp3: '/assets/images/Audio.png',
       mp4: '/assets/images/Video.png',
       webm: '/assets/images/Video.png',
-      pdf: '/assets/images/PDF.png'
+      pdf: '/assets/images/PDF.png',
+      link: '/assets/images/LINK.png'
     }
     return mimeTypes[mimeType];
   }
