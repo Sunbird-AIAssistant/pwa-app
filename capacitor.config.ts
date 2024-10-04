@@ -6,7 +6,11 @@ const config: CapacitorConfig = {
   loggingBehavior: "none",
   webDir: 'www',
   server: {
-    androidScheme: 'https'
+    androidScheme: 'https',
+    allowNavigation: [
+      "https://drive.google.com",
+      "https://docs.google.com"
+    ]
   },
   plugins: {
     CapacitorSQLite: {

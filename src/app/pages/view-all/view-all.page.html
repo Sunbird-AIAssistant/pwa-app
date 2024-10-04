@@ -8,8 +8,8 @@
         <img [src]="(content?.metaData?.thumbnail && !content.metaData.identifier.startsWith('do_')) ? (content?.metaData?.thumbnail) : 'assets/images/youtube-video.png'" alt="" *ngIf="content.metaData.mimetype === mimeType.YOUTUBE">
         <img [src]="(content?.metaData?.thumbnail && !content.metaData.identifier.startsWith('do_')) ? (content?.metaData?.thumbnail) : 'assets/images/Video.png'" alt="" *ngIf="content.metaData.mimetype === mimeType.MP4">
         <img [src]="(content?.metaData?.thumbnail && !content.metaData.identifier.startsWith('do_')) ? (content?.metaData?.thumbnail) : 'assets/images/PDF.png'" alt="" *ngIf="content.metaData.mimetype === mimeType.PDF">
-        <!-- <img [src]="(content?.metaData?.thumbnail && !content.metaData.identifier.startsWith('do_')) ? (content?.metaData?.thumbnail) : 'assets/images/LINK.png'" alt="" *ngIf="content.metaData.mimetype === mimeType.LINK"> -->
-        <img src="assets/images/LINK.png" alt="" *ngIf="content?.metaData?.mimetype === mimeType?.LINK">
+        <img  [src]="(content?.metaData?.thumbnail && !content.metaData.identifier.startsWith('do_')) ? (content?.metaData?.thumbnail) : 'assets/images/LINK.png'"  alt="" *ngIf="content?.metaData?.mimetype === mimeType?.LINK">
+        <!-- <img src="assets/images/LINK.png" alt="" *ngIf="content?.metaData?.mimetype === mimeType?.LINK"> -->
 
       </div>
       <div class="card__metadata">
