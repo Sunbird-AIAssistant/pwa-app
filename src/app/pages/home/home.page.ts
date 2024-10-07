@@ -212,7 +212,7 @@ export class HomePage implements OnInit, OnTabViewWillEnter, OnDestroy {
   }
 
   async mappUIContentList(content: Array<ContentMetaData>) {
-    // await this.contentService.deleteAllContents();
+    await this.contentService.deleteAllContents();
     this.showSheenAnimation = false;
     this.configContents = [];
     this.contentList = [];
