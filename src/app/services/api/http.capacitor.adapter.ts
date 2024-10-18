@@ -111,6 +111,20 @@ export class HttpCapacitorAdapter implements HttpClient {
         return match ? match[1] : null;
       }
 
+
+    convertGoogleDriveUrl(driveUrl: string): string | null {
+        const regex = /\/d\/([a-zA-Z0-9_-]+)\//;
+        const match = driveUrl.match(regex);
+        
+        if (match && match[1]) {
+          const fileId = match[1];
+          return `https://drive.google.com/thumbnail?id=${fileId}`;
+        }
+      
+        return null;  // Return null if no match
+      }
+
+      
     private invokeRequest(type: ApiHttpRequestType, url: string, parametersOrData: any,
                           headers: { [key: string]: string }): Observable<ApiResponse> {
         const observable = new Subject<ApiResponse>();
@@ -144,7 +158,8 @@ export class HttpCapacitorAdapter implements HttpClient {
                 receivedData.data.djp_contents.forEach((item : any) => {
                     // let mimetype = item?.url ?  this.checkMimieType(item?.url) : 'text/html';
                     let url =   this.isGoogleDriveLink(item?.url) ? item?.url.replace('/view', '/preview'): item?.url;
-                    let thumbnail =   item?.thumbnail != null && this.isGoogleDriveLink(item?.thumbnail) ? ""  : "";
+                    item.thumbnail =  (item?.thumbnail != null && this.isGoogleDriveLink(item?.thumbnail)) ? this.convertGoogleDriveUrl(item?.thumbnail): item?.thumbnail;
+
                     let mimetype = this.checkMimieType(url);
                 // Traverse through the items array of each provider
                 const content: SearchContentMetaData = {
@@ -162,7 +177,7 @@ export class HttpCapacitorAdapter implements HttpClient {
                     provider_name: item.provider_name,
                     name: item.name,
                     description: item.description,
-                    thumbnail: thumbnail,
+                    thumbnail: item?.thumbnail,
                     domain: item.domain,
                     unique_id: item.unique_id,
                     language: item.language,

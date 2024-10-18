@@ -35,7 +35,7 @@
           <img appThumbnail [appThumbnail]="content?.metaData" alt="" *ngIf="content.metaData.mimetype === mimeType.YOUTUBE && !content.play">
           <img [src]="(content?.metaData?.thumbnail && !content.metaData.identifier.startsWith('do_')) ? content?.metaData?.thumbnail :'assets/images/Video.png'" alt="" *ngIf="content.metaData.mimetype === mimeType.MP4 || content.metaData.mimetype === mimeType.WEBM">
           <img [src]="(content?.metaData?.thumbnail && !content.metaData.identifier.startsWith('do_')) ? content?.metaData?.thumbnail :'assets/images/PDF.png'" alt="" *ngIf="content.metaData.mimetype === mimeType.PDF">
-           
+
           <!-- <ion-img [src]="content.metaData.thumbnail" alt=""/>
           <ion-img *ngIf="!content.metaData.thumbnail" src="assets/images/defaultImg.png" alt=""/> -->
         </div>
