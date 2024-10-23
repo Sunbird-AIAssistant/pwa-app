@@ -70,7 +70,7 @@ export class TabsPage implements OnTabViewWillEnter, OnInit{
           component: AppExitComponent,
           cssClass: 'sheet-modal',
           breakpoints: [0.2],
-         showBackdrop: false,
+          showBackdrop: false,
           backdropDismiss: false,
           initialBreakpoint: 0.2,
           handle: false,

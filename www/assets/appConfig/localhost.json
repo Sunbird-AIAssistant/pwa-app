@@ -55,10 +55,14 @@
         {
             "id": "kn",
             "label": "ಕನ್ನಡ",
+            "default": false
+        }, {
+            "id": "hi",
+            "label": "हिंदी",
             "default": true
         }
     ],
-    "titleCode": [ "kn"
+    "titleCode": [ "kn", "hi"
     ],
     "kn": {
         "teacherTaraBotName": "ಅಂಗನವಾಡಿ ಕಾರ್ಯಕರ್ತೆ"
