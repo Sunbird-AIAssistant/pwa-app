@@ -36,10 +36,10 @@
                 "filters": "Songs"
             },
             {
-                "id": "Audio Books",
-                "label": "Audio Books",
-                "query": "Audio Books",
-                "filters": "Audio Books"
+                "id": "Audio",
+                "label": "Audio",
+                "query": "Audio",
+                "filters": "Audio"
             },
             {
                 "id": "Handbooks",
