@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1730097208682,
+  "timestamp": 1730190804943,
   "index": "/index.html",
   "assetGroups": [
     {
@@ -592,7 +592,7 @@
     "/assets/appConfig/hummingbird.json": "c49e50745fbbf51e978d6a960e6bb8ab6d26bb0d",
     "/assets/appConfig/imamiya-mission.json": "15348571c919e0bb33cd7516b52e6063a5b8af4e",
     "/assets/appConfig/inclued.json": "8d0f355ebd6ea42a03d95030a68fcf9c33a57873",
-    "/assets/appConfig/learningresources.json": "01948eb4744dbd1c515df7a151d1ae0d3a9268a7",
+    "/assets/appConfig/learningresources.json": "2e03dc88c1fd14f6e16b9f58f2821e4b1662f342",
     "/assets/appConfig/localhost.json": "1e4d8c0fe46518d48ae9935aeebb172b09c4acc8",
     "/assets/appConfig/turtuk-valley.json": "c90f834d8d160b9a87ad5044269bd90e1631d780",
     "/assets/arrow-right.svg": "bb67048eb7cd7987f8e2e43511f11a7d962f5af3",
