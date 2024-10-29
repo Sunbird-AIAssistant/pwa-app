@@ -6,6 +6,7 @@
     "bots": ["teacher"],
     "defaultContentFilter": [
         {
+            "language":["Kannada"]
         }
     ],
     "headerFilters": [
