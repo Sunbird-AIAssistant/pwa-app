@@ -6,7 +6,7 @@
     "bots": ["teacher"],
     "defaultContentFilter": [
         {
-            "language":["Kannada"]
+            "language":["Kannada", "Hindi"]
         }
     ],
     "headerFilters": [
@@ -56,12 +56,19 @@
             "id": "kn",
             "label": "ಕನ್ನಡ",
             "default": true
+        },
+        {
+            "id": "hi",
+            "label": "हिंदी",
+            "default": false
         }
     ],
-    "titleCode": [ "kn"
-    ],
+    "titleCode": ["kn", "hi"],
     "kn": {
         "teacherTaraBotName": "ಅಂಗನವಾಡಿ ಕಾರ್ಯಕರ್ತೆ"
+    },
+    "hi": {
+        "teacherTaraBotName": "शिक्षक तारा"
     },
     "footerText": "Developed with ❤️ by Tekdi Technologies ",
     "headerColor": "#A71028",
