@@ -19,7 +19,7 @@ jobs:
           key: ${{ secrets.SSH_KEY_PROD_JUN_7 }}
           port: ${{ secrets.PORT_PROD_JUN_7 }}
           script: |    
-               cd ${{ secrets.TARGET_DIR_DEV }}
+               cd ${{ secrets.TARGET_DIR_PROD_JUN_7 }}
                ./deploy.sh
     -          
       name: Notify on Slack channel
