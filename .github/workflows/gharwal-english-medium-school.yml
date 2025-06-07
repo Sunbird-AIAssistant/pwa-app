@@ -16,7 +16,7 @@ jobs:
       with:
           host: ${{ secrets.HOST_NAME_DEV }}
           username: ${{ secrets.USERNAME_DEV }}
-          key: ${{ secrets.SSH_KEY_DEV }}
+          key: ${{ secrets.SSH_KEY_PROD_JUN_7 }}
           port: ${{ secrets.PORT_DEV }}
           script: |    
                cd ${{ secrets.TARGET_DIR_DEV }}
