@@ -14,12 +14,12 @@ jobs:
       name: Deploy Stack
       uses: appleboy/ssh-action@master
       with:
-          host: ${{ secrets.HOST_NAME_DEV }}
-          username: ${{ secrets.USERNAME_DEV }}
-          key: ${{ secrets.SSH_KEY_DEV }}
-          port: ${{ secrets.PORT_DEV }}
+          host: ${{ secrets.HOST_NAME_PROD_JUN_7 }}
+          username: ${{ secrets.USERNAME_PROD_JUN_7 }}
+          key: ${{ secrets.SSH_KEY_PROD_JUN_7 }}
+          port: ${{ secrets.PORT_PROD_JUN_7 }}
           script: |    
-               cd ${{ secrets.TARGET_DIR_DEV }}
+               cd ${{ secrets.TARGET_DIR_PROD_JUN_7 }}
                ./deploy.sh
     -          
       name: Notify on Slack channel
