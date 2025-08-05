@@ -27,7 +27,17 @@ export class AppHeaderService {
   sideMenuItemEventEmitted$ = this.sideMenuItemEvent.asObservable();
 
   filterEvent(val: any) {
+    // When called with defaultFilter, triggers content reload
     this.filterConfig.next(val);
+  }
+
+  updateFiltersOnly(val: { filter: any, languages: any }) {
+    // Update filters without triggering content reload
+    this.headerConfig.next({ 
+      ...this.getDefaultPageConfig(),
+      filter: val.filter,
+      languages: val.languages
+    });
   }
 
   sidebarEvent(event: any) {

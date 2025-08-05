@@ -118,11 +118,17 @@ export class HomePage implements OnInit, OnTabViewWillEnter, OnDestroy {
     this.headerService.headerEventEmitted$.subscribe(async (val) => {
       if(val == 'language') {
         let lang = await this.storage.getData('lang');
-        this.responseList = await this.searchService.postContentSearch(req, await this.storage.getData('lang'));
         if (this.selectedLang !== lang) {
           this.selectedLang = lang;
           this.showSheenAnimation = true;
-          this.getServerMetaConfig();
+          
+          // Get filtered content based on selected language
+          this.responseList = await this.searchService.postContentSearch(req, lang);
+          // Update UI with the new content
+          this.mappUIContentList(this.responseList);
+          
+          // Update filters but skip content reload
+          await this.getServerMetaConfigWithoutContentReload();
         }
       }
     })
@@ -237,9 +243,19 @@ export class HomePage implements OnInit, OnTabViewWillEnter, OnDestroy {
     }
   }
 
+  async getServerMetaConfigWithoutContentReload() {
+    let config = this.configVariables.headerFilters;
+    config.forEach((cfg: any) => {
+      this.filters = (cfg.additionalFilters).sort((a: Filter, b: Filter) => a.index - b.index);
+    })
+    this.languages = this.configVariables.languages.sort((a: Language, b: Language) => a.id.localeCompare(b.id));
+    // Skip triggering the filterEvent to prevent content reload
+    this.headerService.updateFiltersOnly({ filter: this.filters, languages: this.languages });
+  }
+
   async getServerMetaConfig() {
     let meta: any = await this.storage.getData('configMeta');
-    let config = this.configVariables.headerFilters;//(meta && meta != 'undefined') ? JSON.parse(meta) : await this.configService.getConfigMeta();
+    let config = this.configVariables.headerFilters;
     config.forEach((cfg: any) => {
       this.filters = (cfg.additionalFilters).sort((a: Filter, b: Filter) => a.index - b.index);
     })

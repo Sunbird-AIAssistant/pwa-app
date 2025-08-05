@@ -71,18 +71,24 @@ export class SearchService {
   }
 
   postContentSearch(data: any, lang: any): Promise<any> {
+    // Map the language code to the language name used in the API
+    const languageMap: { [key: string]: string } = {
+      'kn': 'Kannada',
+      'hi': 'Hindi'
+    };
+
     let requestBody = {
-      name:  data?.name,
+      name: data?.name,
       category: data?.category,
       language: lang,
       request: {
         orderBy: {
           "mimetype": "video/x-youtube"
         },
-        filters: this.configVariables.defaultContentFilter[0]
-
-        // fields: ["mimetype", "identifier","keywords","name",  "thumbnail", "media", "agegroup", "language", "sourceorg", "url", "domain", "category"]
-
+        filters: {
+          ...this.configVariables.defaultContentFilter[0],
+          language: [languageMap[lang]] // Only include the selected language
+        }
       }
     }
     const apiRequest = new ApiRequest.Builder()
