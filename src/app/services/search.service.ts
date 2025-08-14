@@ -24,7 +24,12 @@ export class SearchService {
   }
 
   async postSearchContext(data: any, audio: boolean): Promise<any> {
-    let requestBody = {};
+    let requestBody: any = {};
+    let initialFilteredContent: any[] = [];
+    let allUnfilteredContent: any[] = [];
+    let lang = data.currentLang;
+
+    // Construct the base request body
     if (audio) {
       requestBody = {
         audio: data.text,
@@ -33,45 +38,102 @@ export class SearchService {
           orderBy: {
             "mimetype": "video/x-youtube"
           },
-          filters: this.configVariables.defaultContentFilter[0]
-          // fields: ["mimetype", "identifier","keywords","name",  "thumbnail", "media", "agegroup", "language", "sourceorg", "url", "domain", "category"]
-
+          filters: {
+            ...this.configVariables.defaultContentFilter[0]
+          }
         }
       }
     } else {
       requestBody = {
         name: data.text,
-        language: data.currentLang,
+        language: lang,
         request: {
           orderBy: {
             "mimetype": "video/x-youtube"
           },
-          filters: this.configVariables.defaultContentFilter[0]
-          // fields: ["mimetype", "identifier","keywords","name",  "thumbnail", "media", "agegroup", "language", "sourceorg", "url", "domain", "category"]
+          filters: {
+            ...this.configVariables.defaultContentFilter[0]
+          }
         }
       }
     }
-    let body = JSON.stringify(requestBody)
-    const apiRequest = new ApiRequest.Builder()
+
+    // First call: All data for the search context, filtered by sitename
+    if (localStorage.getItem("sitename")) {
+      const filteredReq = { ...requestBody, request: { ...requestBody.request, filters: { ...requestBody.request.filters, sourceorg: localStorage.getItem("sitename") } } };
+      initialFilteredContent = await lastValueFrom(this.apiService.fetch(new ApiRequest.Builder()
+        .withHost(config.api.BASE_URL)
+        .withPath(config.api.CONTENT_SEARCH_API)
+        .withType(ApiHttpRequestType.POST)
+        .withBody(JSON.stringify(filteredReq))
+        .withBearerToken(true)
+        .withLanguge(lang)
+        .build()).pipe(map((response: ApiResponse<any>) => response.body.result)));
+    }
+
+    // Second call: All data for the search context, without sourceorg filter
+    const unfilteredReq = { ...requestBody, request: { ...requestBody.request, filters: { ...requestBody.request.filters } } };
+    delete unfilteredReq.request.filters.sourceorg; // Ensure no sourceorg filter for this call
+
+    allUnfilteredContent = await lastValueFrom(this.apiService.fetch(new ApiRequest.Builder()
       .withHost(config.api.BASE_URL)
       .withPath(config.api.CONTENT_SEARCH_API)
       .withType(ApiHttpRequestType.POST)
-      .withBody(body)
+      .withBody(JSON.stringify(unfilteredReq))
       .withBearerToken(true)
-      .withLanguge(data.currentLang)
-      .build()
-    return lastValueFrom(this.apiService.fetch(apiRequest).pipe(
-      map((response: ApiResponse<any>) => {
-        return response.body;
-      }),
-      catchError((err) => {
-        throw err;
-      })
-    ));
+      .withLanguge(lang)
+      .build()).pipe(map((response: ApiResponse<any>) => response.body.result)));
+
+    const mergedContent = new Map();
+
+    // Add initial filtered content (if any), prioritizing it
+    initialFilteredContent.forEach((content: any) => {
+      mergedContent.set(content.metaData.identifier, content);
+    });
+
+    // Add all unfiltered content, avoiding duplicates
+    allUnfilteredContent.forEach((content: any) => {
+      if (!mergedContent.has(content.metaData.identifier)) {
+        mergedContent.set(content.metaData.identifier, content);
+      }
+    });
+
+    return Array.from(mergedContent.values());
   }
 
-  postContentSearch(data: any, lang: any): Promise<any> {
-    let requestBody = {
+  async postContentSearch(data: any, lang: any, applySourceOrgFilter: boolean = false): Promise<any> {
+    let filteredContent: any[] = [];
+    let unfilteredContent: any[] = [];
+    let currentSitename = localStorage.getItem("sitename");
+
+    // First API call: Filtered by localStorage.sitename
+    if (currentSitename) {
+      let filteredRequestBody: any = {
+        name:  data?.name,
+        category: data?.category,
+        language: lang,
+        request: {
+          orderBy: {
+            "mimetype": "video/x-youtube"
+          },
+          filters: {
+            ...this.configVariables.defaultContentFilter[0],
+            sourceorg: currentSitename
+          }
+        }
+      };
+      filteredContent = await lastValueFrom(this.apiService.fetch(new ApiRequest.Builder()
+        .withHost(config.api.BASE_URL)
+        .withPath(config.api.CONTENT_SEARCH_API)
+        .withType(ApiHttpRequestType.POST)
+        .withBody(JSON.stringify(filteredRequestBody))
+        .withBearerToken(true)
+        .withLanguge(lang)
+        .build()).pipe(map((response: ApiResponse<any>) => response.body.result)));
+    }
+
+    // Second API call: Unfiltered by sourceorg
+    let unfilteredRequestBody: any = {
       name:  data?.name,
       category: data?.category,
       language: lang,
@@ -79,27 +141,33 @@ export class SearchService {
         orderBy: {
           "mimetype": "video/x-youtube"
         },
-        filters: this.configVariables.defaultContentFilter[0]
-
-        // fields: ["mimetype", "identifier","keywords","name",  "thumbnail", "media", "agegroup", "language", "sourceorg", "url", "domain", "category"]
-
+        filters: {
+          ...this.configVariables.defaultContentFilter[0]
+        }
       }
-    }
-    const apiRequest = new ApiRequest.Builder()
+    };
+    unfilteredContent = await lastValueFrom(this.apiService.fetch(new ApiRequest.Builder()
       .withHost(config.api.BASE_URL)
       .withPath(config.api.CONTENT_SEARCH_API)
       .withType(ApiHttpRequestType.POST)
-      .withBody(requestBody)
+      .withBody(JSON.stringify(unfilteredRequestBody))
       .withBearerToken(true)
       .withLanguge(lang)
-      .build()
-    return lastValueFrom(this.apiService.fetch(apiRequest).pipe(
-      map((response: ApiResponse) => {
-        return response.body.result;
-      }),
-      catchError((err) => {
-        throw err
-      })
-    ));
+      .build()).pipe(map((response: ApiResponse<any>) => response.body.result)));
+
+    // Merge results
+    const mergedContent = new Map<string, any>();
+
+    filteredContent.forEach((content: any) => {
+      mergedContent.set(content.metaData.identifier, content);
+    });
+
+    unfilteredContent.forEach((content: any) => {
+      if (!mergedContent.has(content.metaData.identifier)) {
+        mergedContent.set(content.metaData.identifier, content);
+      }
+    });
+
+    return Array.from(mergedContent.values());
   }
 }
