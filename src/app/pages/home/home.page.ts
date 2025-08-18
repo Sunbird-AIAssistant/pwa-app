@@ -239,12 +239,18 @@ export class HomePage implements OnInit, OnTabViewWillEnter, OnDestroy {
 
   async getServerMetaConfig() {
     let meta: any = await this.storage.getData('configMeta');
-    let config = this.configVariables.headerFilters;//(meta && meta != 'undefined') ? JSON.parse(meta) : await this.configService.getConfigMeta();
+    let config = this.configVariables.headerFilters;
+    let defaultFilter = config[0].defaultFilter;
+
+    if (this.configVariables?.siteName === 'Prajayatna') {
+      defaultFilter.filters = { ...defaultFilter.filters, sourceorg: 'Prajayatna' };
+    }
+
     config.forEach((cfg: any) => {
       this.filters = (cfg.additionalFilters).sort((a: Filter, b: Filter) => a.index - b.index);
-    })
+    });
     this.languages = this.configVariables.languages.sort((a: Language, b: Language) => a.id.localeCompare(b.id));
-    this.headerService.filterEvent({ defaultFilter: config[0].defaultFilter, filter: this.filters, languages: this.languages });
+    this.headerService.filterEvent({ defaultFilter: defaultFilter, filter: this.filters, languages: this.languages });
   }
 
   async tabViewWillEnter() {

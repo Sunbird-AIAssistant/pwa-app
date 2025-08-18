@@ -88,13 +88,14 @@ export class SearchService {
 
     // Add initial filtered content (if any), prioritizing it
     initialFilteredContent.forEach((content: any) => {
-      mergedContent.set(content.metaData.identifier, content);
+      // Items returned by the API are flat objects; use `identifier` directly
+      mergedContent.set(content.identifier, content);
     });
 
     // Add all unfiltered content, avoiding duplicates
     allUnfilteredContent.forEach((content: any) => {
-      if (!mergedContent.has(content.metaData.identifier)) {
-        mergedContent.set(content.metaData.identifier, content);
+      if (!mergedContent.has(content.identifier)) {
+        mergedContent.set(content.identifier, content);
       }
     });
 
@@ -105,9 +106,23 @@ export class SearchService {
     let filteredContent: any[] = [];
     let unfilteredContent: any[] = [];
     let currentSitename = localStorage.getItem("sitename");
+    const languageMap: { [key: string]: string } = {
+      'kn': 'Kannada',
+      'hi': 'Hindi'
+    };
+    const selectedLanguageName = languageMap[lang] || lang;
+
 
     // First API call: Filtered by localStorage.sitename
     if (currentSitename) {
+      let filters: any = {
+        ...this.configVariables.defaultContentFilter[0],
+        sourceorg: currentSitename
+      };
+    
+      if (currentSitename === "Prajayatna") {
+        filters.language = [selectedLanguageName];
+      }
       let filteredRequestBody: any = {
         name:  data?.name,
         category: data?.category,
@@ -116,10 +131,8 @@ export class SearchService {
           orderBy: {
             "mimetype": "video/x-youtube"
           },
-          filters: {
-            ...this.configVariables.defaultContentFilter[0],
-            sourceorg: currentSitename
-          }
+          filters
+
         }
       };
       filteredContent = await lastValueFrom(this.apiService.fetch(new ApiRequest.Builder()
@@ -133,6 +146,12 @@ export class SearchService {
     }
 
     // Second API call: Unfiltered by sourceorg
+    let filters: any = {
+      ...this.configVariables.defaultContentFilter[0],
+    };
+    if (currentSitename === "Prajayatna") {
+      filters.language = [selectedLanguageName];
+    }
     let unfilteredRequestBody: any = {
       name:  data?.name,
       category: data?.category,
@@ -141,9 +160,7 @@ export class SearchService {
         orderBy: {
           "mimetype": "video/x-youtube"
         },
-        filters: {
-          ...this.configVariables.defaultContentFilter[0]
-        }
+        filters
       }
     };
     unfilteredContent = await lastValueFrom(this.apiService.fetch(new ApiRequest.Builder()
@@ -159,12 +176,13 @@ export class SearchService {
     const mergedContent = new Map<string, any>();
 
     filteredContent.forEach((content: any) => {
-      mergedContent.set(content.metaData.identifier, content);
+      // Items are flat objects; use `identifier`
+      mergedContent.set(content.identifier, content);
     });
 
     unfilteredContent.forEach((content: any) => {
-      if (!mergedContent.has(content.metaData.identifier)) {
-        mergedContent.set(content.metaData.identifier, content);
+      if (!mergedContent.has(content.identifier)) {
+        mergedContent.set(content.identifier, content);
       }
     });
 
