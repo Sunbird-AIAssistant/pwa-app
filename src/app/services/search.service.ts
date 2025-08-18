@@ -23,6 +23,54 @@ export class SearchService {
     });
   }
 
+  private prioritizePrajayatnaFirst(contents: any[]): any[] {
+    const normalize = (value: any) => (typeof value === 'string' ? value.trim().toLowerCase() : '');
+    const prioritized = contents.filter(item => normalize(item?.sourceorg) === 'Prajayatna');
+    const others = contents.filter(item => normalize(item?.sourceorg) !== 'Prajayatna');
+    return [...prioritized, ...others];
+  }
+
+  private ensurePrajayatnaPresenceInTopN(contents: any[], topN: number = 10, minCount: number = 2): any[] {
+    if (!Array.isArray(contents) || contents.length === 0) {
+      return contents;
+    }
+    const normalize = (value: any) => (typeof value === 'string' ? value.trim().toLowerCase() : '');
+    const limit = Math.min(topN, contents.length);
+    const isPrajayatna = (item: any) => normalize(item?.sourceorg) === 'Prajayatna';
+
+    const copy = contents.slice();
+    let currentCount = 0;
+    for (let i = 0; i < limit; i++) {
+      if (isPrajayatna(copy[i])) currentCount++;
+    }
+    const needed = Math.max(0, minCount - currentCount);
+    if (needed === 0) return copy;
+
+    const candidates: number[] = [];
+    for (let i = limit; i < copy.length; i++) {
+      if (isPrajayatna(copy[i])) candidates.push(i);
+    }
+    if (candidates.length === 0) return copy;
+
+    const getRandomInt = (min: number, max: number) => Math.floor(Math.random() * (max - min + 1)) + min;
+
+    const moves = Math.min(needed, candidates.length);
+    for (let m = 0; m < moves; m++) {
+      // Pick a Prajayatna index from remaining candidates
+      const pickedIdxInCandidates = getRandomInt(0, candidates.length - 1);
+      const fromIndex = candidates.splice(pickedIdxInCandidates, 1)[0];
+      const [item] = copy.splice(fromIndex, 1);
+      // Insert at a random position in the first window
+      const toIndex = getRandomInt(0, limit - 1);
+      copy.splice(toIndex, 0, item);
+      // Adjust candidate indices after removal if needed
+      for (let j = 0; j < candidates.length; j++) {
+        if (candidates[j] > fromIndex) candidates[j] -= 1;
+      }
+    }
+    return copy;
+  }
+
   async postSearchContext(data: any, audio: boolean): Promise<any> {
     let requestBody: any = {};
     let initialFilteredContent: any[] = [];
@@ -99,7 +147,8 @@ export class SearchService {
       }
     });
 
-    return Array.from(mergedContent.values());
+    const result = Array.from(mergedContent.values());
+    return this.prioritizePrajayatnaFirst(result);
   }
 
   async postContentSearch(data: any, lang: any, applySourceOrgFilter: boolean = false): Promise<any> {
@@ -111,7 +160,6 @@ export class SearchService {
       'hi': 'Hindi'
     };
     const selectedLanguageName = languageMap[lang] || lang;
-
 
     // First API call: Filtered by localStorage.sitename
     if (currentSitename) {
@@ -186,6 +234,7 @@ export class SearchService {
       }
     });
 
-    return Array.from(mergedContent.values());
+    const result = Array.from(mergedContent.values());
+    return this.prioritizePrajayatnaFirst(result);
   }
 }
