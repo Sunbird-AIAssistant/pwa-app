@@ -6,7 +6,6 @@
   <ion-refresher #refresher slot="fixed" (ionRefresh)="doRefresh($event)">
     <ion-refresher-content refreshingSpinner="circles"></ion-refresher-content>
   </ion-refresher>
-
   <ion-list class="m-n" *ngIf="showSheenAnimation">
     <div class="cards-container" *ngFor="let i of [0,1,2,3,4,5,6,7,8]">
       <div class="card">
@@ -29,7 +28,6 @@
       <ion-label class="no-data">{{'No Result' | translate }}</ion-label>
     </ion-item>
   </ion-list>
-
   <ion-list *ngIf="!showSheenAnimation && serverError">
     <ion-item lines="none">
       <ion-label class="no-data">{{'An unknown error occured, please try after sometime' | translate }}</ion-label>
@@ -50,25 +48,50 @@
       </div> -->
       <div class="card" *ngIf="content?.metaData && content?.metaData?.name">
         <div class="card__img" (click)="playContent($event, content)">
-          <img loading="lazy" [src]="(content?.metaData?.thumbnail && !content?.metaData.identifier.startsWith('do_')) ? (content?.metaData?.thumbnail) : 'assets/images/Audio.png'" alt="" *ngIf="content.metaData.mimetype === mimeType.AUDIO">
-          <!-- <img appThumbnail [appThumbnail]="'assets/images/yt.jpeg'" alt="" *ngIf="content.metaData.mimetype === mimeType.YOUTUBE"> -->
-          <img appThumbnail [appThumbnail]="content?.metaData" alt="" *ngIf="content?.metaData?.mimetype === mimeType.YOUTUBE && !content.play"> 
-          <!-- <img [src]="(content?.metaData?.thumbnail && !content.metaData.identifier.startsWith('do_')) ? (content?.metaData?.thumbnail) : 'assets/images/youtube-video.png'" alt="" *ngIf="content.metaData.mimetype === mimeType.YOUTUBE"> -->
-          <!-- <img [src]="loadYoutubeImg(content.metaData.identifier)" alt="" *ngIf="content.metaData.mimetype === mimeType.YOUTUBE && !content.play"> -->
-          <img  loading="lazy" [src]="(content?.metaData?.thumbnail && !content?.metaData?.identifier.startsWith('do_')) ? (content?.metaData?.thumbnail) : 'assets/images/Video.png'" alt="" *ngIf="content?.metaData?.mimetype === mimeType?.MP4">
-          <img [src]="(content?.metaData?.thumbnail && !content?.metaData?.identifier.startsWith('do_')) ? (content?.metaData?.thumbnail) : 'assets/images/PDF.png'" alt="" *ngIf="content?.metaData?.mimetype === mimeType?.PDF">
-          <img loading="lazy" [src]="(content?.metaData?.thumbnail && !content?.metaData?.identifier.startsWith('do_')) ? (content?.metaData?.thumbnail) : 'assets/images/LINK.png'" alt="" *ngIf="content?.metaData?.mimetype === mimeType?.LINK">
-
-          <img loading="lazy"  [src]="(content?.metaData?.thumbnail =='' && !content.metaData.identifier.startsWith('do_')) ? 'https://ejaaduipitara.ncert.gov.in/assets/img/cards.jpg' : ''" alt="">
-
-          <!-- <ion-img *ngIf="content.metaData.thumbnail && !content.play" [src]="content.metaData.thumbnail" alt=""/>
-            <ion-img *ngIf="!content.metaData.thumbnail && !content.play" [src]="loadYoutubeImg(content.metaData.identifier)" alt=""/> -->
-          <!-- <div *ngIf="content.metaData.mimetype === 'video/x-youtube' && content.play">
-              <iframe title="" width="380" height="200" allowfullscreen [src]="sanitiseUrl(content.metaData.url)"></iframe>
-            </div> -->
-          <!-- <div class="landscape-icon" (click)="switchLandscape(content)">
-              <ion-icon name="scan" size="large" color="light"></ion-icon>
-            </div> -->
+          <ng-container *ngIf="isTabActive">
+            <img
+              *ngIf="content.metaData.mimetype === mimeType.AUDIO"
+              [attr.loading]="'lazy'"
+              decoding="async"
+              [src]="resolveImageUrl((content?.metaData?.thumbnail && !content?.metaData.identifier.startsWith('do_')) ? (content?.metaData?.thumbnail) : 'assets/images/Audio.png')"
+              [alt]="content.metaData?.name || 'Audio content'"
+              (error)="onImgError($event, 'audio')">
+            <img
+              *ngIf="content?.metaData?.mimetype === mimeType.YOUTUBE && !content.play"
+              appThumbnail [appThumbnail]="content?.metaData"
+              [attr.loading]="'lazy'"
+              decoding="async"
+              [alt]="content.metaData?.name || 'YouTube content'"
+              (error)="onImgError($event, 'video')">
+            <img
+              *ngIf="content?.metaData?.mimetype === mimeType?.MP4"
+              [attr.loading]="'lazy'"
+              decoding="async"
+              [src]="resolveImageUrl((content?.metaData?.thumbnail && !content?.metaData?.identifier.startsWith('do_')) ? (content?.metaData?.thumbnail) : 'assets/images/Video.png')"
+              [alt]="content.metaData?.name || 'Video content'"
+              (error)="onImgError($event, 'video')">
+            <img
+              *ngIf="content?.metaData?.mimetype === mimeType?.PDF"
+              [attr.loading]="'lazy'"
+              decoding="async"
+              [src]="resolveImageUrl((content?.metaData?.thumbnail && !content?.metaData?.identifier.startsWith('do_')) ? (content?.metaData?.thumbnail) : 'assets/images/PDF.png')"
+              [alt]="content.metaData?.name || 'PDF content'"
+              (error)="onImgError($event, 'pdf')">
+            <img
+              *ngIf="content?.metaData?.mimetype === mimeType?.LINK"
+              [attr.loading]="'lazy'"
+              decoding="async"
+              [src]="resolveImageUrl((content?.metaData?.thumbnail && !content?.metaData?.identifier.startsWith('do_')) ? (content?.metaData?.thumbnail) : 'assets/images/LINK.png')"
+              [alt]="content.metaData?.name || 'Link content'"
+              (error)="onImgError($event, 'link')">
+            <img
+              *ngIf="!content?.metaData?.thumbnail || content?.metaData?.thumbnail === ''"
+              [attr.loading]="'lazy'"
+              decoding="async"
+              [src]="'https://ejaaduipitara.ncert.gov.in/assets/img/cards.jpg'"
+              [alt]="content.metaData?.name || 'Content'"
+              (error)="onImgError($event, 'default')">
+          </ng-container>
         </div>
         <div class="card__metadata">
           <div class="card__title">{{content.metaData?.name}}</div>
