@@ -51,6 +51,8 @@ export class HomePage implements OnInit, OnTabViewWillEnter, OnDestroy {
   appName: string = "";
   configVariables : any;
   responseList: Array<any> = [];
+  // Flag to render images only when Home tab is active (prevents preloading in background)
+  isTabActive: boolean = false;
   constructor(
     private headerService: AppHeaderService,
     private router: Router,
@@ -254,6 +256,7 @@ export class HomePage implements OnInit, OnTabViewWillEnter, OnDestroy {
   }
 
   async tabViewWillEnter() {
+    this.isTabActive = true;
     await this.headerService.showHeader(this.appName, false);
     setTimeout(() => {
       this.headerService.showStatusBar(false);
@@ -266,6 +269,10 @@ export class HomePage implements OnInit, OnTabViewWillEnter, OnDestroy {
 
   ionViewDidEnter() {
     this.headerService.showStatusBar(false);
+  }
+
+  ionViewWillLeave() {
+    this.isTabActive = false;
   }
 
   async moreOtions(content: any) {
@@ -384,6 +391,29 @@ export class HomePage implements OnInit, OnTabViewWillEnter, OnDestroy {
   sanitiseUrl(url: string): SafeResourceUrl {
     let sanitizeUrl = url.split('&')[0]
     return this.domSanitiser.bypassSecurityTrustResourceUrl(sanitizeUrl.replace('watch?v=', 'embed/') + '?autoplay=1&controls=1');
+  }
+
+  // Normalize/upgrade image URLs to avoid mixed-content and stray spaces
+  resolveImageUrl(url?: string): string {
+    if (!url) return '';
+    const trimmed = url.trim();
+    if (trimmed.startsWith('http://')) {
+      return 'https://' + trimmed.substring(7);
+    }
+    return trimmed;
+  }
+
+  // Robust fallback when an image fails to load
+  onImgError(event: Event, type: 'audio' | 'video' | 'pdf' | 'link' | 'default' = 'default') {
+    const img = event.target as HTMLImageElement;
+    const fallbackMap: Record<string, string> = {
+      audio: 'assets/images/Audio.png',
+      video: 'assets/images/Video.png',
+      pdf: 'assets/images/PDF.png',
+      link: 'assets/images/LINK.png',
+      default: 'assets/images/Audio.png'
+    };
+    img.src = fallbackMap[type] || fallbackMap['default'];
   }
 
   navigateToSakhi(type: string) {
