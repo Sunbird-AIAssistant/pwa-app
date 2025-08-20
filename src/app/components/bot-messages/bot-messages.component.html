@@ -56,9 +56,21 @@
       <ion-label>{{durationDisplay}}</ion-label>
     </div>
     <div #recordbtn [ngClass]="startRecording ? 'cancel-div' : ''">
-      <ion-label class="cancel-record" *ngIf="startRecording"><span> << {{'Swipe left to cancel' | translate }}</span></ion-label>
-      <ion-button [disabled]="disabled" fill="clear" size="small" (touchstart)="onLongPressStart()" (touchend)="onLongPressEnd()">
-        <ion-icon *ngIf="textMessage.length == 0" aria-hidden="true" class="audio-record-mic right icon" src="assets/icon/bot-audio.svg"></ion-icon>
+      <ion-label class="cancel-record" *ngIf="startRecording">
+        <span> << {{ 'Swipe left to cancel' | translate }}</span>
+      </ion-label>
+      <ion-button
+        [disabled]="disabled"
+        fill="clear"
+        size="small"
+        (click)="!startRecording ? onLongPressStart() : onLongPressEnd()"
+      >
+        <ion-icon
+          *ngIf="textMessage.length == 0"
+          aria-hidden="true"
+          class="audio-record-mic right icon"
+          src="assets/icon/bot-audio.svg"
+        ></ion-icon>
       </ion-button>
     </div>
     <ion-icon *ngIf="textMessage.length > 0" class="audio-record-mic right icon" name="send" (click)="handleMessage()"></ion-icon>
