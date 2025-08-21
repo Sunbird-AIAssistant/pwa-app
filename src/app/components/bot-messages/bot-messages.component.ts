@@ -276,7 +276,6 @@ export class BotMessagesComponent implements OnInit, AfterViewInit {
 
   async makeBotAPICall(text: string, audio: string) {
     this.textMessage = "";
-    this.disabled = true;
     // Api call and response from bot, replace laoding text
     let index = this.botMessages.length;
     let lang = await this.storage.getData('lang');
