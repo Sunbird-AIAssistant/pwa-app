@@ -1,18 +1,12 @@
 {
-    "tenantLogo": "assets/school/DL_128x128.svg",
-    "siteName": "Dharma Life",
-    "siteByLine": "Listen, Learn & Grow !!!",
-    "splashImage": "assets/school/DL_152x152.png",
+    "tenantLogo": "assets/school/P_128x128.svg",
+    "siteName": "Prajayatna",
+    "siteByLine": "We learn. We live",
+    "splashImage": "assets/school/P_512x512.png",
     "bots": ["teacher"],
-
     "defaultContentFilter": [
         {
-            "agegroup": [
-                "3-6",
-                "6-8"
-            ],
-            "language":["English", "Hindi"]
-
+            "language":["Kannada"]
         }
     ],
     "headerFilters": [
@@ -59,37 +53,31 @@
     ],
     "languages": [
         {
-            "id": "en",
-            "label": "English",
-            "default": true
-        },
-        {
+            "id": "kn",
+            "label": "ಕನ್ನಡ",
+            "default": false
+        }, {
             "id": "hi",
             "label": "हिंदी",
-            "default": false
+            "default": true
         }
     ],
-    "titleCode": [
-        "en",
-        "hi"
+    "titleCode": [ "kn", "hi"
     ],
-    "en": {
-        "teacherTaraBotName": "Pre-School Teachers"
-    },
-    "hi": {
-        "teacherTaraBotName": "पूर्व-स्कूल शिक्षक"
+    "kn": {
+        "teacherTaraBotName": "ಅಂಗನವಾಡಿ ಕಾರ್ಯಕರ್ತೆ"
     },
     "footerText": "Developed with ❤️ by Tekdi Technologies ",
-    "headerColor": "#e98021ff",
+    "headerColor": "#AB251B",
     "headerFontSize": "16",
-    "footerColor": "#e98021ff",
+    "footerColor": "#AB251B",
     "footerFontSize": "16",
     "primaryCss" : {
-        "primary": "#e98021ff",
-        "shade": "#186aaaff"
+        "primary": "#AB251B",
+        "shade": "#FDB529"
     },
     "secondaryCss" : {
-        "secondary": "#186aaaff",
+        "secondary": "#FDB529",
         "shade": "#e98021ff"
     }
 }
