@@ -68,3 +68,8 @@ testem.log
 Thumbs.db
 
 .angular
+
+
+#env files
+/configuration/environment.dev.ts
+/configuration/environment.prod.ts
