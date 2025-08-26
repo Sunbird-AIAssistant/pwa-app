@@ -26,7 +26,6 @@ export class ApplicationHeaderComponent  implements OnInit {
   configVariables : any;
   isTitleChanged : boolean = false;
   languageSubscription: any;
-  sitename:string = "";
 
   language: string = '';
   constructor(private utilService: UtilService,
@@ -44,19 +43,11 @@ export class ApplicationHeaderComponent  implements OnInit {
 
       ConfigVariables.then(config => {
         this.configVariables = config;
-        this.sitename = this.configVariables?.siteName;
-        localStorage.setItem("sitename", this.sitename);
-        console.log(this.configVariables?.siteName, 'configVariables siteName in header component');
-        
         // Use the config data as needed
       }).catch(error => {
         console.error('Failed to load configuration:', error);
       });
     }
-
-
-
-  
 
     loadTabData(language: string) {
       this.language = language;
@@ -64,7 +55,6 @@ export class ApplicationHeaderComponent  implements OnInit {
     }
 
   async ngOnInit() {
-  
     this.defaultFilter = {};
     this.language = await this.storage.getData('lang') || 'en';
     this.isTitleChanged = this.configVariables.titleCode.includes(this.language);

@@ -38,21 +38,17 @@ export class ConfigService {
   }
 
   async getAllContent(req: any, lang: any): Promise<any> {
-    const languageMap: { [key: string]: string } = { en: 'English', hi: 'Hindi', mr: 'Marathi', kn: 'Kannada' };
-    const selectedLanguageName = languageMap[lang] || lang;
-    const filters = { ...this.configVariables.defaultContentFilter[0]};
-    
-    let currentSitename = localStorage.getItem("sitename");
-      if (currentSitename === "Prajayatna") {
-        filters.language = [selectedLanguageName];
-      }
     let requestBody = {
       language: lang,
       request: {
         orderBy: {
           "mimetype": "video/x-youtube"
         },
-        filters
+        filters: 
+          this.configVariables.defaultContentFilter[0]
+        ,
+        // fields: ["mimetype", "identifier","keywords","name",  "thumbnail", "media", "agegroup", "language", "sourceorg", "url", "domain", "category"]
+
       }
     }
     const apiRequest = new ApiRequest.Builder()

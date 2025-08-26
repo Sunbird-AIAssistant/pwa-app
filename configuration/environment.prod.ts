@@ -16,6 +16,7 @@ export const config = {
     CONFIRM_API: 'confirm',
     BOT_SAKHI_API_PATH: 'v1/chat',
     BOT_ACTIVITY_API_PATH: 'api/activitybot/v1/chat',
+
     REGISTER_DEVICE_API_PATH: 'api/registerMobileDevice',
     KEY: 'myjp-0.1',
     SECRET: '7tVOEu0xj0zYQiYtCYbauEkNC3NBXCpM'
@@ -25,6 +26,3 @@ export const config = {
     PRODUCER_PID: 'mobileapp'
   }
 }
-
-
-
