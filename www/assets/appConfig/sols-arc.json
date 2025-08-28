@@ -1,17 +1,12 @@
 {
-    "tenantLogo": "assets/school/BFES_128x128.svg",
-    "siteName": "Bright Future English School",
-    "siteByLine": "Listen, Learn & Grow !!!",
-    "splashImage": "assets/school/BFES_152x152.png",
-    "bots": ["story", "parent", "teacher"],
+    "tenantLogo": "assets/school/SA_128x128.svg",
+    "siteName": "Sols Arc",
+    "siteByLine": "Every child learns, every adult earns",
+    "splashImage": "assets/school/SA_152x152.png",
+    "bots": ["teacher"],
     "defaultContentFilter": [
         {
-            "agegroup": [
-                "3-6",
-                "6-8"
-            ],
-            "language":["English", "Hindi"]
-
+            "language":["English","Marathi", "Hindi"]
         }
     ],
     "headerFilters": [
@@ -42,10 +37,10 @@
                     "filters": "Songs"
                 },
                 {
-                    "id": "Audio",
-                    "label": "Audio",
-                    "query": "Audio",
-                    "filters": "Audio"
+                    "id": "Audio Books",
+                    "label": "Audio Books",
+                    "query": "Audio Books",
+                    "filters": "Audio Books"
                 },
                 {
                     "id": "Handbooks",
@@ -60,31 +55,31 @@
         {
             "id": "en",
             "label": "English",
-            "default": true
+            "default": false
         },
         {
             "id": "hi",
             "label": "हिंदी",
+            "default": true
+        },
+        {
+            "id": "mr",
+            "label": "मराठी",
             "default": false
         }
     ],
-    "titleCode": [
-        "en",
-        "hi"
-    ],
-    "en": {
-        "kathaSakhiBotName": "Katha Sangini",
-        "parentTaraBotName": "Parents Sangini",
-        "teacherTaraBotName": "Shikshak Sangini"
-    },
-    "hi": {
-        "kathaSakhiBotName": "कथा संगिनी",
-        "parentTaraBotName": "पेरेंट संगिनी",
-        "teacherTaraBotName": "टीचर संगिनी"
-    },
+    "titleCode": [ ],
     "footerText": "Developed with ❤️ by Tekdi Technologies ",
-    "headerColor": "brown",
+    "headerColor": "#A71028",
     "headerFontSize": "16",
-    "footerColor": "brown",
-    "footerFontSize": "16"
+    "footerColor": "#A71028",
+    "footerFontSize": "16",
+    "primaryCss" : {
+        "primary": "#A71028",
+        "shade": "#EEAA1F"
+    },
+    "secondaryCss" : {
+        "secondary": "#EEAA1F",
+        "shade": "#e98021ff"
+    }
 }
