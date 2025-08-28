@@ -11,6 +11,14 @@ import { ConfigVariables } from "../config";
 })
 export class SearchService {
   configVariables: any;
+  private readonly LANGUAGE_LABEL_MAP: Record<string, string> = {
+    en: 'English',
+    hi: 'Hindi',
+    kn: 'Kannada',
+    as: 'Assamese',
+    bn: 'Bengali',
+    ur: 'Urdu'
+  };
 
   constructor(
     private apiService: ApiService
@@ -25,6 +33,10 @@ export class SearchService {
 
   private getLanguageLabelFromCode(languageCode: string, fallbackFilters?: any): string | null {
     try {
+      // 1) Prefer explicit map if provided in requirements
+      if (this.LANGUAGE_LABEL_MAP[languageCode]) {
+        return this.LANGUAGE_LABEL_MAP[languageCode];
+      }
       const languages: Array<{ id: string; label: string }>
         = this.configVariables?.languages || [];
       const found = languages.find((l) => l.id === languageCode);
