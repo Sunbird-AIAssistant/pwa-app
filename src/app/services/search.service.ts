@@ -23,17 +23,44 @@ export class SearchService {
     });
   }
 
+  private getLanguageLabelFromCode(languageCode: string, fallbackFilters?: any): string | null {
+    try {
+      const languages: Array<{ id: string; label: string }>
+        = this.configVariables?.languages || [];
+      const found = languages.find((l) => l.id === languageCode);
+      if (found?.label) {
+        return found.label;
+      }
+      // Fallback: if the provided code is actually a label present in default filters, accept it
+      const availableLabels: string[] = fallbackFilters?.language || [];
+      if (availableLabels.includes(languageCode)) {
+        return languageCode;
+      }
+      return null;
+    } catch (_) {
+      return null;
+    }
+  }
+
   async postSearchContext(data: any, audio: boolean): Promise<any> {
     let requestBody = {};
+    const languageCode = data.currentLang;
+    const defaultFilters = { ...(this.configVariables.defaultContentFilter?.[0] || {}) } as any;
+    const languageLabel = this.getLanguageLabelFromCode(languageCode, defaultFilters);
+    if (languageLabel) {
+      defaultFilters.language = [languageLabel];
+    }
+    // Debug: verify payload language values (safe to keep; remove if noisy)
+    try { console.debug('[SearchService] postSearchContext payload language', { languageCode, languageLabel, filtersLanguage: defaultFilters.language }); } catch {}
     if (audio) {
       requestBody = {
         audio: data.text,
-        language: data.currentLang,
+        language: languageCode,
         request: {
           orderBy: {
             "mimetype": "video/x-youtube"
           },
-          filters: this.configVariables.defaultContentFilter[0]
+          filters: defaultFilters
           // fields: ["mimetype", "identifier","keywords","name",  "thumbnail", "media", "agegroup", "language", "sourceorg", "url", "domain", "category"]
 
         }
@@ -41,12 +68,12 @@ export class SearchService {
     } else {
       requestBody = {
         name: data.text,
-        language: data.currentLang,
+        language: languageCode,
         request: {
           orderBy: {
             "mimetype": "video/x-youtube"
           },
-          filters: this.configVariables.defaultContentFilter[0]
+          filters: defaultFilters
           // fields: ["mimetype", "identifier","keywords","name",  "thumbnail", "media", "agegroup", "language", "sourceorg", "url", "domain", "category"]
         }
       }
@@ -71,15 +98,23 @@ export class SearchService {
   }
 
   postContentSearch(data: any, lang: any): Promise<any> {
+    const languageCode = lang;
+    const defaultFilters = { ...(this.configVariables.defaultContentFilter?.[0] || {}) } as any;
+    const languageLabel = this.getLanguageLabelFromCode(languageCode, defaultFilters);
+    if (languageLabel) {
+      defaultFilters.language = [languageLabel];
+    }
+    // Debug: verify payload language values (safe to keep; remove if noisy)
+    try { console.debug('[SearchService] postContentSearch payload language', { languageCode, languageLabel, filtersLanguage: defaultFilters.language }); } catch {}
     let requestBody = {
       name:  data?.name,
       category: data?.category,
-      language: lang,
+      language: languageCode,
       request: {
         orderBy: {
           "mimetype": "video/x-youtube"
         },
-        filters: this.configVariables.defaultContentFilter[0]
+        filters: defaultFilters
 
         // fields: ["mimetype", "identifier","keywords","name",  "thumbnail", "media", "agegroup", "language", "sourceorg", "url", "domain", "category"]
 
