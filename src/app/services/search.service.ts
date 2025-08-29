@@ -116,8 +116,13 @@ export class SearchService {
     if (languageLabel) {
       defaultFilters.language = [languageLabel];
     }
+    
+    // Note: We don't add sourceorg filter here to ensure we get ALL content
+    // Instead, we'll sort the results to prioritize Prajayatna content first
+    
     // Debug: verify payload language values (safe to keep; remove if noisy)
-    try { console.debug('[SearchService] postContentSearch payload language', { languageCode, languageLabel, filtersLanguage: defaultFilters.language }); } catch {}
+    try { console.debug('[SearchService] postContentSearch payload language', { languageCode, languageLabel, filtersLanguage: defaultFilters.language, siteName: this.configVariables?.siteName }); } catch {}
+    
     let requestBody = {
       name:  data?.name,
       category: data?.category,
@@ -142,6 +147,32 @@ export class SearchService {
       .build()
     return lastValueFrom(this.apiService.fetch(apiRequest).pipe(
       map((response: ApiResponse) => {
+        // If siteName is "Prajayatna", prioritize Prajayatna content first
+        if (this.configVariables?.siteName === "Prajayatna" && response.body?.result) {
+          const results = response.body.result;
+          
+          // Separate Prajayatna content from other content using rest operator
+          const prajayatnaContent = results.filter((item: any) => 
+            item.sourceorg === "Prajayatna" || 
+            item.sourceOrganisation === "Prajayatna" ||
+            item.source_org === "Prajayatna" ||
+            item.organisation === "Prajayatna" ||
+            item.org === "Prajayatna"
+          );
+          
+          const otherContent = results.filter((item: any) => 
+            !(item.sourceorg === "Prajayatna" || 
+              item.sourceOrganisation === "Prajayatna" ||
+              item.source_org === "Prajayatna" ||
+              item.organisation === "Prajayatna" ||
+              item.org === "Prajayatna")
+          );
+          
+          // Combine: Prajayatna content first, then other content
+          const reorderedResults = [...prajayatnaContent, ...otherContent];
+          
+          return reorderedResults;
+        }
         return response.body.result;
       }),
       catchError((err) => {

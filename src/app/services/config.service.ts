@@ -38,15 +38,18 @@ export class ConfigService {
   }
 
   async getAllContent(req: any, lang: any): Promise<any> {
+    let defaultFilters = { ...(this.configVariables.defaultContentFilter?.[0] || {}) } as any;
+    
+    // Note: We don't add sourceorg filter here to ensure we get ALL content
+    // Instead, we'll sort the results to prioritize Prajayatna content first
+    
     let requestBody = {
       language: lang,
       request: {
         orderBy: {
           "mimetype": "video/x-youtube"
         },
-        filters: 
-          this.configVariables.defaultContentFilter[0]
-        ,
+        filters: defaultFilters,
         // fields: ["mimetype", "identifier","keywords","name",  "thumbnail", "media", "agegroup", "language", "sourceorg", "url", "domain", "category"]
 
       }
@@ -60,7 +63,37 @@ export class ConfigService {
       .withLanguge(lang)
       .build()
     return lastValueFrom(this.apiService.fetch(apiRequest).pipe(
-      map((apiResponse) => apiResponse.body.result),
+      map((apiResponse) => {
+        // If siteName is "Prajayatna", prioritize Prajayatna content first
+        if (this.configVariables?.siteName === "Prajayatna" && apiResponse.body?.result) {
+          const results = apiResponse.body.result;
+          
+          console.log('[ConfigService] Original results count:', results.length);
+          
+          // Separate Prajayatna content from other content using rest operator
+          const prajayatnaContent = results.filter((item: any) => 
+            item.sourceorg === "Prajayatna" || 
+            item.sourceOrganisation === "Prajayatna" ||
+            item.source_org === "Prajayatna" ||
+            item.organisation === "Prajayatna" ||
+            item.org === "Prajayatna"
+          );
+          
+          const otherContent = results.filter((item: any) => 
+            !(item.sourceorg === "Prajayatna" || 
+              item.sourceOrganisation === "Prajayatna" ||
+              item.source_org === "Prajayatna" ||
+              item.organisation === "Prajayatna" ||
+              item.org === "Prajayatna")
+          );
+          
+          // Combine: Prajayatna content first, then other content
+          const reorderedResults = [...prajayatnaContent, ...otherContent];
+          
+          return reorderedResults;
+        }
+        return apiResponse.body.result;
+      }),
       catchError((err) => {
         throw err;
       })
