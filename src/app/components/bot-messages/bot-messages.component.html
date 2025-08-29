@@ -1,4 +1,4 @@
-<ion-content id="content" [fullscreen]="true"  [scrollEvents]="true" #content>
+<ion-content id="content" [fullscreen]="true" [scrollEvents]="true" #content>
   <div class="bot-content" *ngIf="botMessages.length > 0">
     <div *ngFor="let msg of botMessages; let i = index">
       <div *ngIf="msg?.type !== ''" class="bot-content__message {{msg?.type}}" [ngClass]="i !==0 ? 'msg-block': ''">
@@ -6,7 +6,8 @@
         <!-- <ion-text innerHTML={msg.displayMsg}></ion-text> -->
         <ion-text [innerHTML]="msg.displayMsg"></ion-text>
 
-        <ion-button *ngIf="msg?.readMore" fill="clear" size="small" (click)="readmore(msg)">{{'Read more...' | translate}}</ion-button>
+        <ion-button *ngIf="msg?.readMore" fill="clear" size="small" (click)="readmore(msg)">{{'Read more...' |
+          translate}}</ion-button>
         <div class="audio_msg" *ngIf="msg?.messageType == 'audio'" (click)="playFile(msg)">
           <div class="play_audio">
             <img *ngIf="!msg?.audio?.play" src="../../../assets/icon/play.svg" alt="" />
@@ -14,13 +15,15 @@
             <span>{{msg?.audio?.duration}}</span>
           </div>
           <div class="audio-wave">
-            <img src="../../../assets/icon/waveform.svg" alt=""/>
-            <img src="../../../assets/icon/waveform.svg" alt=""/>
+            <img src="../../../assets/icon/waveform.svg" alt="" />
+            <img src="../../../assets/icon/waveform.svg" alt="" />
           </div>
         </div>
         <ion-text class="time" *ngIf="msg?.time">{{msg?.time}}</ion-text>
       </div>
-      <div *ngIf="msg?.type === 'received' && i !== 0 && msg.timeStamp && !msg?.audio?.file && msg.message !== 'An unknown error occured, please try after sometime'" class="action-div">
+      <div
+        *ngIf="msg?.type === 'received' && i !== 0 && msg.timeStamp && !msg?.audio?.file && msg.message !== 'An unknown error occured, please try after sometime'"
+        class="action-div">
         <div class="action_button" (click)="msgLiked(msg, 'like')">
           <ion-icon class="like" aria-hidden="true" src="assets/icon/thumb-up.svg" *ngIf="!msg.likeMsg"></ion-icon>
           <ion-icon aria-hidden="true" src="assets/icon/like.svg" *ngIf="msg.likeMsg"></ion-icon>
@@ -36,19 +39,9 @@
 <ion-footer style="background-color: white;">
 
   <div class="bot-input" [ngClass]="keyboardOpen ? 'keyboard-open' : 'keyboard-closed'">
-    <ion-input
-      *ngIf="!startRecording"
-      [disabled]="disabled"
-      aria-label=""
-      value=""
-      [placeholder]="'Type here' | translate"
-      (keyup.enter)="handleMessage()"
-      fill="outline"
-      shape="round"
-      [(ngModel)]="textMessage"
-      #textareaField
-      (focus)="scrollToBottom()"
-      (ionFocus)="scrollToBottom()"
+    <ion-input *ngIf="!startRecording" [disabled]="disabled" aria-label="" value=""
+      [placeholder]="'Type here' | translate" (keyup.enter)="handleMessage()" fill="outline" shape="round"
+      [(ngModel)]="textMessage" #textareaField (focus)="scrollToBottom()" (ionFocus)="scrollToBottom()"
       (ionBlur)="onInputBlur()">
     </ion-input>
     <div class="input_record" *ngIf="startRecording">
@@ -56,12 +49,17 @@
       <ion-label>{{durationDisplay}}</ion-label>
     </div>
     <div #recordbtn [ngClass]="startRecording ? 'cancel-div' : ''">
-      <ion-label class="cancel-record" *ngIf="startRecording"><span> << {{'Swipe left to cancel' | translate }}</span></ion-label>
-      <ion-button [disabled]="disabled" fill="clear" size="small" (touchstart)="onLongPressStart()" (touchend)="onLongPressEnd()">
-        <ion-icon *ngIf="textMessage.length == 0" aria-hidden="true" class="audio-record-mic right icon" src="assets/icon/bot-audio.svg"></ion-icon>
+      <ion-label class="cancel-record" *ngIf="startRecording">
+        <span>
+          << {{ 'Swipe left to cancel' | translate }}</span>
+      </ion-label>
+      <ion-button [disabled]="disabled" fill="clear" size="small"
+        (click)="!startRecording ? onLongPressStart() : onLongPressEnd()">
+        <ion-icon *ngIf="textMessage.length == 0" aria-hidden="true" class="audio-record-mic right icon"
+          src="assets/icon/bot-audio.svg"></ion-icon>
       </ion-button>
     </div>
-    <ion-icon *ngIf="textMessage.length > 0" class="audio-record-mic right icon" name="send" (click)="handleMessage()"></ion-icon>
+    <ion-icon *ngIf="textMessage.length > 0" class="audio-record-mic right icon" name="send"
+      (click)="handleMessage()"></ion-icon>
   </div>
-  </ion-footer>
-
+</ion-footer>
