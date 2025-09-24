@@ -55,6 +55,7 @@ export class ApplicationHeaderComponent  implements OnInit {
       }).catch(error => {
         console.error('Failed to load configuration:', error);
       });
+      this.userName = JSON.parse(localStorage.getItem('user') || '{}').name || '';
     }
 
     loadTabData(language: string) {
@@ -82,8 +83,7 @@ export class ApplicationHeaderComponent  implements OnInit {
       });
     })
     this.appInfo = await this.utilService.getAppInfo();
-    this.userName = JSON.parse(localStorage.getItem('user') || '{}').name || '';
-    console.log(this.userName);
+   
     
 
   }
