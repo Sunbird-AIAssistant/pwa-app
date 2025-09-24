@@ -10,19 +10,29 @@
           <ion-icon class="back-btn" aria-hidden="true" src="assets/icon/back.svg"></ion-icon>
         </ion-button>
       </ion-buttons>
-      <ion-title role="heading" [ngClass]="{'title_bb': headerConfig?.showbackButton, 'animate_title': headerConfig?.pageTitle == appName}" aria-level="1" 
-      *ngIf="!(headerConfig?.showbackButton && (headerConfig?.actionButtons?.indexOf('search') >=0 || headerConfig?.actionButtons?.indexOf('edit') >=0))">{{ configVariables?.siteName }}</ion-title>
-      <ion-title role="heading" aria-level="1" *ngIf="headerConfig?.actionButtons?.indexOf('edit') >=0">{{ headerConfig?.pageTitle }}</ion-title>
-      <ion-input type="search" *ngIf="headerConfig?.showbackButton && headerConfig?.actionButtons?.indexOf('search') >=0" #searchInput [placeholder]="'SEARCH_HINT' | translate"></ion-input>
+      <ion-title role="heading"
+        [ngClass]="{'title_bb': headerConfig?.showbackButton, 'animate_title': headerConfig?.pageTitle == appName}"
+        aria-level="1"
+        *ngIf="!(headerConfig?.showbackButton && (headerConfig?.actionButtons?.indexOf('search') >=0 || headerConfig?.actionButtons?.indexOf('edit') >=0))">{{
+        configVariables?.siteName }}</ion-title>
+      <ion-title role="heading" aria-level="1" *ngIf="headerConfig?.actionButtons?.indexOf('edit') >=0">{{
+        headerConfig?.pageTitle }}</ion-title>
+      <ion-input type="search"
+        *ngIf="headerConfig?.showbackButton && headerConfig?.actionButtons?.indexOf('search') >=0" #searchInput
+        [placeholder]="'SEARCH_HINT' | translate"></ion-input>
       <ion-buttons slot="end" [hidden]="headerConfig?.showbackButton">
         <ion-button (click)="emitEvent($event, 'search')">
           <ion-icon aria-hidden="true" src="assets/icon/search.svg"></ion-icon>
         </ion-button>
-         <!-- <ion-button (click)="navigateToQRScreen()">
+        <!-- <ion-button (click)="navigateToQRScreen()">
           <ion-icon aria-hidden="true" src="assets/icon/qr-scan.svg"></ion-icon>
         </ion-button>  -->
         <ion-button (click)="emitEvent($event, 'profile')">
           <ion-icon aria-hidden="true" src="assets/icon/language-icon.svg"></ion-icon>
+        </ion-button>
+        <span>Welcome, <span>{{userName}} ! </span></span>
+        <ion-button (click)="logout()">
+          <img src="assets/icon/logout.png" width="20">
         </ion-button>
       </ion-buttons>
       <ion-buttons slot="end" [hidden]="!headerConfig?.showbackButton">
@@ -36,36 +46,43 @@
     </div>
     <!--bot panel header-->
     <div class="bot-back-panel" *ngIf="headerConfig?.actionButtons[0] === 'bot'">
-      <div class="bot-back-panel-container" [ngClass]="headerConfig?.pageTitle === 'Parent Tara' || headerConfig?.pageTitle === 'Teacher Tara' ?  'question-bot' : '' "  (click)="emitEvent($event, 'back')">  
+      <div class="bot-back-panel-container"
+        [ngClass]="headerConfig?.pageTitle === 'Parent Tara' || headerConfig?.pageTitle === 'Teacher Tara' ?  'question-bot' : '' "
+        (click)="emitEvent($event, 'back')">
         <!--use the class "parent-bot" for parent bot panel-->
         <ion-icon aria-hidden="true" src="assets/icon/bot-back-icon.svg"></ion-icon>
         <div *ngIf="!isTitleChanged" class="bot-back-panel__title">{{headerConfig?.pageTitle | translate}}</div>
-        <ion-label *ngIf="isTitleChanged && headerConfig?.pageTitle === 'Katha Sakhi'"> {{ configVariables?.[language]?.kathaSakhiBotName }}
+        <ion-label *ngIf="isTitleChanged && headerConfig?.pageTitle === 'Katha Sakhi'"> {{
+          configVariables?.[language]?.kathaSakhiBotName }}
         </ion-label>
-           <ion-label *ngIf="isTitleChanged && headerConfig?.pageTitle === 'Parent Tara'">{{ configVariables?.[language]?.parentTaraBotName }}</ion-label>
-       <ion-label *ngIf="isTitleChanged && headerConfig?.pageTitle === 'Teacher Tara'">{{ configVariables?.[language]?.teacherTaraBotName }}</ion-label>
+        <ion-label *ngIf="isTitleChanged && headerConfig?.pageTitle === 'Parent Tara'">{{
+          configVariables?.[language]?.parentTaraBotName }}</ion-label>
+        <ion-label *ngIf="isTitleChanged && headerConfig?.pageTitle === 'Teacher Tara'">{{
+          configVariables?.[language]?.teacherTaraBotName }}</ion-label>
 
         <div class="logo">
-          <img *ngIf="headerConfig?.pageTitle === 'Katha Sakhi'" src="../../../assets/images/story_sakhi.png" alt=""/>
-          <img *ngIf="headerConfig?.pageTitle === 'Parent Tara'" src="../../../assets/images/parent_sakhi.png" alt=""/>
-          <img *ngIf="headerConfig?.pageTitle === 'Teacher Tara'" src="../../../assets/images/teacher_sakhi.png" alt=""/>
+          <img *ngIf="headerConfig?.pageTitle === 'Katha Sakhi'" src="../../../assets/images/story_sakhi.png" alt="" />
+          <img *ngIf="headerConfig?.pageTitle === 'Parent Tara'" src="../../../assets/images/parent_sakhi.png" alt="" />
+          <img *ngIf="headerConfig?.pageTitle === 'Teacher Tara'" src="../../../assets/images/teacher_sakhi.png"
+            alt="" />
         </div>
       </div>
     </div>
     <!--bot panel header ends here-->
-    <div class="pills-container" *ngIf="!headerConfig?.showbackButton && headerConfig?.pageTitle !== 'My Jaadui Pitara'">
+    <div class="pills-container"
+      *ngIf="!headerConfig?.showbackButton && headerConfig?.pageTitle !== 'My Jaadui Pitara'">
       <ion-chip class="pills" (click)="toggleMenu()">
         <ion-icon aria-hidden="true" src="assets/icon/list.svg"></ion-icon>
       </ion-chip>
       <div *ngFor="let filter of filters; let i=index" (click)="handleFilter(filter)">
-        <ion-chip class="pills" [ngClass]="filter?.label == defaultFilter?.label ? 'active': ''">{{filter.label | translate }}</ion-chip>
+        <ion-chip class="pills" [ngClass]="filter?.label == defaultFilter?.label ? 'active': ''">{{filter.label |
+          translate }}</ion-chip>
       </div>
     </div>
   </ion-toolbar>
 </ion-header>
 
-<ion-menu contentId="mainContent" class="sb-side-menu" side="start" persistent="true"
-  [swipeGesture]="false">
+<ion-menu contentId="mainContent" class="sb-side-menu" side="start" persistent="true" [swipeGesture]="false">
   <ion-header>
     <ion-toolbar>
       <ion-title class="filter_title">{{'All Categories' | translate }}</ion-title>
@@ -74,7 +91,8 @@
   <ion-content class="ion-padding">
     <ion-list class="sb-menu-list">
       <ion-item lines="none" *ngFor="let item of filters" (click)="emitSideMenuItemEvent($event, item)">
-        <ion-label class="sb-menu-item" [ngClass]="item?.label == defaultFilter?.label ? 'active-label': ''" role="button" menuClose>{{item.label | translate}}</ion-label>
+        <ion-label class="sb-menu-item" [ngClass]="item?.label == defaultFilter?.label ? 'active-label': ''"
+          role="button" menuClose>{{item.label | translate}}</ion-label>
       </ion-item>
     </ion-list>
   </ion-content>
@@ -84,4 +102,4 @@
       <ion-label role="button" menuClose><span>{{ configVariables?.siteName }}</span></ion-label>
     </div>
   </ion-footer>
-</ion-menu> 
+</ion-menu>
