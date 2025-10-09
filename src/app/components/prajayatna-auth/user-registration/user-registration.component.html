@@ -49,11 +49,18 @@
         </div>
       </div>
 
-      <!-- Password -->
-      <div class="form-group">
+      <div class="form-group position-relative">
         <label>Password</label>
-        <input type="password" name="password" class="form-control" [(ngModel)]="userregisterData.password" required
-          pattern="^(?=.*[A-Za-z])(?=.*\d).{8,}$" #password="ngModel">
+
+        <input [type]="showPassword ? 'text' : 'password'" name="password" class="form-control"
+          [(ngModel)]="userregisterData.password" required pattern="^(?=.*[A-Za-z])(?=.*\d).{8,}$"
+          #password="ngModel" />
+
+        <!-- 👁️ Ionic eye button -->
+        <ion-button fill="clear" (click)="togglePasswordVisibility()" class="toggle-btn" type="button">
+          <ion-icon [name]="showPassword ? 'eye-off' : 'eye'"></ion-icon>
+        </ion-button>
+
         <div *ngIf="password.invalid && password.touched" class="error">
           <span *ngIf="password.errors?.['required']">Password is required</span>
           <span *ngIf="password.errors?.['pattern']">
@@ -62,13 +69,27 @@
         </div>
       </div>
 
-
+      <div class="form-group position-relative">
+        <label>Confirm Password</label>
+        <input [type]="showPassword ? 'text' : 'password'" name="confirmPassword" class="form-control"
+          [(ngModel)]="userregisterData.confirmPassword" required pattern="^(?=.*[A-Za-z])(?=.*\d).{8,}$"
+          #confirmPassword="ngModel" />
+        <!-- Eye icon button -->
+        <ion-button fill="clear" type="button" (click)="togglePasswordVisibility()" class="toggle-btn">
+          <ion-icon [name]="showPassword ? 'eye-off' : 'eye'"></ion-icon>
+        </ion-button>
+        <div *ngIf="confirmPassword.invalid && confirmPassword.touched" class="error">
+          <span *ngIf="confirmPassword.errors?.['required']">Password is required</span>
+          <span *ngIf="confirmPassword.errors?.['pattern']">
+            Password must be at least 8 characters and include letters and numbers.
+          </span>
+        </div>
+      </div>
 
       <button type="submit" [disabled]="registerForm.invalid">Register</button>
       <p (click)="switchToLogin()" style="cursor:pointer; margin-top:12px;">
         Already an account yet? Login here
       </p>
-
     </form>
 
   </div>

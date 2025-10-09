@@ -40,10 +40,16 @@
       </div>
 
       <!-- Password -->
-      <div class="form-group">
+      <div class="form-group position-relative">
         <label>Password</label>
-        <input type="password" name="password" class="form-control" [(ngModel)]="userLoginData.password" required
-          pattern="^(?=.*[A-Za-z])(?=.*\d).{8,}$" #password="ngModel">
+
+        <input [type]="showPassword ? 'text' : 'password'" name="password" class="form-control"
+          [(ngModel)]="userLoginData.password" required pattern="^(?=.*[A-Za-z])(?=.*\d).{8,}$" #password="ngModel" />
+
+        <!-- 👁️ Ionic eye button -->
+        <ion-button fill="clear" (click)="togglePasswordVisibility()" class="toggle-btn" type="button">
+          <ion-icon [name]="showPassword ? 'eye-off' : 'eye'"></ion-icon>
+        </ion-button>
 
         <div *ngIf="password.invalid && password.touched" class="error">
           <span *ngIf="password.errors?.['required']">Password is required</span>
@@ -53,8 +59,10 @@
         </div>
       </div>
 
+
       <!-- Submit Button -->
       <button type="submit" [disabled]="loginForm.invalid">Login</button>
+      <p class="forgot-password" (click)="switchToForgotPassword()"> Forgot Password ?</p>
 
       <p (click)="switchToRegistration()" style="cursor:pointer; margin-top:12px;">
         Don’t have an account yet? Register here

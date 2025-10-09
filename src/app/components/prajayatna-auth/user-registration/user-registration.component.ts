@@ -7,17 +7,23 @@ import { ToastController } from '@ionic/angular';
 @Component({
   selector: 'app-user-registration',
   templateUrl: './user-registration.component.html',
-  styleUrls: ['./user-registration.component.scss'],
+  styleUrls: ['../auth-styles.scss'],
 })
 export class UserRegistrationComponent  implements OnInit {
 
   siteName: string = '';
   apiUrl: string = '';
+  showPassword = false;
+
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
+  }
 
   userregisterData = {
     name: '',
     email: '',
     password: '',
+    confirmPassword:'',
     tenantName: ''
   };
 
@@ -57,6 +63,7 @@ export class UserRegistrationComponent  implements OnInit {
           this.userregisterData.name = '';
           this.userregisterData.email ='';
           this.userregisterData.password =''
+          this.userregisterData.confirmPassword =''
           this.userregisterData.tenantName =''
 
         },

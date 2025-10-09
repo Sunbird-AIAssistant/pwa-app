@@ -259,6 +259,14 @@ export class HomePage implements OnInit, OnTabViewWillEnter, OnDestroy {
 
   async ionViewWillEnter() {
     this.tabViewWillEnter();
+    // If flagged after login, perform a one-time hard reload when visiting /home
+    const shouldReload = sessionStorage.getItem('reloadHomeOnce');
+    if (shouldReload) {
+      sessionStorage.removeItem('reloadHomeOnce');
+      setTimeout(() => {
+        window.location.reload();
+      }, 0);
+    }
   }
 
   ionViewDidEnter() {

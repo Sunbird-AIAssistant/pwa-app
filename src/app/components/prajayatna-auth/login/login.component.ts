@@ -7,12 +7,18 @@ import { config } from 'configuration/environment.prod';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss'],
+  styleUrls: ['../auth-styles.scss'],
 })
 export class LoginComponent  implements OnInit {
 
   siteName: string = '';
   apiUrl: string = '';
+
+  showPassword = false;
+
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
+  }
 
 
   userLoginData = {
@@ -21,7 +27,7 @@ export class LoginComponent  implements OnInit {
     tenantName: ''
   };
 
-  showPassword: boolean = false; // 👈 Add this line
+
 
   constructor(
     private http: HttpClient,
@@ -64,6 +70,8 @@ export class LoginComponent  implements OnInit {
           await this.presentToast('Login successful!', 'success');
   
           // Redirect to home/dashboard page
+          // Set a one-time reload flag for Home to ensure initial state is fully rendered
+          sessionStorage.setItem('reloadHomeOnce', '1');
           this.router.navigate(['/home']); // replace with your route
           this.userLoginData.email = '';
           this.userLoginData.password ='';
@@ -82,6 +90,10 @@ export class LoginComponent  implements OnInit {
 
   switchToRegistration() {
     this.router.navigate(['/registration']);
+  }
+
+  switchToForgotPassword(){
+    this.router.navigate(['/forgot-password'])
   }
 
 }

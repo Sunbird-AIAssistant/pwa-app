@@ -83,8 +83,36 @@ export class ApplicationHeaderComponent  implements OnInit {
       });
     })
     this.appInfo = await this.utilService.getAppInfo();
-   
-    
+
+    // Load userName on first init if user already exists in localStorage
+    try {
+      const userRaw = localStorage.getItem('user');
+      if (userRaw) {
+        this.userName = JSON.parse(userRaw).name || '';
+      }
+    } catch {}
+
+    // Keep userName in sync if localStorage changes in this or other tabs
+    window.addEventListener('storage', (event: StorageEvent) => {
+      if (event.key === 'user') {
+        try {
+          this.userName = event.newValue ? (JSON.parse(event.newValue).name || '') : '';
+        } catch {
+          this.userName = '';
+        }
+      }
+    });
+
+    // Fallback: if username still not visible, refresh the screen once
+    setTimeout(() => {
+      if (!this.userName) {
+        const hasReloaded = sessionStorage.getItem('reloadedForUserName');
+        if (!hasReloaded) {
+          sessionStorage.setItem('reloadedForUserName', '1');
+          window.location.reload();
+        }
+      }
+    }, 500);
 
   }
 

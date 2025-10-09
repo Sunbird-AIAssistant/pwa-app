@@ -5,12 +5,14 @@ import { IonicModule } from '@ionic/angular'; // optional if using Ionic
 import { AuthRoutingModule } from './auth-routing.module';
 import { UserRegistrationComponent } from './user-registration/user-registration.component';
 import { LoginComponent } from './login/login.component';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 
 
 @NgModule({
   declarations: [
     LoginComponent,
-    UserRegistrationComponent
+    UserRegistrationComponent,
+    ForgotPasswordComponent
   ],
   imports: [
     CommonModule,

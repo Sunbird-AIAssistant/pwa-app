@@ -86,22 +86,40 @@ button:hover:not(:disabled) {
     height: auto;
 }
 
-.password-item {
-    --inner-padding-end: 0.5rem; // reduce padding for icon
-    --min-height: 0px; // set desired height
 
-    ion-input {
-        height: 100%; // make input fill the item height
-    }
-
-    ion-icon.eye-icon {
-        font-size: 1.2rem; // smaller icon
-        color: #666;
-        cursor: pointer;
-        margin-right: 4px;
-    }
+ion-icon {
+    font-size: 20px;
+    margin-right: 8px;
 }
 
-.form-control1 {
-    border: 1px solid #ccc;
+.form-group {
+    position: relative;
+}
+
+.toggle-btn {
+    --padding-start: 0;
+    --padding-end: 0;
+    position: absolute;
+    top: 45px;
+    right: 8px;
+    transform: translateY(-50%);
+    height: 32px;
+    min-height: 32px;
+    width: 32px;
+    --background: transparent;
+    /* no background */
+    --box-shadow: none;
+    color: #666;
+}
+
+.form-control {
+    padding-right: 40px;
+    /* space for the eye button */
+}
+
+p.forgot-password {
+    text-align: right;
+    margin: 15px 0px;
+    color: #AB251B;
+    cursor: pointer;
 }

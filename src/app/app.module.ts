@@ -5,6 +5,7 @@ import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { ComponentsModule } from './components/components.module';
+import { AuthModule } from './components/prajayatna-auth/auth.module';
 import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
@@ -34,6 +35,9 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../../configuration/environment.prod';
 import { SwUpdate } from '@angular/service-worker';
 import { ConfigVariables } from "./config";
+import { FormsModule } from '@angular/forms';
+
+
 
 export function translateHttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient, './assets/i18n/', '.json');
@@ -59,6 +63,8 @@ export function initializeFactory(init: DbService) {
     }),
     ComponentsModule,
     DirectivesModule,
+    FormsModule,
+    AuthModule,
     // ServiceWorkerModule.register('ngsw-worker.js', {
     //   enabled: !isDevMode(),
     //   // Register the ServiceWorker as soon as the application is stable
@@ -161,7 +167,8 @@ export class AppModule {
   private setManifestFile(currentDomain: any) {
     var link = document.createElement('link');
     link.rel = 'manifest';
-    link.href = currentDomain + '.webmanifest';
+    //link.href = currentDomain + '.webmanifest';
+    link.href = 'learningresources.webmanifest';
     document.getElementsByTagName('head')[0].appendChild(link);
   }
 }
