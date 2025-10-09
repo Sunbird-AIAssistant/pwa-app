@@ -6,7 +6,7 @@ ion-header {
 //   padding: 1.3rem 0.5rem 0.5rem !important;
 // }
 ::ng-deep {
-  .toolbar-container{
+  .toolbar-container {
     padding: 0 !important;
     min-height: auto;
   }
@@ -41,17 +41,20 @@ ion-icon {
   grid-auto-flow: column;
   padding: 1rem 0.5rem;
   grid-auto-columns: max-content;
+
   .pills {
     padding: 0.375rem 0.75rem;
     text-transform: capitalize;
     border-radius: 0.625rem;
     font-size: 0.75rem;
     width: max-content;
+
     &.active {
       background-color: var(--ion-color-secondary-contrast);
       color: var(--ion-color-primary-contrast);
     }
-    icon-icon{
+
+    icon-icon {
       margin-left: 0;
     }
   }
@@ -59,24 +62,30 @@ ion-icon {
 
 .sb-side-menu {
   --max-width: 68%;
+
   ion-toolbar {
-    --background:  var(--ion-color-primary-contrast);
+    --background: var(--ion-color-primary-contrast);
     --color: var(--ion-color-secondary-contrast);
     margin: 0 0 0 1.5rem;
+
     .filter_title {
       width: 100% !important;
     }
   }
+
   ion-label {
     display: flex;
     align-items: center;
   }
+
   div {
     display: block;
   }
-  .sb-menu-list  {
+
+  .sb-menu-list {
     padding: 0 !important;
-    .sb-menu-item{
+
+    .sb-menu-item {
       // margin: 0 0 0 0.5rem; 
     }
   }
@@ -92,32 +101,38 @@ span {
   ion-title {
     color: var(--ion-color-primary);
   }
+
   .title_bb {
     color: black;
   }
 }
 
-.custom-header:has(> .bot-back-panel) { 
+.custom-header:has(> .bot-back-panel) {
   //padding: 0 !important;
 }
-.bot-back-panel{
+
+.bot-back-panel {
   padding-bottom: 2rem;
   background: url('../../../assets/images/Doodles.svg') center center / cover no-repeat;
   background-color: #FFFAEE;
-  .bot-back-panel-container{
+
+  .bot-back-panel-container {
     background: var(--ion-color-primary);
     height: 4rem;
     padding: 1rem;
     display: flex;
     align-items: center;
-    &.question-bot{
-      background:  var(--ion-color-tertiary);
+
+    &.question-bot {
+      background: var(--ion-color-tertiary);
     }
+
     ion-icon {
       color: var(--ion-color-primary-contrast);
     }
   }
-  &__title{
+
+  &__title {
     font-size: 1rem;
     font-style: normal;
     font-weight: 700;
@@ -126,7 +141,7 @@ span {
   }
 }
 
-.edit-icon{
+.edit-icon {
   width: 1.2rem;
   height: 1.2rem;
 }
@@ -135,7 +150,7 @@ span {
   color: var(--ion-color-primary);
 }
 
-.logo{
+.logo {
   position: absolute;
   right: 0;
   top: -0.5rem;
@@ -163,6 +178,7 @@ ion-title {
   font-weight: 700;
   padding: 0 0.5rem 0 0;
   font-size: 0.8rem;
+
   @keyframes textclip {
     to {
       background-position: 200% center;
@@ -175,4 +191,8 @@ ion-title {
   align-items: center;
   flex-direction: column;
   margin: 0.5rem 1.5rem;
+}
+
+::ng-deep .custom-alert .alert-wrapper {
+  width: 400px !important;
 }

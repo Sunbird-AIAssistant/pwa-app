@@ -7,6 +7,10 @@ import { ConfigVariables } from '../../config';
 import { QrcodePopupComponent } from '../qrcode-popup/qrcode-popup.component';
 import { StorageService } from 'src/app/services';
 import { LanguageService } from '../../components/langauge-select/language.service';
+import { AlertController } from '@ionic/angular';
+import { ToastController } from '@ionic/angular';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-application-header',
@@ -26,6 +30,7 @@ export class ApplicationHeaderComponent  implements OnInit {
   configVariables : any;
   isTitleChanged : boolean = false;
   languageSubscription: any;
+  userName:string='';
 
   language: string = '';
   constructor(private utilService: UtilService,
@@ -35,6 +40,9 @@ export class ApplicationHeaderComponent  implements OnInit {
     private storage : StorageService,
     private languageService: LanguageService,
     private modalCtrl: ModalController,
+    private alertController: AlertController,
+    private toastController: ToastController,
+    private router: Router,
     ) {
       App.getInfo().then(val => {
         this.appVersion = `v${val.version}.${val.build}`
@@ -47,6 +55,7 @@ export class ApplicationHeaderComponent  implements OnInit {
       }).catch(error => {
         console.error('Failed to load configuration:', error);
       });
+      this.userName = JSON.parse(localStorage.getItem('user') || '{}').name || '';
     }
 
     loadTabData(language: string) {
@@ -74,6 +83,37 @@ export class ApplicationHeaderComponent  implements OnInit {
       });
     })
     this.appInfo = await this.utilService.getAppInfo();
+
+    // Load userName on first init if user already exists in localStorage
+    try {
+      const userRaw = localStorage.getItem('user');
+      if (userRaw) {
+        this.userName = JSON.parse(userRaw).name || '';
+      }
+    } catch {}
+
+    // Keep userName in sync if localStorage changes in this or other tabs
+    window.addEventListener('storage', (event: StorageEvent) => {
+      if (event.key === 'user') {
+        try {
+          this.userName = event.newValue ? (JSON.parse(event.newValue).name || '') : '';
+        } catch {
+          this.userName = '';
+        }
+      }
+    });
+
+    // Fallback: if username still not visible, refresh the screen once
+    setTimeout(() => {
+      if (!this.userName) {
+        const hasReloaded = sessionStorage.getItem('reloadedForUserName');
+        if (!hasReloaded) {
+          sessionStorage.setItem('reloadedForUserName', '1');
+          window.location.reload();
+        }
+      }
+    }, 500);
+
   }
 
   async scan() {
@@ -124,4 +164,59 @@ export class ApplicationHeaderComponent  implements OnInit {
     await modal.present();
     modal.onDidDismiss();
   }
+
+  async logout() {
+    const alert = await this.alertController.create({
+      header: 'Confirm Logout',
+      message: 'Are you sure you want to logout?',
+      cssClass:'custom-alert',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+            console.log('Logout canceled');
+          },
+        },
+        {
+          text: 'Logout',
+          role: 'destructive',
+          handler: () => {
+            this.performLogout();
+          },
+        },
+      ],
+    });
+
+    await alert.present();
+  }
+
+
+  async presentToast(message: string, color: string = 'success') {
+    const toast = await this.toastController.create({
+      message,
+      duration: 2000,
+      color,
+      position: 'top'
+    });
+    toast.present();
+  }
+
+  performLogout() {
+    this.headerConfig= false;
+      // Remove token and user info from localStorage
+      localStorage.removeItem('access_token');
+      localStorage.removeItem('user');
+    
+      // Optional: show toast
+      this.presentToast('Logged out successfully', 'success');
+    
+      // Redirect to login page
+      this.router.navigate(['/login']);
+    
+    
+    this.emitEvent(new Event(''), 'logout');
+  }
+
+  
 }

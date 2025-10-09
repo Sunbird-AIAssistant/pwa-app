@@ -1,0 +1,74 @@
+<div class="login-container">
+  <div class="login-box">
+    <div class="auth-header">
+      <div *ngIf="siteName==='Hummingbird School in Assam'">
+        <img src="assets/school/THSM_152x152.png" [alt]="siteName + ' logo'" class="logo" />
+      </div>
+      <div *ngIf="siteName==='Dharma Life'">
+        <img src="assets/school/DL_152x152.png" [alt]="siteName + ' logo'" class="logo" />
+      </div>
+      <div *ngIf="siteName==='Garhwal English Medium School'">
+        <img src="assets/school/GEMS.jpeg" [alt]="siteName + ' logo'" class="logo" />
+      </div>
+      <div *ngIf="siteName==='Imamiya Mission School'">
+        <img src="assets/school/IMS_152x152.png" [alt]="siteName + ' logo'" class="logo" />
+      </div>
+      <div *ngIf="siteName==='Sols Arc'">
+        <img src="assets/school/SA_152x152.png" [alt]="siteName + ' logo'" class="logo" />
+      </div>
+      <div *ngIf="siteName==='Prajayatna'">
+        <img src="assets/school/prajayatna-logo-eng.webp" [alt]="siteName + ' logo'" class="logo" />
+      </div>
+      <br>
+      <div *ngIf="siteName==='Turtuk Valley School'">
+        <img src="assets/school/TVS_152x152.png" [alt]="siteName + ' logo'" class="logo" />
+      </div>
+      <h3>{{ siteName }}</h3>
+    </div>
+    <h2>Login</h2>
+    <form #loginForm="ngForm" (ngSubmit)="onSubmit()" class="login-form">
+
+      <!-- Email -->
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" name="email" class="form-control" [(ngModel)]="userLoginData.email" required
+          pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" #email="ngModel">
+        <div *ngIf="email.invalid && email.touched" class="error">
+          <span *ngIf="email.errors?.['required']">Email is required</span>
+          <span *ngIf="email.errors?.['pattern']">Enter a valid email address</span>
+        </div>
+      </div>
+
+      <!-- Password -->
+      <div class="form-group position-relative">
+        <label>Password</label>
+
+        <input [type]="showPassword ? 'text' : 'password'" name="password" class="form-control"
+          [(ngModel)]="userLoginData.password" required pattern="^(?=.*[A-Za-z])(?=.*\d).{8,}$" #password="ngModel" />
+
+        <!-- 👁️ Ionic eye button -->
+        <ion-button fill="clear" (click)="togglePasswordVisibility()" class="toggle-btn" type="button">
+          <ion-icon [name]="showPassword ? 'eye-off' : 'eye'"></ion-icon>
+        </ion-button>
+
+        <div *ngIf="password.invalid && password.touched" class="error">
+          <span *ngIf="password.errors?.['required']">Password is required</span>
+          <span *ngIf="password.errors?.['pattern']">
+            Password must be at least 8 characters and include letters and numbers.
+          </span>
+        </div>
+      </div>
+
+
+      <!-- Submit Button -->
+      <button type="submit" [disabled]="loginForm.invalid">Login</button>
+      <p class="forgot-password" (click)="switchToForgotPassword()"> Forgot Password ?</p>
+
+      <p (click)="switchToRegistration()" style="cursor:pointer; margin-top:12px;">
+        Don’t have an account yet? Register here
+      </p>
+
+    </form>
+
+  </div>
+</div>

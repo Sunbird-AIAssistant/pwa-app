@@ -2,11 +2,19 @@ import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
 export const routes: Routes = [
-  {
-    path: '',
-    loadChildren: () => import('./pages/splash/splash.module').then( m => m.SplashPageModule),
-    pathMatch: 'full'
-  },
+{
+  path: '',  // default route
+  loadChildren: () =>
+    import('./pages/splash/splash.module').then(m => m.SplashPageModule),
+  pathMatch: 'full'
+},
+{
+  path: 'login',  // direct login path
+  loadChildren: () =>
+    import('./components/prajayatna-auth/auth.module').then(m => m.AuthModule)
+},
+
+  
   {
     path: 'tabs',
     loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule)
