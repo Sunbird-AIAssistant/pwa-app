@@ -36,7 +36,7 @@ export class LoginComponent  implements OnInit {
   ) {}
 
   ngOnInit() {
-   this.siteName = sessionStorage.getItem('siteName') || '';
+   this.siteName = localStorage.getItem('siteName') || '';
     this.apiUrl = config.api.BASE_URL;
     this.userLoginData.tenantName = this.siteName;
   }
