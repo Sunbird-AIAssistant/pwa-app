@@ -34,13 +34,7 @@ export class ForgotPasswordComponent  implements OnInit {
   ) { }
 
   ngOnInit() {
-    try {
-      const hostname = new URL(document.baseURI).hostname;
-      const parts = hostname.split('.');
-      this.siteName = parts[0] || '';
-    } catch {
-      this.siteName = localStorage.getItem('siteName') || '';
-    }
+    this.siteName = sessionStorage.getItem('siteName') || '';
     this.apiUrl = config.api.BASE_URL;
     this.forgotPasswordData.tenantName = this.siteName;
   }

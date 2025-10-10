@@ -35,7 +35,7 @@ export class SplashPage implements OnInit {
   async ngOnInit() {
     ConfigVariables.then(config => {
       this.configVariables = config;
-      try { localStorage.setItem('siteName', config?.siteName || ''); } catch {}
+      try { sessionStorage.setItem('siteName', config?.siteName || ''); } catch {}
     }).catch(error => {
       console.error('Failed to load configuration:', error);
     });
@@ -49,7 +49,7 @@ export class SplashPage implements OnInit {
     this.appinitialise.initialize();
     setTimeout(async () => {
       this.startTelemetry()
-      const siteName = (localStorage.getItem('siteName') || this.configVariables?.siteName || '').trim();
+      const siteName = (sessionStorage.getItem('siteName') || this.configVariables?.siteName || '').trim();
       const isLoggedIn = await this.storage.getData('authToken');
       if (siteName) {
         this.router.navigate(['/login']); 
