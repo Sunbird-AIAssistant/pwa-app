@@ -34,7 +34,7 @@ export class ForgotPasswordComponent  implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.siteName = localStorage.getItem('siteName') || '';
+    this.siteName = sessionStorage.getItem('siteName') || '';
     this.apiUrl = config.api.BASE_URL;
     this.forgotPasswordData.tenantName = this.siteName;
   }
