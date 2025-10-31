@@ -27,10 +27,9 @@
     </div>
     <h2>Register</h2>
     <form (ngSubmit)="onSubmit()" #registerForm="ngForm" class="register-form">
-
       <!-- Name -->
       <div class="form-group">
-        <label>Name</label>
+        <label>Name <sup class="mandatory-sign">*</sup></label>
         <input type="text" name="name" class="form-control" [(ngModel)]="userregisterData.name" required
           #name="ngModel">
         <div *ngIf="name.invalid && name.touched" class="error">
@@ -38,9 +37,28 @@
         </div>
       </div>
 
+      <!-- Phone Number only for Prajayatna-->
+      <div *ngIf="siteName==='Prajayatna'" class="form-group">
+        <label>Phone Number <sup class="mandatory-sign">*</sup></label>
+        <input type="text" name="phoneNumber" class="form-control" [(ngModel)]="userregisterData.phoneNumber" required
+          pattern="^[0-9]{10}$" #phoneNumber="ngModel">
+        <div *ngIf="phoneNumber.invalid && phoneNumber.touched" class="error">
+          <span *ngIf="phoneNumber.errors?.['required']">Phone Number is required</span>
+          <span *ngIf="phoneNumber.errors?.['pattern']"> Enter a valid 10-digit Phone Number</span>
+        </div>
+      </div>
+      <div class="form-group" *ngIf="siteName==='Prajayatna'">
+        <label for="state">Select State</label>
+        <select id="state" class="form-control" [(ngModel)]="userregisterData.selectedState" name="state" required>
+          <option value="" disabled selected>Select a state</option>
+          <option *ngFor="let state of states" [value]="state">
+            {{ state }}
+          </option>
+        </select>
+      </div>
       <!-- Email -->
-      <div class="form-group">
-        <label>Email</label>
+      <div *ngIf="siteName!=='Prajayatna'" class="form-group">
+        <label>Email <sup class="mandatory-sign">*</sup></label>
         <input type="email" name="email" class="form-control" [(ngModel)]="userregisterData.email" required
           pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" #email="ngModel">
         <div *ngIf="email.invalid && email.touched" class="error">
@@ -48,19 +66,15 @@
           <span *ngIf="email.errors?.['pattern']">Enter a valid email address</span>
         </div>
       </div>
-
       <div class="form-group position-relative">
-        <label>Password</label>
-
+        <label>Password <sup class="mandatory-sign">*</sup></label>
         <input [type]="showPassword ? 'text' : 'password'" name="password" class="form-control"
           [(ngModel)]="userregisterData.password" required pattern="^(?=.*[A-Za-z])(?=.*\d).{8,}$"
           #password="ngModel" />
-
         <!-- 👁️ Ionic eye button -->
         <ion-button fill="clear" (click)="togglePasswordVisibility()" class="toggle-btn" type="button">
           <ion-icon [name]="showPassword ? 'eye-off' : 'eye'"></ion-icon>
         </ion-button>
-
         <div *ngIf="password.invalid && password.touched" class="error">
           <span *ngIf="password.errors?.['required']">Password is required</span>
           <span *ngIf="password.errors?.['pattern']">
@@ -68,9 +82,8 @@
           </span>
         </div>
       </div>
-
       <div class="form-group position-relative">
-        <label>Confirm Password</label>
+        <label>Confirm Password <sup class="mandatory-sign">*</sup></label>
         <input [type]="showPassword ? 'text' : 'password'" name="confirmPassword" class="form-control"
           [(ngModel)]="userregisterData.confirmPassword" required pattern="^(?=.*[A-Za-z])(?=.*\d).{8,}$"
           #confirmPassword="ngModel" />

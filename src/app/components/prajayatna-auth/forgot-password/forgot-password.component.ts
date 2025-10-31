@@ -16,6 +16,7 @@ export class ForgotPasswordComponent  implements OnInit {
   apiUrl: string = '';
 
   forgotPasswordData = {
+    phoneNumber:'',
     email: '',
     newPassword: '',
     confirmNewPassword: '',
@@ -82,6 +83,7 @@ onSubmitForgotPassword() {
 
 resetForm() {
   this.forgotPasswordData = {
+    phoneNumber:'',
     email: '',
     newPassword: '',
     confirmNewPassword: '',
