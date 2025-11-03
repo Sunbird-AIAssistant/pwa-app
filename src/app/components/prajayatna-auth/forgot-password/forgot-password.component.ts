@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import {Router} from '@angular/router';
 import { config } from 'configuration/environment.prod';
@@ -10,7 +10,7 @@ import { ToastController } from '@ionic/angular';
   templateUrl: './forgot-password.component.html',
   styleUrls: ['../auth-styles.scss'],
 })
-export class ForgotPasswordComponent  implements OnInit {
+export class ForgotPasswordComponent  implements OnInit, OnDestroy {
 
   siteName: string = '';
   apiUrl: string = '';
@@ -38,6 +38,31 @@ export class ForgotPasswordComponent  implements OnInit {
     this.siteName = localStorage.getItem('siteName') || '';
     this.apiUrl = config.api.BASE_URL;
     this.forgotPasswordData.tenantName = this.siteName;
+
+    // React if siteName is set asynchronously (e.g., after splash config loads)
+    if (!this.siteName) {
+      setTimeout(() => {
+        const refreshed = localStorage.getItem('siteName') || '';
+        if (refreshed && !this.forgotPasswordData.tenantName) {
+          this.siteName = refreshed;
+          this.forgotPasswordData.tenantName = refreshed;
+        }
+      }, 300);
+    }
+
+    window.addEventListener('storage', this.onStorageChange);
+  }
+
+  private onStorageChange = (event: StorageEvent) => {
+    if (event.key === 'siteName') {
+      const value = event.newValue || '';
+      this.siteName = value;
+      this.forgotPasswordData.tenantName = value;
+    }
+  };
+
+  ngOnDestroy() {
+    window.removeEventListener('storage', this.onStorageChange);
   }
 
 
@@ -67,6 +92,12 @@ checkPasswordMatch() {
 
 onSubmitForgotPassword() {
   if (this.passwordMismatch) return;
+  // Final guard to ensure tenantName is present
+  if (!this.forgotPasswordData.tenantName) {
+    const latest = localStorage.getItem('siteName') || '';
+    this.forgotPasswordData.tenantName = latest;
+    this.siteName = latest;
+  }
 
   this.http.post(`${this.apiUrl}auth/change-password`, this.forgotPasswordData)
     .subscribe({

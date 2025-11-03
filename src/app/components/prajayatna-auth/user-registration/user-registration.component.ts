@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import {Router} from '@angular/router';
 import { config } from 'configuration/environment.prod';
 import { HttpClient } from '@angular/common/http';
@@ -9,7 +9,7 @@ import { ToastController } from '@ionic/angular';
   templateUrl: './user-registration.component.html',
   styleUrls: ['../auth-styles.scss'],
 })
-export class UserRegistrationComponent  implements OnInit {
+export class UserRegistrationComponent  implements OnInit, OnDestroy {
 
   siteName: string = '';
   apiUrl: string = '';
@@ -51,6 +51,31 @@ export class UserRegistrationComponent  implements OnInit {
     this.apiUrl = config.api.BASE_URL;
 
     this.userregisterData.tenantName = this.siteName;
+
+    // React if siteName is set asynchronously (e.g., after splash config loads)
+    if (!this.siteName) {
+      setTimeout(() => {
+        const refreshed = localStorage.getItem('siteName') || '';
+        if (refreshed && !this.userregisterData.tenantName) {
+          this.siteName = refreshed;
+          this.userregisterData.tenantName = refreshed;
+        }
+      }, 300);
+    }
+
+    window.addEventListener('storage', this.onStorageChange);
+  }
+
+  private onStorageChange = (event: StorageEvent) => {
+    if (event.key === 'siteName') {
+      const value = event.newValue || '';
+      this.siteName = value;
+      this.userregisterData.tenantName = value;
+    }
+  };
+
+  ngOnDestroy() {
+    window.removeEventListener('storage', this.onStorageChange);
   }
 
   async presentToast(message: string, color: string = 'success') {
@@ -64,6 +89,12 @@ export class UserRegistrationComponent  implements OnInit {
   }
 
   onSubmit() {
+    // Final guard to ensure tenantName is present
+    if (!this.userregisterData.tenantName) {
+      const latest = localStorage.getItem('siteName') || '';
+      this.userregisterData.tenantName = latest;
+      this.siteName = latest;
+    }
     this.http.post(`${this.apiUrl}auth/register`, this.userregisterData)
       .subscribe({
         next: async (res) => {
