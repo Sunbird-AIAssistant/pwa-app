@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 import { config } from 'configuration/environment.prod';
+import { ConfigVariables } from '../../../config';
 
 @Component({
   selector: 'app-login',
@@ -42,6 +43,16 @@ export class LoginComponent  implements OnInit, OnDestroy {
 
     // React if siteName is set asynchronously (e.g., after splash config loads)
     if (!this.siteName) {
+      // Fallback: load configuration and set siteName if splash wasn't visited
+      ConfigVariables.then(cfg => {
+        const computed = (cfg && cfg.siteName) || '';
+        if (computed) {
+          try { localStorage.setItem('siteName', computed); } catch {}
+          this.siteName = computed;
+          this.userLoginData.tenantName = computed;
+        }
+      }).catch(() => {});
+
       setTimeout(() => {
         const refreshed = localStorage.getItem('siteName') || '';
         if (refreshed && !this.userLoginData.tenantName) {

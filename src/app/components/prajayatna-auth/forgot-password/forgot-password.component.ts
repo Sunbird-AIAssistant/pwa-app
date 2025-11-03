@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import {Router} from '@angular/router';
 import { config } from 'configuration/environment.prod';
+import { ConfigVariables } from '../../../config';
 import { HttpClient } from '@angular/common/http';
 import { ToastController } from '@ionic/angular';
 
@@ -41,6 +42,16 @@ export class ForgotPasswordComponent  implements OnInit, OnDestroy {
 
     // React if siteName is set asynchronously (e.g., after splash config loads)
     if (!this.siteName) {
+      // Fallback: load configuration and set siteName if splash wasn't visited
+      ConfigVariables.then(cfg => {
+        const computed = (cfg && cfg.siteName) || '';
+        if (computed) {
+          try { localStorage.setItem('siteName', computed); } catch {}
+          this.siteName = computed;
+          this.forgotPasswordData.tenantName = computed;
+        }
+      }).catch(() => {});
+
       setTimeout(() => {
         const refreshed = localStorage.getItem('siteName') || '';
         if (refreshed && !this.forgotPasswordData.tenantName) {
