@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
@@ -9,7 +9,7 @@ import { config } from 'configuration/environment.prod';
   templateUrl: './login.component.html',
   styleUrls: ['../auth-styles.scss'],
 })
-export class LoginComponent  implements OnInit {
+export class LoginComponent  implements OnInit, OnDestroy {
 
   siteName: string = '';
   apiUrl: string = '';
@@ -39,6 +39,31 @@ export class LoginComponent  implements OnInit {
    this.siteName = localStorage.getItem('siteName') || '';
     this.apiUrl = config.api.BASE_URL;
     this.userLoginData.tenantName = this.siteName;
+
+    // React if siteName is set asynchronously (e.g., after splash config loads)
+    if (!this.siteName) {
+      setTimeout(() => {
+        const refreshed = localStorage.getItem('siteName') || '';
+        if (refreshed && !this.userLoginData.tenantName) {
+          this.siteName = refreshed;
+          this.userLoginData.tenantName = refreshed;
+        }
+      }, 300);
+    }
+
+    window.addEventListener('storage', this.onStorageChange);
+  }
+
+  private onStorageChange = (event: StorageEvent) => {
+    if (event.key === 'siteName') {
+      const value = event.newValue || '';
+      this.siteName = value;
+      this.userLoginData.tenantName = value;
+    }
+  };
+
+  ngOnDestroy() {
+    window.removeEventListener('storage', this.onStorageChange);
   }
 
   async presentToast(message: string, color: string = 'success') {
@@ -52,6 +77,12 @@ export class LoginComponent  implements OnInit {
   }
 
   onSubmit() {
+    // Final guard to ensure tenantName is present
+    if (!this.userLoginData.tenantName) {
+      const latest = localStorage.getItem('siteName') || '';
+      this.userLoginData.tenantName = latest;
+      this.siteName = latest;
+    }
     this.http.post(`${this.apiUrl}auth/login`, this.userLoginData)
       .subscribe({
         next: async (res: any) => {
@@ -66,7 +97,7 @@ export class LoginComponent  implements OnInit {
           // Redirect to home/dashboard page
           // Set a one-time reload flag for Home to ensure initial state is fully rendered
           sessionStorage.setItem('reloadHomeOnce', '1');
-          this.router.navigate(['/home']); // replace with your route
+          this.router.navigate(['/tabs/home']); // replace with your route
           this.userLoginData.email = '';
           this.userLoginData.password ='';
           this.userLoginData.tenantName =''
