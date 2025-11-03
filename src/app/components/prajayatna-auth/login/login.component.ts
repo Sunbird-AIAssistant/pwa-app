@@ -22,7 +22,6 @@ export class LoginComponent  implements OnInit {
 
 
   userLoginData = {
-    phoneNumber :'',
     email: '',
     password: '',
     tenantName: ''
@@ -68,7 +67,6 @@ export class LoginComponent  implements OnInit {
           // Set a one-time reload flag for Home to ensure initial state is fully rendered
           sessionStorage.setItem('reloadHomeOnce', '1');
           this.router.navigate(['/home']); // replace with your route
-          this.userLoginData.phoneNumber = '';
           this.userLoginData.email = '';
           this.userLoginData.password ='';
           this.userLoginData.tenantName =''
