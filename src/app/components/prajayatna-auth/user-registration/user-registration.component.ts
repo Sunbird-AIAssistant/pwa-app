@@ -14,6 +14,17 @@ export class UserRegistrationComponent  implements OnInit {
   siteName: string = '';
   apiUrl: string = '';
   showPassword = false;
+  // selectedState: string = '';
+
+  // states: string[] = [
+  //   'Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh',
+  //   'Goa', 'Gujarat', 'Haryana', 'Himachal Pradesh', 'Jharkhand',
+  //   'Karnataka', 'Kerala', 'Madhya Pradesh', 'Maharashtra', 'Manipur',
+  //   'Meghalaya', 'Mizoram', 'Nagaland', 'Odisha', 'Punjab',
+  //   'Rajasthan', 'Sikkim', 'Tamil Nadu', 'Telangana', 'Tripura',
+  //   'Uttar Pradesh', 'Uttarakhand', 'West Bengal'
+  // ];
+
 
   togglePasswordVisibility() {
     this.showPassword = !this.showPassword;
@@ -21,7 +32,9 @@ export class UserRegistrationComponent  implements OnInit {
 
   userregisterData = {
     name: '',
+   // phoneNumber:'',
     email: '',
+   // selectedState:'',
     password: '',
     confirmPassword:'',
     tenantName: ''
@@ -61,6 +74,8 @@ export class UserRegistrationComponent  implements OnInit {
           // Redirect to login page
           this.router.navigate(['/login']);
           this.userregisterData.name = '';
+         // this.userregisterData.phoneNumber = '',
+         // this.userregisterData.selectedState='',
           this.userregisterData.email ='';
           this.userregisterData.password =''
           this.userregisterData.confirmPassword =''

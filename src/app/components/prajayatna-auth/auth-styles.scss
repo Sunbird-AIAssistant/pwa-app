@@ -114,6 +114,7 @@ ion-icon {
 
 .form-control {
     padding-right: 40px;
+    background-color: #fff;
     /* space for the eye button */
 }
 
@@ -122,4 +123,8 @@ p.forgot-password {
     margin: 15px 0px;
     color: #AB251B;
     cursor: pointer;
+}
+
+.mandatory-sign {
+    color: #AB251B;
 }
