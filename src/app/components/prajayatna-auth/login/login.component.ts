@@ -14,6 +14,8 @@ export class LoginComponent  implements OnInit, OnDestroy {
 
   siteName: string = '';
   apiUrl: string = '';
+  isPrajayatna: boolean = false;
+  loginType: 'email' | 'phone' = 'email'; // For Prajayatna: toggle between email and phone
 
   showPassword = false;
 
@@ -24,6 +26,7 @@ export class LoginComponent  implements OnInit, OnDestroy {
 
   userLoginData = {
     email: '',
+    phoneNumber: '',
     password: '',
     tenantName: ''
   };
@@ -40,6 +43,7 @@ export class LoginComponent  implements OnInit, OnDestroy {
    this.siteName = localStorage.getItem('siteName') || '';
     this.apiUrl = config.api.BASE_URL;
     this.userLoginData.tenantName = this.siteName;
+    this.isPrajayatna = this.siteName === 'Prajayatna';
 
     // React if siteName is set asynchronously (e.g., after splash config loads)
     if (!this.siteName) {
@@ -50,6 +54,7 @@ export class LoginComponent  implements OnInit, OnDestroy {
           try { localStorage.setItem('siteName', computed); } catch {}
           this.siteName = computed;
           this.userLoginData.tenantName = computed;
+          this.isPrajayatna = computed === 'Prajayatna';
         }
       }).catch(() => {});
 
@@ -58,6 +63,7 @@ export class LoginComponent  implements OnInit, OnDestroy {
         if (refreshed && !this.userLoginData.tenantName) {
           this.siteName = refreshed;
           this.userLoginData.tenantName = refreshed;
+          this.isPrajayatna = refreshed === 'Prajayatna';
         }
       }, 300);
     }
@@ -70,6 +76,7 @@ export class LoginComponent  implements OnInit, OnDestroy {
       const value = event.newValue || '';
       this.siteName = value;
       this.userLoginData.tenantName = value;
+      this.isPrajayatna = value === 'Prajayatna';
     }
   };
 
@@ -93,8 +100,22 @@ export class LoginComponent  implements OnInit, OnDestroy {
       const latest = localStorage.getItem('siteName') || '';
       this.userLoginData.tenantName = latest;
       this.siteName = latest;
+      this.isPrajayatna = latest === 'Prajayatna';
     }
-    this.http.post(`${this.apiUrl}auth/login`, this.userLoginData)
+    
+    // Prepare payload based on login type for Prajayatna
+    const payload: any = {
+      password: this.userLoginData.password,
+      tenantName: this.userLoginData.tenantName
+    };
+    
+    if (this.isPrajayatna && this.loginType === 'phone') {
+      payload.mobileNumber = this.userLoginData.phoneNumber;
+    } else {
+      payload.email = this.userLoginData.email;
+    }
+    
+    this.http.post(`${this.apiUrl}auth/login`, payload)
       .subscribe({
         next: async (res: any) => {
   
@@ -110,6 +131,7 @@ export class LoginComponent  implements OnInit, OnDestroy {
           sessionStorage.setItem('reloadHomeOnce', '1');
           this.router.navigate(['/tabs/home']); // replace with your route
           this.userLoginData.email = '';
+          this.userLoginData.phoneNumber = '';
           this.userLoginData.password ='';
           this.userLoginData.tenantName =''
 

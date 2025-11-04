@@ -15,9 +15,11 @@ export class ForgotPasswordComponent  implements OnInit, OnDestroy {
 
   siteName: string = '';
   apiUrl: string = '';
+  isPrajayatna: boolean = false;
+  forgotPasswordType: 'email' | 'phone' = 'email'; // For Prajayatna: toggle between email and phone
 
   forgotPasswordData = {
-   // phoneNumber:'',
+    phoneNumber: '',
     email: '',
     newPassword: '',
     confirmNewPassword: '',
@@ -39,6 +41,7 @@ export class ForgotPasswordComponent  implements OnInit, OnDestroy {
     this.siteName = localStorage.getItem('siteName') || '';
     this.apiUrl = config.api.BASE_URL;
     this.forgotPasswordData.tenantName = this.siteName;
+    this.isPrajayatna = this.siteName === 'Prajayatna';
 
     // React if siteName is set asynchronously (e.g., after splash config loads)
     if (!this.siteName) {
@@ -49,6 +52,7 @@ export class ForgotPasswordComponent  implements OnInit, OnDestroy {
           try { localStorage.setItem('siteName', computed); } catch {}
           this.siteName = computed;
           this.forgotPasswordData.tenantName = computed;
+          this.isPrajayatna = computed === 'Prajayatna';
         }
       }).catch(() => {});
 
@@ -57,6 +61,7 @@ export class ForgotPasswordComponent  implements OnInit, OnDestroy {
         if (refreshed && !this.forgotPasswordData.tenantName) {
           this.siteName = refreshed;
           this.forgotPasswordData.tenantName = refreshed;
+          this.isPrajayatna = refreshed === 'Prajayatna';
         }
       }, 300);
     }
@@ -69,6 +74,7 @@ export class ForgotPasswordComponent  implements OnInit, OnDestroy {
       const value = event.newValue || '';
       this.siteName = value;
       this.forgotPasswordData.tenantName = value;
+      this.isPrajayatna = value === 'Prajayatna';
     }
   };
 
@@ -108,9 +114,23 @@ onSubmitForgotPassword() {
     const latest = localStorage.getItem('siteName') || '';
     this.forgotPasswordData.tenantName = latest;
     this.siteName = latest;
+    this.isPrajayatna = latest === 'Prajayatna';
   }
 
-  this.http.post(`${this.apiUrl}auth/change-password`, this.forgotPasswordData)
+  // Prepare payload based on forgot password type for Prajayatna
+  const payload: any = {
+    newPassword: this.forgotPasswordData.newPassword,
+    confirmNewPassword: this.forgotPasswordData.confirmNewPassword,
+    tenantName: this.forgotPasswordData.tenantName
+  };
+  
+  if (this.isPrajayatna && this.forgotPasswordType === 'phone') {
+    payload.mobileNumber = this.forgotPasswordData.phoneNumber;
+  } else {
+    payload.email = this.forgotPasswordData.email;
+  }
+
+  this.http.post(`${this.apiUrl}auth/change-password`, payload)
     .subscribe({
       next: async () => {
         await this.presentToast('Password reset successful!', 'success');
@@ -125,7 +145,7 @@ onSubmitForgotPassword() {
 
 resetForm() {
   this.forgotPasswordData = {
-    //phoneNumber:'',
+    phoneNumber: '',
     email: '',
     newPassword: '',
     confirmNewPassword: '',

@@ -17,7 +17,8 @@
         <img src="assets/school/SA_152x152.png" [alt]="siteName + ' logo'" class="logo" />
       </div>
       <div *ngIf="siteName==='Prajayatna'">
-        <img src="assets/school/prajayatna-logo-eng.webp" [alt]="siteName + ' logo'" class="logo" />
+        <img src="assets/school/prajayatna-logo-eng.webp" [alt]="siteName + ' logo'" class="logo"
+          style="max-height: 60px" />
       </div>
       <br>
       <div *ngIf="siteName==='Turtuk Valley School'">
@@ -28,25 +29,39 @@
     <h2>Login</h2>
     <form #loginForm="ngForm" (ngSubmit)="onSubmit()" class="login-form">
 
-      <!-- Phone Number only for Prajayatna-->
-      <!-- <div *ngIf="siteName==='Prajayatna'" class="form-group">
-        <label>Phone Number <sup class="mandatory-sign">*</sup></label>
-        <input type="text" name="phoneNumber" class="form-control" [(ngModel)]="userLoginData.phoneNumber" required
-          pattern="^[0-9]{10}$" #phoneNumber="ngModel">
-        <div *ngIf="phoneNumber.invalid && phoneNumber.touched" class="error">
-          <span *ngIf="phoneNumber.errors?.['required']">Phone Number is required</span>
-          <span *ngIf="phoneNumber.errors?.['pattern']"> Enter a valid 10-digit Phone Number</span>
-        </div>
-      </div> -->
+      <!-- Email/Phone Toggle for Prajayatna -->
+      <div *ngIf="isPrajayatna" class="form-group">
+        <label>Login with <sup class="mandatory-sign">*</sup></label>
+        <ion-segment [(ngModel)]="loginType" name="loginType"
+          (ionChange)="userLoginData.email = ''; userLoginData.phoneNumber = ''">
+          <ion-segment-button value="email">
+            <ion-label>Email</ion-label>
+          </ion-segment-button>
+          <ion-segment-button value="phone">
+            <ion-label>Phone</ion-label>
+          </ion-segment-button>
+        </ion-segment>
+      </div>
 
-      <!-- Email -->
-      <div class="form-group">
+      <!-- Email Input (default for all, or when email selected for Prajayatna) -->
+      <div class="form-group" *ngIf="!isPrajayatna || loginType === 'email'">
         <label>Email <sup class="mandatory-sign">*</sup></label>
         <input type="email" name="email" class="form-control" [(ngModel)]="userLoginData.email" required
           pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" #email="ngModel">
         <div *ngIf="email.invalid && email.touched" class="error">
           <span *ngIf="email.errors?.['required']">Email is required</span>
           <span *ngIf="email.errors?.['pattern']">Enter a valid email address</span>
+        </div>
+      </div>
+
+      <!-- Phone Input (only when phone selected for Prajayatna) -->
+      <div class="form-group" *ngIf="isPrajayatna && loginType === 'phone'">
+        <label>Phone Number <sup class="mandatory-sign">*</sup></label>
+        <input type="text" name="phoneNumber" class="form-control" [(ngModel)]="userLoginData.phoneNumber" required
+          pattern="^[0-9]{10}$" #phoneNumber="ngModel">
+        <div *ngIf="phoneNumber.invalid && phoneNumber.touched" class="error">
+          <span *ngIf="phoneNumber.errors?.['required']">Phone Number is required</span>
+          <span *ngIf="phoneNumber.errors?.['pattern']">Enter a valid 10-digit Phone Number</span>
         </div>
       </div>
 

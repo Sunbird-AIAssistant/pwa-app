@@ -14,17 +14,19 @@ export class UserRegistrationComponent  implements OnInit, OnDestroy {
 
   siteName: string = '';
   apiUrl: string = '';
+  isPrajayatna: boolean = false;
+  registrationType: 'email' | 'phone' = 'email'; // For Prajayatna: toggle between email and phone
   showPassword = false;
-  // selectedState: string = '';
+  selectedState: string = '';
 
-  // states: string[] = [
-  //   'Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh',
-  //   'Goa', 'Gujarat', 'Haryana', 'Himachal Pradesh', 'Jharkhand',
-  //   'Karnataka', 'Kerala', 'Madhya Pradesh', 'Maharashtra', 'Manipur',
-  //   'Meghalaya', 'Mizoram', 'Nagaland', 'Odisha', 'Punjab',
-  //   'Rajasthan', 'Sikkim', 'Tamil Nadu', 'Telangana', 'Tripura',
-  //   'Uttar Pradesh', 'Uttarakhand', 'West Bengal'
-  // ];
+  states: string[] = [
+    'Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh',
+    'Goa', 'Gujarat', 'Haryana', 'Himachal Pradesh', 'Jharkhand',
+    'Karnataka', 'Kerala', 'Madhya Pradesh', 'Maharashtra', 'Manipur',
+    'Meghalaya', 'Mizoram', 'Nagaland', 'Odisha', 'Punjab',
+    'Rajasthan', 'Sikkim', 'Tamil Nadu', 'Telangana', 'Tripura',
+    'Uttar Pradesh', 'Uttarakhand', 'West Bengal'
+  ];
 
 
   togglePasswordVisibility() {
@@ -33,9 +35,9 @@ export class UserRegistrationComponent  implements OnInit, OnDestroy {
 
   userregisterData = {
     name: '',
-   // phoneNumber:'',
+    phoneNumber: '',
     email: '',
-   // selectedState:'',
+    selectedState:'',
     password: '',
     confirmPassword:'',
     tenantName: ''
@@ -50,8 +52,8 @@ export class UserRegistrationComponent  implements OnInit, OnDestroy {
   ngOnInit() {
     this.siteName = localStorage.getItem('siteName') || '';
     this.apiUrl = config.api.BASE_URL;
-
     this.userregisterData.tenantName = this.siteName;
+    this.isPrajayatna = this.siteName === 'Prajayatna';
 
     // React if siteName is set asynchronously (e.g., after splash config loads)
     if (!this.siteName) {
@@ -62,6 +64,7 @@ export class UserRegistrationComponent  implements OnInit, OnDestroy {
           try { localStorage.setItem('siteName', computed); } catch {}
           this.siteName = computed;
           this.userregisterData.tenantName = computed;
+          this.isPrajayatna = computed === 'Prajayatna';
         }
       }).catch(() => {});
 
@@ -70,6 +73,7 @@ export class UserRegistrationComponent  implements OnInit, OnDestroy {
         if (refreshed && !this.userregisterData.tenantName) {
           this.siteName = refreshed;
           this.userregisterData.tenantName = refreshed;
+          this.isPrajayatna = refreshed === 'Prajayatna';
         }
       }, 300);
     }
@@ -82,6 +86,7 @@ export class UserRegistrationComponent  implements OnInit, OnDestroy {
       const value = event.newValue || '';
       this.siteName = value;
       this.userregisterData.tenantName = value;
+      this.isPrajayatna = value === 'Prajayatna';
     }
   };
 
@@ -105,8 +110,30 @@ export class UserRegistrationComponent  implements OnInit, OnDestroy {
       const latest = localStorage.getItem('siteName') || '';
       this.userregisterData.tenantName = latest;
       this.siteName = latest;
+      this.isPrajayatna = latest === 'Prajayatna';
     }
-    this.http.post(`${this.apiUrl}auth/register`, this.userregisterData)
+    
+    // Prepare payload based on registration type for Prajayatna
+    const payload: any = {
+      name: this.userregisterData.name,
+      password: this.userregisterData.password,
+      confirmPassword: this.userregisterData.confirmPassword,
+      tenantName: this.userregisterData.tenantName
+    };
+    
+    // Include either email or mobileNumber
+    if (this.isPrajayatna && this.registrationType === 'phone') {
+      payload.mobileNumber = this.userregisterData.phoneNumber;
+    } else {
+      payload.email = this.userregisterData.email;
+    }
+    
+    // Include state if available
+    if (this.selectedState) {
+      payload.state = this.selectedState;
+    }
+    
+    this.http.post(`${this.apiUrl}auth/register`, payload)
       .subscribe({
         next: async (res) => {
 
@@ -116,7 +143,7 @@ export class UserRegistrationComponent  implements OnInit, OnDestroy {
           // Redirect to login page
           this.router.navigate(['/login']);
           this.userregisterData.name = '';
-         // this.userregisterData.phoneNumber = '',
+          this.userregisterData.phoneNumber = '';
          // this.userregisterData.selectedState='',
           this.userregisterData.email ='';
           this.userregisterData.password =''
