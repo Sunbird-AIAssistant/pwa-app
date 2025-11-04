@@ -40,7 +40,7 @@ export class LoginComponent  implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-   this.siteName = localStorage.getItem('siteName') || '';
+   this.siteName = sessionStorage.getItem('siteName') || '';
     this.apiUrl = config.api.BASE_URL;
     this.userLoginData.tenantName = this.siteName;
     this.isPrajayatna = this.siteName === 'Prajayatna';
@@ -51,7 +51,7 @@ export class LoginComponent  implements OnInit, OnDestroy {
       ConfigVariables.then(cfg => {
         const computed = (cfg && cfg.siteName) || '';
         if (computed) {
-          try { localStorage.setItem('siteName', computed); } catch {}
+          try { sessionStorage.setItem('siteName', computed); } catch {}
           this.siteName = computed;
           this.userLoginData.tenantName = computed;
           this.isPrajayatna = computed === 'Prajayatna';
@@ -59,7 +59,7 @@ export class LoginComponent  implements OnInit, OnDestroy {
       }).catch(() => {});
 
       setTimeout(() => {
-        const refreshed = localStorage.getItem('siteName') || '';
+        const refreshed = sessionStorage.getItem('siteName') || '';
         if (refreshed && !this.userLoginData.tenantName) {
           this.siteName = refreshed;
           this.userLoginData.tenantName = refreshed;
@@ -97,7 +97,7 @@ export class LoginComponent  implements OnInit, OnDestroy {
   onSubmit() {
     // Final guard to ensure tenantName is present
     if (!this.userLoginData.tenantName) {
-      const latest = localStorage.getItem('siteName') || '';
+      const latest = sessionStorage.getItem('siteName') || '';
       this.userLoginData.tenantName = latest;
       this.siteName = latest;
       this.isPrajayatna = latest === 'Prajayatna';
