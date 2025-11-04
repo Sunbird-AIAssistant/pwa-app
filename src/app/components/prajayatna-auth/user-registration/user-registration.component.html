@@ -17,15 +17,14 @@
         <img src="assets/school/SA_152x152.png" [alt]="siteName + ' logo'" class="logo" />
       </div>
       <div *ngIf="siteName==='Prajayatna'">
-        <img src="assets/school/prajayatna-logo-eng.webp" [alt]="siteName + ' logo'" class="logo" />
+        <img src="assets/school/prajayatna-logo-eng.webp" [alt]="siteName + ' logo'" class="logo"
+          style="max-height: 60px" />
       </div>
       <br>
       <div *ngIf="siteName==='Turtuk Valley School'">
         <img src="assets/school/TVS_152x152.png" [alt]="siteName + ' logo'" class="logo" />
       </div>
-      <h3>{{ siteName }}</h3>
     </div>
-    <h2>Register</h2>
     <form (ngSubmit)="onSubmit()" #registerForm="ngForm" class="register-form">
       <!-- Name -->
       <div class="form-group">
@@ -36,28 +35,27 @@
           <span *ngIf="name.errors?.['required']">Name is required</span>
         </div>
       </div>
+      <div *ngIf="isPrajayatna" class="form-group">
 
-      <!-- Phone Number only for Prajayatna-->
-      <!-- <div *ngIf="siteName==='Prajayatna'" class="form-group">
-        <label>Phone Number <sup class="mandatory-sign">*</sup></label>
-        <input type="text" name="phoneNumber" class="form-control" [(ngModel)]="userregisterData.phoneNumber" required
-          pattern="^[0-9]{10}$" #phoneNumber="ngModel">
-        <div *ngIf="phoneNumber.invalid && phoneNumber.touched" class="error">
-          <span *ngIf="phoneNumber.errors?.['required']">Phone Number is required</span>
-          <span *ngIf="phoneNumber.errors?.['pattern']"> Enter a valid 10-digit Phone Number</span>
-        </div>
-      </div> -->
-      <!-- <div class="form-group" *ngIf="siteName==='Prajayatna'">
-        <label for="state">Select State</label>
-        <select id="state" class="form-control" [(ngModel)]="userregisterData.selectedState" name="state" required>
-          <option value="" disabled selected>Select a state</option>
-          <option *ngFor="let state of states" [value]="state">
-            {{ state }}
-          </option>
-        </select>
-      </div> -->
-      <!-- Email -->
-      <div class="form-group">
+      </div>
+      <!-- Email/Phone Toggle for Prajayatna -->
+      <div *ngIf="isPrajayatna" class="form-group">
+        <label>Register with <sup class="mandatory-sign">*</sup></label>
+        <ion-segment [(ngModel)]="registrationType" name="registrationType"
+          (ionChange)="userregisterData.email = ''; userregisterData.phoneNumber = ''">
+          <ion-segment-button value="email">
+            <ion-label>Email</ion-label>
+          </ion-segment-button>
+          <ion-segment-button value="phone">
+            <ion-label>Phone</ion-label>
+          </ion-segment-button>
+        </ion-segment>
+      </div>
+
+
+
+      <!-- Email Input (default for all, or when email selected for Prajayatna) -->
+      <div class="form-group" *ngIf="!isPrajayatna || registrationType === 'email'">
         <label>Email <sup class="mandatory-sign">*</sup></label>
         <input type="email" name="email" class="form-control" [(ngModel)]="userregisterData.email" required
           pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" #email="ngModel">
@@ -66,6 +64,28 @@
           <span *ngIf="email.errors?.['pattern']">Enter a valid email address</span>
         </div>
       </div>
+
+      <!-- Phone Input (only when phone selected for Prajayatna) -->
+      <div class="form-group" *ngIf="isPrajayatna && registrationType === 'phone'">
+        <label>Phone Number <sup class="mandatory-sign">*</sup></label>
+        <input type="text" name="phoneNumber" class="form-control" [(ngModel)]="userregisterData.phoneNumber" required
+          pattern="^[0-9]{10}$" #phoneNumber="ngModel">
+        <div *ngIf="phoneNumber.invalid && phoneNumber.touched" class="error">
+          <span *ngIf="phoneNumber.errors?.['required']">Phone Number is required</span>
+          <span *ngIf="phoneNumber.errors?.['pattern']">Enter a valid 10-digit Phone Number</span>
+        </div>
+      </div>
+
+      <div *ngIf="isPrajayatna" class="form-group">
+        <label for="stateSelect">Select State</label>
+        <select id="stateSelect" class="form-control" [(ngModel)]="selectedState" name="state">
+          <option value="" disabled selected>Select your state</option>
+          <option *ngFor="let state of states" [value]="state">
+            {{ state }}
+          </option>
+        </select>
+      </div>
+
       <div class="form-group position-relative">
         <label>Password <sup class="mandatory-sign">*</sup></label>
         <input [type]="showPassword ? 'text' : 'password'" name="password" class="form-control"
