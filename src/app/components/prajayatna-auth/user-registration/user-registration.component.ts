@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import {Router} from '@angular/router';
+import { Router } from '@angular/router';
 import { config } from 'configuration/environment.prod';
 import { ConfigVariables } from '../../../config';
 import { HttpClient } from '@angular/common/http';
@@ -10,7 +10,7 @@ import { ToastController } from '@ionic/angular';
   templateUrl: './user-registration.component.html',
   styleUrls: ['../auth-styles.scss'],
 })
-export class UserRegistrationComponent  implements OnInit, OnDestroy {
+export class UserRegistrationComponent implements OnInit, OnDestroy {
 
   siteName: string = '';
   apiUrl: string = '';
@@ -37,9 +37,9 @@ export class UserRegistrationComponent  implements OnInit, OnDestroy {
     name: '',
     phoneNumber: '',
     email: '',
-    selectedState:'',
+    selectedState: '',
     password: '',
-    confirmPassword:'',
+    confirmPassword: '',
     tenantName: ''
   };
 
@@ -47,7 +47,7 @@ export class UserRegistrationComponent  implements OnInit, OnDestroy {
     private http: HttpClient,
     private router: Router,
     private toastController: ToastController
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.siteName = sessionStorage.getItem('siteName') || '';
@@ -61,12 +61,12 @@ export class UserRegistrationComponent  implements OnInit, OnDestroy {
       ConfigVariables.then(cfg => {
         const computed = (cfg && cfg.siteName) || '';
         if (computed) {
-          try { sessionStorage.setItem('siteName', computed); } catch {}
+          try { sessionStorage.setItem('siteName', computed); } catch { }
           this.siteName = computed;
           this.userregisterData.tenantName = computed;
           this.isPrajayatna = computed === 'Prajayatna';
         }
-      }).catch(() => {});
+      }).catch(() => { });
 
       setTimeout(() => {
         const refreshed = sessionStorage.getItem('siteName') || '';
@@ -97,7 +97,7 @@ export class UserRegistrationComponent  implements OnInit, OnDestroy {
   async presentToast(message: string, color: string = 'success') {
     const toast = await this.toastController.create({
       message,
-      duration: 2000,
+      duration: 5000,
       color,
       position: 'top'
     });
@@ -112,7 +112,7 @@ export class UserRegistrationComponent  implements OnInit, OnDestroy {
       this.siteName = latest;
       this.isPrajayatna = latest === 'Prajayatna';
     }
-    
+
     // Prepare payload based on registration type for Prajayatna
     const payload: any = {
       name: this.userregisterData.name,
@@ -120,19 +120,19 @@ export class UserRegistrationComponent  implements OnInit, OnDestroy {
       confirmPassword: this.userregisterData.confirmPassword,
       tenantName: this.userregisterData.tenantName
     };
-    
+
     // Include either email or mobileNumber
     if (this.isPrajayatna && this.registrationType === 'phone') {
       payload.mobileNumber = this.userregisterData.phoneNumber;
     } else {
       payload.email = this.userregisterData.email;
     }
-    
+
     // Include state if available
     if (this.selectedState) {
       payload.state = this.selectedState;
     }
-    
+
     this.http.post(`${this.apiUrl}auth/register`, payload)
       .subscribe({
         next: async (res) => {
@@ -144,21 +144,23 @@ export class UserRegistrationComponent  implements OnInit, OnDestroy {
           this.router.navigate(['/login']);
           this.userregisterData.name = '';
           this.userregisterData.phoneNumber = '';
-         // this.userregisterData.selectedState='',
-          this.userregisterData.email ='';
-          this.userregisterData.password =''
-          this.userregisterData.confirmPassword =''
-          this.userregisterData.tenantName =''
+          // this.userregisterData.selectedState='',
+          this.userregisterData.email = '';
+          this.userregisterData.password = ''
+          this.userregisterData.confirmPassword = ''
+          this.userregisterData.tenantName = ''
 
         },
         error: async (err) => {
+          console.log("Registration failed", err);
+          const errorMessage = err?.error?.message || 'Registration failed. Please try again later.';
           // Show error toast
-          await this.presentToast('Registration failed. Please try again later.', 'danger');
+          await this.presentToast(errorMessage, 'danger');
         }
       });
   }
 
-  switchToLogin(){
+  switchToLogin() {
     this.router.navigate(['/login']);
   }
 
