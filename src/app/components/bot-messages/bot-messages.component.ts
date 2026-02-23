@@ -123,13 +123,27 @@ export class BotMessagesComponent implements OnInit, AfterViewInit {
   /**
    * Converts backend markdown-style formatting to safe HTML for display.
    * Renders **bold** as <strong>, *italic* as <em>, and newlines as <br>.
+   * Adds line breaks for numbered lists, section headers, and sources (ChatGPT-style).
    * Escapes raw HTML to prevent XSS.
    */
   getDisplayHtml(text: string | undefined): SafeHtml {
     if (!text) {
       return this.sanitizer.bypassSecurityTrustHtml('');
     }
-    const escaped = text
+    // 1) Add structure: newlines before numbered list items (1) 2) or 1. 2.) and before sources
+    let structured = text
+      // Numbered list " 1)" " 2)" ... → new line before each
+      .replace(/\s+(\d+)\)/g, '\n$1)')
+      // Numbered list " 1. " " 2. " (digit, dot, space) → new line before each
+      .replace(/\s+(\d+)\.\s+/g, '\n$1. ')
+      // Sources (Kannada "ಮೂಲಃ" / "ಮೂಲ:" or English "Source(s):") on new line
+      .replace(/\s+(ಮೂಲ[ಃ:]|Source[s]?:\s*)/gi, '\n\n$1')
+      // Section headers like "ಚಟುವಟಿಕೆ (...):" or "Activity (...):" on new line
+      .replace(/\s+(ಚಟುವಟಿಕೆ|Activity|ಕಾರ್ಯಾಚರಣೆ)\s*\(/gi, '\n\n$1 (')
+      // Sentence breaks: Kannada/Devanagari "। " and ". " (after period + space) for readability
+      .replace(/।\s+/g, '।\n')
+      .replace(/\.\s+(?=[A-Z\u0C80-\u0CFF\u0900-\u097F])/g, '.\n');
+    const escaped = structured
       .replace(/&/g, '&amp;')
       .replace(/</g, '&lt;')
       .replace(/>/g, '&gt;');
@@ -140,8 +154,8 @@ export class BotMessagesComponent implements OnInit, AfterViewInit {
     const withItalic = withBold.replace(/\*([^*]+)\*/g, '<em>$1</em>');
     // Standalone * used as bullet → bullet character for cleaner UI (no raw * in UI)
     const withBullets = withItalic
-      .replace(/\s+\*\s+/g, ' • ')           // " पंख * गतिविधिः " → " पंख • गतिविधिः "
-      .replace(/(^|\n)\*\s+/g, '$1• ');      // "* item" or "\n* item" at line start
+      .replace(/\s+\*\s+/g, ' • ')
+      .replace(/(^|\n)\*\s+/g, '$1• ');
     const withBreaks = withBullets.replace(/\n/g, '<br>');
     return this.sanitizer.bypassSecurityTrustHtml(withBreaks);
   }
