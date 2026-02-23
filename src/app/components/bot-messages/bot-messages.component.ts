@@ -1,4 +1,5 @@
 import { AfterViewInit, Component, ElementRef, EventEmitter, Input, NgZone, OnInit, Output, ViewChild } from '@angular/core';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { IonContent, Platform } from '@ionic/angular';
 import { BotMessage } from 'src/app/appConstants';
 import { AppHeaderService, BotApiService, RecordingService, StorageService } from 'src/app/services';
@@ -10,7 +11,6 @@ import { TelemetryGeneratorService } from 'src/app/services/telemetry/telemetry.
 import { CorrelationData } from 'src/app/services/telemetry/models/telemetry';
 import { ChatMessage } from 'src/app/services/bot/db/models/chat.message';
 import { v4 as uuidv4 } from "uuid";
-// import DOMPurify from 'dompurify'; // Import DOMPurify to sanitize HTML
 import { ConfigVariables } from "../../config";
 
 @Component({
@@ -49,7 +49,8 @@ export class BotMessagesComponent implements OnInit, AfterViewInit {
     private translate: TranslateService,
     private telemetryGeneratorService: TelemetryGeneratorService,
     private storage: StorageService,
-    private platform: Platform
+    private platform: Platform,
+    private sanitizer: DomSanitizer
   ) {
     this.defaultLoaderMsg = { identifier: "", message: this.translate.instant('Loading....'), messageType: 'text', displayMsg: this.translate.instant('Loading...'), type: 'received', time: '', timeStamp: '', readMore: false, likeMsg: false, dislikeMsg: false, requestId: "" };
     this.botMessages = [];
@@ -118,6 +119,32 @@ export class BotMessagesComponent implements OnInit, AfterViewInit {
     this.scrollToBottom();
   }
 
+
+  /**
+   * Converts backend markdown-style formatting to safe HTML for display.
+   * Renders **bold** as <strong>, *italic* as <em>, and newlines as <br>.
+   * Escapes raw HTML to prevent XSS.
+   */
+  getDisplayHtml(text: string | undefined): SafeHtml {
+    if (!text) {
+      return this.sanitizer.bypassSecurityTrustHtml('');
+    }
+    const escaped = text
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;');
+    // **bold** or * * bold * * (with spaces)
+    const withBold = escaped
+      .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+      .replace(/\* \* (.+?) \* \*/g, '<strong>$1</strong>');
+    const withItalic = withBold.replace(/\*([^*]+)\*/g, '<em>$1</em>');
+    // Standalone * used as bullet → bullet character for cleaner UI (no raw * in UI)
+    const withBullets = withItalic
+      .replace(/\s+\*\s+/g, ' • ')           // " पंख * गतिविधिः " → " पंख • गतिविधिः "
+      .replace(/(^|\n)\*\s+/g, '$1• ');      // "* item" or "\n* item" at line start
+    const withBreaks = withBullets.replace(/\n/g, '<br>');
+    return this.sanitizer.bypassSecurityTrustHtml(withBreaks);
+  }
 
   public scrollToBottom() {
     this.keyboardOpen = true;
