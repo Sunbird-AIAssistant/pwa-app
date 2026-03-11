@@ -165,3 +165,20 @@ p {
 .mandatory-sign {
     color: #AB251B;
 }
+
+.otp-hint {
+    font-size: 13px;
+    color: #555;
+    margin-bottom: 12px;
+}
+
+.back-btn {
+    margin-top: 8px;
+    background: transparent;
+    color: #AB251B;
+    border: 1px solid #AB251B;
+}
+
+.back-btn:hover:not(:disabled) {
+    background: rgba(171, 37, 27, 0.08);
+}

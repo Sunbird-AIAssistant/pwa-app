@@ -22,14 +22,9 @@
 
   <meta name="theme-color" content="#1976d2">
   <script>
-    // Function to get subdomain
+    // Function to get subdomain - hardcoded for localhost
     function getSubdomain() {
-      const urlObj = new URL(document.baseURI);
-    // Extract the hostname
-    const hostname = urlObj.hostname; // e.g., "subdomain.example.com"
-    // Split the hostname by dots
-    const domainParts = hostname.split('.');
-        return domainParts[0];
+        return 'localhost';
     }
 
     // Function to set favicon based on subdomain

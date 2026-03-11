@@ -25,7 +25,24 @@
         <img src="assets/school/TVS_152x152.png" [alt]="siteName + ' logo'" class="logo" />
       </div>
     </div>
-    <form (ngSubmit)="onSubmit()" #registerForm="ngForm" class="register-form">
+
+    <!-- Step 2: OTP verification (Prajayatna only) -->
+    <div *ngIf="isPrajayatna && registrationStep === 'otp'" class="register-form">
+      <h2>Verify OTP</h2>
+      <p class="otp-hint">Enter the OTP sent to your {{ registrationType === 'phone' ? 'phone' : 'email' }}</p>
+      <div class="form-group">
+        <label>OTP <sup class="mandatory-sign">*</sup></label>
+        <input type="text" name="otp" class="form-control" [(ngModel)]="otpValue"
+          maxlength="6" placeholder="Enter 6-digit OTP" inputmode="numeric" pattern="[0-9]*" />
+      </div>
+      <button type="button" (click)="verifyAndRegister()" [disabled]="verifyingOtp || !otpValue?.trim()">
+        {{ verifyingOtp ? 'Verifying...' : 'Verify & Register' }}
+      </button>
+      <button type="button" class="back-btn" (click)="backToForm()">Back</button>
+      <p (click)="switchToLogin()" style="cursor:pointer; margin-top:12px;">Already have an account? Login here</p>
+    </div>
+
+    <form *ngIf="!isPrajayatna || registrationStep === 'form'" (ngSubmit)="onSubmit()" #registerForm="ngForm" class="register-form">
       <!-- Name -->
       <div class="form-group">
         <label>Name <sup class="mandatory-sign">*</sup></label>
@@ -119,7 +136,9 @@
         </div>
       </div>
 
-      <button type="submit" [disabled]="registerForm.invalid">Register</button>
+      <button type="submit" [disabled]="registerForm.invalid || sendingOtp">
+        {{ isPrajayatna ? (sendingOtp ? 'Sending OTP...' : 'Send OTP') : 'Register' }}
+      </button>
       <p (click)="switchToLogin()" style="cursor:pointer; margin-top:12px;">
         Already an account yet? Login here
       </p>

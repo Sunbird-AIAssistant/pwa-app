@@ -154,14 +154,10 @@ export class AppModule {
   }
 
   private findSiteSubDomain(){
-    const urlObj = new URL(document.baseURI);
-    // Extract the hostname
-    const hostname = urlObj.hostname; // e.g., "subdomain.example.com"
-    // Split the hostname by dots
-    const domainParts = hostname.split('.');
-    localStorage.setItem('subDomain', domainParts[0])
-    // Return the first part of the domain
-    this.setManifestFile(domainParts[0]);
+    // Hardcoded for localhost
+    const subDomain = 'localhost';
+    localStorage.setItem('subDomain', subDomain);
+    this.setManifestFile(subDomain);
   }
 
   private setManifestFile(currentDomain: any) {

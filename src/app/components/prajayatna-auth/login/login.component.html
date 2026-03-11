@@ -27,7 +27,26 @@
       <h3>{{ siteName }}</h3>
     </div>
     <h2>Login</h2>
-    <form #loginForm="ngForm" (ngSubmit)="onSubmit()" class="login-form">
+
+    <!-- Step 2: OTP verification (Prajayatna only) -->
+    <div *ngIf="isPrajayatna && loginStep === 'otp'" class="login-form">
+      <p class="otp-hint">Enter the OTP sent to your {{ loginType === 'phone' ? 'phone' : 'email' }}</p>
+      <div class="form-group">
+        <label>OTP <sup class="mandatory-sign">*</sup></label>
+        <input type="text" name="otp" class="form-control" [(ngModel)]="otpValue"
+          maxlength="6" placeholder="Enter 6-digit OTP" inputmode="numeric" pattern="[0-9]*" />
+      </div>
+      <button type="button" (click)="verifyAndLogin()" [disabled]="verifyingOtp || !otpValue?.trim()">
+        {{ verifyingOtp ? 'Verifying...' : 'Verify & Login' }}
+      </button>
+      <button type="button" class="back-btn" (click)="backToCredentials()">Back</button>
+      <p class="forgot-password" (click)="switchToForgotPassword()"> Forgot Password ?</p>
+      <p (click)="switchToRegistration()" style="cursor:pointer; margin-top:12px;">
+        Don't have an account yet? Register here
+      </p>
+    </div>
+
+    <form *ngIf="!isPrajayatna || loginStep === 'credentials'" #loginForm="ngForm" (ngSubmit)="onSubmit()" class="login-form">
 
       <!-- Email/Phone Toggle for Prajayatna -->
       <div *ngIf="isPrajayatna" class="form-group">
@@ -86,8 +105,10 @@
       </div>
 
 
-      <!-- Submit Button -->
-      <button type="submit" [disabled]="loginForm.invalid">Login</button>
+      <!-- Submit Button (Prajayatna: Send OTP first) -->
+      <button type="submit" [disabled]="loginForm.invalid || sendingOtp">
+        {{ isPrajayatna ? (sendingOtp ? 'Sending OTP...' : 'Send OTP') : 'Login' }}
+      </button>
       <p class="forgot-password" (click)="switchToForgotPassword()"> Forgot Password ?</p>
 
       <p (click)="switchToRegistration()" style="cursor:pointer; margin-top:12px;">
