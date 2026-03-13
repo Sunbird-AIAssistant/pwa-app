@@ -9,7 +9,8 @@ import { StorageService } from 'src/app/services';
 import { LanguageService } from '../../components/langauge-select/language.service';
 import { AlertController } from '@ionic/angular';
 import { ToastController } from '@ionic/angular';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
+import { filter } from 'rxjs/operators';
 
 
 @Component({
@@ -63,6 +64,16 @@ export class ApplicationHeaderComponent  implements OnInit {
     this.isTitleChanged = this.configVariables.titleCode.includes(language);
     }
 
+  /** Re-read user from localStorage so displayed name updates after login/register in same tab. */
+  private refreshUserNameFromStorage(): void {
+    try {
+      const userRaw = localStorage.getItem('user');
+      this.userName = userRaw ? (JSON.parse(userRaw).name || '') : '';
+    } catch {
+      this.userName = '';
+    }
+  }
+
   async ngOnInit() {
     this.defaultFilter = {};
     this.language = await this.storage.getData('lang') || 'en';
@@ -85,12 +96,7 @@ export class ApplicationHeaderComponent  implements OnInit {
     this.appInfo = await this.utilService.getAppInfo();
 
     // Load userName on first init if user already exists in localStorage
-    try {
-      const userRaw = localStorage.getItem('user');
-      if (userRaw) {
-        this.userName = JSON.parse(userRaw).name || '';
-      }
-    } catch {}
+    this.refreshUserNameFromStorage();
 
     // Keep userName in sync if localStorage changes in this or other tabs
     window.addEventListener('storage', (event: StorageEvent) => {
@@ -101,6 +107,11 @@ export class ApplicationHeaderComponent  implements OnInit {
           this.userName = '';
         }
       }
+    });
+
+    // Refresh displayed name when navigating (e.g. after login/register in same tab)
+    this.router.events.pipe(filter((e): e is NavigationEnd => e instanceof NavigationEnd)).subscribe(() => {
+      this.refreshUserNameFromStorage();
     });
 
     // Fallback: if username still not visible, refresh the screen once
