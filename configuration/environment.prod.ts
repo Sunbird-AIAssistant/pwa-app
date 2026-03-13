@@ -24,5 +24,14 @@ export const config = {
   telmetry: {
     PRODUCER_ID: 'dev.ejp.mobileapp',
     PRODUCER_PID: 'mobileapp'
-  }
+  },
+  // BAP/BPP & Hasura (from env)
+  BAP_CLIENT_URL: 'https://kahani-api.tekdinext.com',
+  BAP_URI: 'https://school-bap-dev-network.tekdinext.com/',
+  BPP_URI: 'https://kahani-bpp.tekdinext.com/',
+  BAP_ID: 'school-bap-dev-network.tekdinext.com',
+  BPP_ID: 'kahani-bpp.tekdinext.com',
+  HASURA_URL: 'https://school-api-prod.tekdinext.com/hasura/v1/graphql',
+  GOOGLE_API_KEY: 'AIzaSyDOZiET85hndSoIJy7r10tgXqDzYVM3QJI',
+  DOMAIN: 'onest:learning-experiences'
 }
