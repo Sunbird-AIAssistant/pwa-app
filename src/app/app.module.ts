@@ -164,7 +164,7 @@ export class AppModule {
     var link = document.createElement('link');
     link.rel = 'manifest';
     link.href = currentDomain + '.webmanifest';
-    //link.href = 'learningresources.webmanifest';
+    //link.href = 'localhost.webmanifest';
     document.getElementsByTagName('head')[0].appendChild(link);
   }
 }
