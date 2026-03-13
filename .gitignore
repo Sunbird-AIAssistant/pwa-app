@@ -70,6 +70,8 @@ Thumbs.db
 .angular
 
 
-#env files
-/configuration/environment.dev.ts
-/configuration/environment.prod.ts
+# Credentials / env – do not commit or push
+.env
+configuration/environment.dev.ts
+configuration/environment.prod.ts
+src/app/services/bot-api.service.ts
