@@ -6,6 +6,7 @@ import { App } from '@capacitor/app';
 import { ConfigVariables } from '../../config';
 import { QrcodePopupComponent } from '../qrcode-popup/qrcode-popup.component';
 import { StorageService } from 'src/app/services';
+import { AuthTokenService } from 'src/app/services/auth-token.service';
 import { LanguageService } from '../../components/langauge-select/language.service';
 import { AlertController } from '@ionic/angular';
 import { ToastController } from '@ionic/angular';
@@ -45,6 +46,7 @@ export class ApplicationHeaderComponent implements OnInit, OnDestroy {
     private alertController: AlertController,
     private toastController: ToastController,
     private router: Router,
+    private authToken: AuthTokenService
     ) {
       App.getInfo().then(val => {
         this.appVersion = `v${val.version}.${val.build}`
@@ -57,7 +59,8 @@ export class ApplicationHeaderComponent implements OnInit, OnDestroy {
       }).catch(error => {
         console.error('Failed to load configuration:', error);
       });
-      this.userName = JSON.parse(localStorage.getItem('user') || '{}').name || '';
+      const user = this.authToken.getUser();
+      this.userName = user?.name || '';
     }
 
     loadTabData(language: string) {
@@ -93,16 +96,8 @@ export class ApplicationHeaderComponent implements OnInit, OnDestroy {
       filter((e): e is NavigationEnd => e instanceof NavigationEnd)
     ).subscribe(() => this.refreshUserName());
 
-    // Keep userName in sync if localStorage changes in this or other tabs
-    window.addEventListener('storage', (event: StorageEvent) => {
-      if (event.key === 'user') {
-        try {
-          this.userName = event.newValue ? (JSON.parse(event.newValue).name || '') : '';
-        } catch {
-          this.userName = '';
-        }
-      }
-    });
+    // Keep userName in sync when navigating (e.g. after login)
+    // Note: sessionStorage does not fire storage events across tabs; refreshUserName() covers same-tab updates
 
     // Fallback: if username still not visible, refresh the screen once
     setTimeout(() => {
@@ -118,12 +113,8 @@ export class ApplicationHeaderComponent implements OnInit, OnDestroy {
   }
 
   refreshUserName() {
-    try {
-      const userRaw = localStorage.getItem('user');
-      this.userName = userRaw ? (JSON.parse(userRaw).name || '') : '';
-    } catch {
-      this.userName = '';
-    }
+    const user = this.authToken.getUser();
+    this.userName = user?.name || '';
   }
 
   ngOnDestroy() {
@@ -217,18 +208,10 @@ export class ApplicationHeaderComponent implements OnInit, OnDestroy {
   }
 
   performLogout() {
-    this.headerConfig= false;
-      // Remove token and user info from localStorage
-      localStorage.removeItem('access_token');
-      localStorage.removeItem('user');
-    
-      // Optional: show toast
-      this.presentToast('Logged out successfully', 'success');
-    
-      // Redirect to login page
-      this.router.navigate(['/login']);
-    
-    
+    this.headerConfig = false;
+    this.authToken.clear();
+    this.presentToast('Logged out successfully', 'success');
+    this.router.navigate(['/login']);
     this.emitEvent(new Event(''), 'logout');
   }
 

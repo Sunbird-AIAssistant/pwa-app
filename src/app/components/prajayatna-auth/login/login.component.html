@@ -27,6 +27,7 @@
       <h3>{{ siteName }}</h3>
     </div>
     <h2>Login</h2>
+    <p *ngIf="apiErrorMessage" class="inline-error">{{ apiErrorMessage }}</p>
     <form #loginForm="ngForm" (ngSubmit)="onSubmit()" class="login-form">
 
       <!-- Step 1: Credentials (hidden when Prajayatna is on OTP step) -->
@@ -106,6 +107,10 @@
         </div>
         <button type="submit" [disabled]="!otpValue.trim() || verifyAndLoginLoading">
           {{ verifyAndLoginLoading ? 'Verifying…' : 'Verify & Login' }}
+        </button>
+        <button type="button" class="resend-btn" (click)="resendOtp()"
+          [disabled]="resendCooldownSeconds > 0 || sendOtpLoading">
+          {{ resendCooldownSeconds > 0 ? ('Resend OTP (' + resendCooldownSeconds + 's)') : (sendOtpLoading ? 'Sending…' : 'Resend OTP') }}
         </button>
         <p (click)="backToCredentials()" class="forgot-password" style="cursor:pointer; margin-top:8px;">Back to login page</p>
       </ng-container>

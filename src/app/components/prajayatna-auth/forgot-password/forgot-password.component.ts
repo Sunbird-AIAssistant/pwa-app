@@ -1,10 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import {Router} from '@angular/router';
-import { config } from 'configuration/environment.prod';
+import { Router } from '@angular/router';
 import { ConfigVariables } from '../../../config';
 import { HttpClient } from '@angular/common/http';
 import { ToastController } from '@ionic/angular';
+import { AuthApiService } from '../auth-api.service';
 
 @Component({
   selector: 'app-forgot-password',
@@ -21,6 +21,12 @@ export class ForgotPasswordComponent  implements OnInit, OnDestroy {
   otpValue = '';
   sendOtpLoading = false;
   verifyAndResetLoading = false;
+  otpExpiresInSeconds = 600;
+  otpCountdown = 0;
+  resendCooldownSeconds = 0;
+  private otpCountdownInterval: any;
+  private resendCooldownInterval: any;
+  apiErrorMessage = '';
 
   forgotPasswordData = {
     phoneNumber: '',
@@ -37,13 +43,15 @@ export class ForgotPasswordComponent  implements OnInit, OnDestroy {
 
   constructor(
     private http: HttpClient,
-        private router: Router,
-        private toastController: ToastController
+    private router: Router,
+    private toastController: ToastController,
+    private authApi: AuthApiService
   ) { }
 
   ngOnInit() {
     this.siteName = sessionStorage.getItem('siteName') || '';
-    this.apiUrl = this.getApiBaseUrl();
+    this.apiUrl = this.authApi.getApiBaseUrlSync();
+    this.authApi.getApiBaseUrl().then(url => { this.apiUrl = url; });
     this.forgotPasswordData.tenantName = this.siteName;
     this.isPrajayatna = this.siteName === 'Prajayatna';
 
@@ -84,13 +92,12 @@ export class ForgotPasswordComponent  implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     window.removeEventListener('storage', this.onStorageChange);
+    if (this.otpCountdownInterval) clearInterval(this.otpCountdownInterval);
+    if (this.resendCooldownInterval) clearInterval(this.resendCooldownInterval);
   }
 
-  private getApiBaseUrl(): string {
-    if (typeof window !== 'undefined' && window.location?.hostname === 'localhost') {
-      return 'http://localhost:3000/';
-    }
-    return config.api.BASE_URL;
+  private async refreshApiUrl(): Promise<void> {
+    this.apiUrl = await this.authApi.getApiBaseUrl();
   }
 
   togglePasswordVisibility(type: 'new' | 'confirm') {
@@ -128,38 +135,73 @@ checkPasswordMatch() {
     return payload;
   }
 
-  sendOtp() {
+  async sendOtp() {
     if (!this.forgotPasswordData.tenantName) {
       const latest = sessionStorage.getItem('siteName') || '';
       this.forgotPasswordData.tenantName = latest;
       this.siteName = latest;
       this.isPrajayatna = latest === 'Prajayatna';
     }
+    await this.refreshApiUrl();
     const payload = { ...this.getIdentifierPayload(), purpose: 'forgot_password' as const };
     this.sendOtpLoading = true;
-    this.http.post(`${this.apiUrl}auth/send-otp`, payload).subscribe({
-      next: () => {
+    this.http.post<{ message?: string; expiresInSeconds?: number }>(`${this.apiUrl}auth/send-otp`, payload).subscribe({
+      next: (res) => {
         this.sendOtpLoading = false;
         this.forgotStep = 'otp';
         this.otpValue = '';
+        this.otpExpiresInSeconds = res?.expiresInSeconds ?? 600;
+        this.otpCountdown = this.otpExpiresInSeconds;
+        this.startOtpCountdown();
+        this.startResendCooldown(60);
         this.presentToast('OTP sent to your ' + (this.forgotPasswordType === 'phone' ? 'phone' : 'email'), 'success');
       },
       error: (err) => {
         this.sendOtpLoading = false;
-        this.presentToast(err?.error?.message || 'Failed to send OTP.', 'danger');
+        this.apiErrorMessage = err?.error?.message || 'Failed to send OTP.';
+        if (err?.status === 429) {
+          this.startResendCooldown(err?.error?.retryAfterSeconds ?? 60);
+          this.presentToast(this.apiErrorMessage, 'warning');
+        } else {
+          this.presentToast(this.apiErrorMessage, 'danger');
+        }
       }
     });
   }
 
+  private startOtpCountdown(): void {
+    if (this.otpCountdownInterval) clearInterval(this.otpCountdownInterval);
+    this.otpCountdownInterval = setInterval(() => {
+      if (this.otpCountdown <= 0) { clearInterval(this.otpCountdownInterval); return; }
+      this.otpCountdown -= 1;
+    }, 1000);
+  }
+
+  private startResendCooldown(seconds: number): void {
+    if (this.resendCooldownInterval) clearInterval(this.resendCooldownInterval);
+    this.resendCooldownSeconds = seconds;
+    this.resendCooldownInterval = setInterval(() => {
+      this.resendCooldownSeconds -= 1;
+      if (this.resendCooldownSeconds <= 0) clearInterval(this.resendCooldownInterval);
+    }, 1000);
+  }
+
+  resendOtp(): void {
+    if (this.resendCooldownSeconds > 0) return;
+    this.sendOtp();
+  }
+
   verifyOtpThenReset() {
     if (this.passwordMismatch) return;
+    this.apiErrorMessage = '';
     const payload: any = { ...this.getIdentifierPayload(), purpose: 'forgot_password', otp: this.otpValue.trim() };
     this.verifyAndResetLoading = true;
     this.http.post(`${this.apiUrl}auth/verify-otp`, payload).subscribe({
       next: () => this.doChangePassword(),
       error: (err) => {
         this.verifyAndResetLoading = false;
-        this.presentToast(err?.error?.message || 'Invalid or expired OTP.', 'danger');
+        this.apiErrorMessage = err?.error?.message || 'Invalid or expired OTP.';
+        this.presentToast(this.apiErrorMessage, 'danger');
       }
     });
   }
@@ -178,18 +220,20 @@ checkPasswordMatch() {
     this.http.post(`${this.apiUrl}auth/change-password`, payload).subscribe({
       next: async () => {
         this.verifyAndResetLoading = false;
+        this.apiErrorMessage = '';
         await this.presentToast('Password reset successful!', 'success');
         this.router.navigate(['/login']);
         this.resetForm();
       },
       error: async (err) => {
         this.verifyAndResetLoading = false;
-        await this.presentToast(err?.error?.message || 'Something went wrong. Please try again.', 'danger');
+        this.apiErrorMessage = err?.error?.message || 'Something went wrong. Please try again.';
+        await this.presentToast(this.apiErrorMessage, 'danger');
       }
     });
   }
 
-  onSubmitForgotPassword() {
+  async onSubmitForgotPassword() {
     if (this.passwordMismatch && this.forgotStep === 'otp') return;
     if (!this.forgotPasswordData.tenantName) {
       const latest = sessionStorage.getItem('siteName') || '';
@@ -197,7 +241,7 @@ checkPasswordMatch() {
       this.siteName = latest;
       this.isPrajayatna = latest === 'Prajayatna';
     }
-    this.apiUrl = this.getApiBaseUrl();
+    await this.refreshApiUrl();
     if (this.isPrajayatna) {
       if (this.forgotStep === 'identifier') {
         this.sendOtp();
@@ -212,6 +256,10 @@ checkPasswordMatch() {
   backToIdentifier() {
     this.forgotStep = 'identifier';
     this.otpValue = '';
+    this.apiErrorMessage = '';
+    if (this.otpCountdownInterval) clearInterval(this.otpCountdownInterval);
+    if (this.resendCooldownInterval) clearInterval(this.resendCooldownInterval);
+    this.resendCooldownSeconds = 0;
   }
 
   resetForm() {

@@ -25,6 +25,7 @@
         <img src="assets/school/TVS_152x152.png" [alt]="siteName + ' logo'" class="logo" />
       </div>
     </div>
+    <p *ngIf="apiErrorMessage" class="inline-error">{{ apiErrorMessage }}</p>
     <form (ngSubmit)="onSubmit()" #registerForm="ngForm" class="register-form">
       <!-- Step 1: Registration form (hidden when Prajayatna is on OTP step) -->
       <ng-container *ngIf="!isPrajayatna || registrationStep === 'form'">
@@ -137,6 +138,10 @@
         </div>
         <button type="submit" [disabled]="!otpValue.trim() || verifyAndRegisterLoading">
           {{ verifyAndRegisterLoading ? 'Verifying…' : 'Verify & Register' }}
+        </button>
+        <button type="button" class="resend-btn" (click)="resendOtp()"
+          [disabled]="resendCooldownSeconds > 0 || sendOtpLoading">
+          {{ resendCooldownSeconds > 0 ? ('Resend OTP (' + resendCooldownSeconds + 's)') : (sendOtpLoading ? 'Sending…' : 'Resend OTP') }}
         </button>
         <p (click)="backToForm()" class="forgot-password" style="cursor:pointer; margin-top:8px;">Back to form</p>
       </ng-container>

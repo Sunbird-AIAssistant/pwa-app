@@ -1,9 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { config } from 'configuration/environment.prod';
 import { ConfigVariables } from '../../../config';
 import { HttpClient } from '@angular/common/http';
 import { ToastController } from '@ionic/angular';
+import { AuthApiService } from '../auth-api.service';
+import { AuthTokenService } from '../../../services/auth-token.service';
 
 @Component({
   selector: 'app-user-registration',
@@ -20,6 +21,12 @@ export class UserRegistrationComponent implements OnInit, OnDestroy {
   otpValue = '';
   sendOtpLoading = false;
   verifyAndRegisterLoading = false;
+  otpExpiresInSeconds = 600;
+  otpCountdown = 0;
+  resendCooldownSeconds = 0;
+  private otpCountdownInterval: any;
+  private resendCooldownInterval: any;
+  apiErrorMessage = '';
   showPassword = false;
   selectedState: string = '';
 
@@ -50,12 +57,15 @@ export class UserRegistrationComponent implements OnInit, OnDestroy {
   constructor(
     private http: HttpClient,
     private router: Router,
-    private toastController: ToastController
+    private toastController: ToastController,
+    private authApi: AuthApiService,
+    private authToken: AuthTokenService
   ) { }
 
   ngOnInit() {
     this.siteName = sessionStorage.getItem('siteName') || '';
-    this.apiUrl = this.getApiBaseUrl();
+    this.apiUrl = this.authApi.getApiBaseUrlSync();
+    this.authApi.getApiBaseUrl().then(url => { this.apiUrl = url; });
     this.userregisterData.tenantName = this.siteName;
     this.isPrajayatna = this.siteName === 'Prajayatna';
 
@@ -96,13 +106,12 @@ export class UserRegistrationComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     window.removeEventListener('storage', this.onStorageChange);
+    if (this.otpCountdownInterval) clearInterval(this.otpCountdownInterval);
+    if (this.resendCooldownInterval) clearInterval(this.resendCooldownInterval);
   }
 
-  private getApiBaseUrl(): string {
-    if (typeof window !== 'undefined' && window.location?.hostname === 'localhost') {
-      return 'http://localhost:3000/';
-    }
-    return config.api.BASE_URL;
+  private async refreshApiUrl(): Promise<void> {
+    this.apiUrl = await this.authApi.getApiBaseUrl();
   }
 
   async presentToast(message: string, color: string = 'success') {
@@ -126,37 +135,72 @@ export class UserRegistrationComponent implements OnInit, OnDestroy {
     return payload;
   }
 
-  sendOtp() {
+  async sendOtp() {
     if (!this.userregisterData.tenantName) {
       const latest = sessionStorage.getItem('siteName') || '';
       this.userregisterData.tenantName = latest;
       this.siteName = latest;
       this.isPrajayatna = latest === 'Prajayatna';
     }
+    await this.refreshApiUrl();
     const payload = { ...this.getRegisterPayload(), purpose: 'register' as const };
     this.sendOtpLoading = true;
-    this.http.post(`${this.apiUrl}auth/send-otp`, payload).subscribe({
-      next: () => {
+    this.http.post<{ message?: string; expiresInSeconds?: number }>(`${this.apiUrl}auth/send-otp`, payload).subscribe({
+      next: (res) => {
         this.sendOtpLoading = false;
         this.registrationStep = 'otp';
         this.otpValue = '';
+        this.otpExpiresInSeconds = res?.expiresInSeconds ?? 600;
+        this.otpCountdown = this.otpExpiresInSeconds;
+        this.startOtpCountdown();
+        this.startResendCooldown(60);
         this.presentToast('OTP sent to your ' + (this.registrationType === 'phone' ? 'phone' : 'email'), 'success');
       },
       error: (err) => {
         this.sendOtpLoading = false;
-        this.presentToast(err?.error?.message || 'Failed to send OTP.', 'danger');
+        this.apiErrorMessage = err?.error?.message || 'Failed to send OTP.';
+        if (err?.status === 429) {
+          this.startResendCooldown(err?.error?.retryAfterSeconds ?? 60);
+          this.presentToast(this.apiErrorMessage, 'warning');
+        } else {
+          this.presentToast(this.apiErrorMessage, 'danger');
+        }
       }
     });
   }
 
+  private startOtpCountdown(): void {
+    if (this.otpCountdownInterval) clearInterval(this.otpCountdownInterval);
+    this.otpCountdownInterval = setInterval(() => {
+      if (this.otpCountdown <= 0) { clearInterval(this.otpCountdownInterval); return; }
+      this.otpCountdown -= 1;
+    }, 1000);
+  }
+
+  private startResendCooldown(seconds: number): void {
+    if (this.resendCooldownInterval) clearInterval(this.resendCooldownInterval);
+    this.resendCooldownSeconds = seconds;
+    this.resendCooldownInterval = setInterval(() => {
+      this.resendCooldownSeconds -= 1;
+      if (this.resendCooldownSeconds <= 0) clearInterval(this.resendCooldownInterval);
+    }, 1000);
+  }
+
+  resendOtp(): void {
+    if (this.resendCooldownSeconds > 0) return;
+    this.sendOtp();
+  }
+
   verifyOtpThenRegister() {
     const payload: any = { ...this.getRegisterPayload(), purpose: 'register', otp: this.otpValue.trim() };
+    this.apiErrorMessage = '';
     this.verifyAndRegisterLoading = true;
     this.http.post(`${this.apiUrl}auth/verify-otp`, payload).subscribe({
       next: () => this.doRegister(),
       error: (err) => {
         this.verifyAndRegisterLoading = false;
-        this.presentToast(err?.error?.message || 'Invalid or expired OTP.', 'danger');
+        this.apiErrorMessage = err?.error?.message || 'Invalid or expired OTP.';
+        this.presentToast(this.apiErrorMessage, 'danger');
       }
     });
   }
@@ -177,9 +221,9 @@ export class UserRegistrationComponent implements OnInit, OnDestroy {
     this.http.post(`${this.apiUrl}auth/register`, payload).subscribe({
       next: async (res: any) => {
         this.verifyAndRegisterLoading = false;
+        this.apiErrorMessage = '';
         if (res?.access_token) {
-          localStorage.setItem('access_token', res.access_token);
-          localStorage.setItem('user', JSON.stringify(res.user || {}));
+          this.authToken.setTokenAndUser(res.access_token, res.user || {});
           sessionStorage.setItem('reloadHomeOnce', '1');
         }
         await this.presentToast('Registration successful!', 'success');
@@ -190,19 +234,20 @@ export class UserRegistrationComponent implements OnInit, OnDestroy {
       },
       error: async (err) => {
         this.verifyAndRegisterLoading = false;
-        await this.presentToast(err?.error?.message || 'Registration failed.', 'danger');
+        this.apiErrorMessage = err?.error?.message || 'Registration failed.';
+        await this.presentToast(this.apiErrorMessage, 'danger');
       }
     });
   }
 
-  onSubmit() {
+  async onSubmit() {
     if (!this.userregisterData.tenantName) {
       const latest = sessionStorage.getItem('siteName') || '';
       this.userregisterData.tenantName = latest;
       this.siteName = latest;
       this.isPrajayatna = latest === 'Prajayatna';
     }
-    this.apiUrl = this.getApiBaseUrl();
+    await this.refreshApiUrl();
     if (this.isPrajayatna) {
       if (this.registrationStep === 'form') {
         this.sendOtp();
@@ -217,6 +262,10 @@ export class UserRegistrationComponent implements OnInit, OnDestroy {
   backToForm() {
     this.registrationStep = 'form';
     this.otpValue = '';
+    this.apiErrorMessage = '';
+    if (this.otpCountdownInterval) clearInterval(this.otpCountdownInterval);
+    if (this.resendCooldownInterval) clearInterval(this.resendCooldownInterval);
+    this.resendCooldownSeconds = 0;
   }
 
   switchToLogin() {

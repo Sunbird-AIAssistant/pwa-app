@@ -8,7 +8,8 @@ import { ComponentsModule } from './components/components.module';
 import { AuthModule } from './components/prajayatna-auth/auth.module';
 import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthHttpInterceptor } from './services/auth-http.interceptor';
 import { StorageService } from './services/storage.service';
 import { DbService } from './services/db/db.service';
 import { AppInitializeService } from './services/appInitialize.service';
@@ -34,7 +35,7 @@ import { AppUpdateService } from './services/app-update/app-update.service';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../../configuration/environment.prod';
 import { SwUpdate } from '@angular/service-worker';
-import { ConfigVariables } from "./config";
+import { ConfigVariables, subdomain } from "./config";
 import { FormsModule } from '@angular/forms';
 
 
@@ -75,6 +76,7 @@ export function initializeFactory(init: DbService) {
   ],
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    { provide: HTTP_INTERCEPTORS, useClass: AuthHttpInterceptor, multi: true },
     StorageService,
     DbService,
     AppInitializeService,
@@ -154,9 +156,14 @@ export class AppModule {
   }
 
   private findSiteSubDomain(){
-    const subdomain = 'localhost';
-    localStorage.setItem('subDomain', subdomain);
-    this.setManifestFile(subdomain);
+    ConfigVariables.then(config => {
+      const sub = (config && (config as any).subDomain) || subdomain;
+      localStorage.setItem('subDomain', sub);
+      this.setManifestFile(sub);
+    }).catch(() => {
+      localStorage.setItem('subDomain', subdomain);
+      this.setManifestFile(subdomain);
+    });
   }
 
   private setManifestFile(currentDomain: any) {

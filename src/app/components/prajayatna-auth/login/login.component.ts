@@ -2,8 +2,9 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
-import { config } from 'configuration/environment.prod';
 import { ConfigVariables } from '../../../config';
+import { AuthApiService } from '../auth-api.service';
+import { AuthTokenService } from '../../../services/auth-token.service';
 
 @Component({
   selector: 'app-login',
@@ -21,6 +22,16 @@ export class LoginComponent  implements OnInit, OnDestroy {
   otpValue = '';
   sendOtpLoading = false;
   verifyAndLoginLoading = false;
+  /** OTP validity in seconds from send-otp response */
+  otpExpiresInSeconds = 600;
+  /** Countdown for display (seconds until OTP expires) */
+  otpCountdown = 0;
+  /** Resend cooldown in seconds (button disabled when > 0) */
+  resendCooldownSeconds = 0;
+  private otpCountdownInterval: any;
+  private resendCooldownInterval: any;
+  /** Inline error message from API (cleared on success or when user retries) */
+  apiErrorMessage = '';
 
   showPassword = false;
 
@@ -35,17 +46,18 @@ export class LoginComponent  implements OnInit, OnDestroy {
     tenantName: ''
   };
 
-
-
   constructor(
     private http: HttpClient,
     private router: Router,
-    private toastController: ToastController
+    private toastController: ToastController,
+    private authApi: AuthApiService,
+    private authToken: AuthTokenService
   ) {}
 
   ngOnInit() {
    this.siteName = sessionStorage.getItem('siteName') || '';
-    this.apiUrl = this.getApiBaseUrl();
+    this.apiUrl = this.authApi.getApiBaseUrlSync();
+    this.authApi.getApiBaseUrl().then(url => { this.apiUrl = url; });
     this.userLoginData.tenantName = this.siteName;
     this.isPrajayatna = this.siteName === 'Prajayatna';
 
@@ -86,14 +98,12 @@ export class LoginComponent  implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     window.removeEventListener('storage', this.onStorageChange);
+    if (this.otpCountdownInterval) clearInterval(this.otpCountdownInterval);
+    if (this.resendCooldownInterval) clearInterval(this.resendCooldownInterval);
   }
 
-  /** Use local backend when app is served from localhost (e.g. ng serve / ionic serve). */
-  private getApiBaseUrl(): string {
-    if (typeof window !== 'undefined' && window.location?.hostname === 'localhost') {
-      return 'http://localhost:3000/';
-    }
-    return config.api.BASE_URL;
+  private async refreshApiUrl(): Promise<void> {
+    this.apiUrl = await this.authApi.getApiBaseUrl();
   }
 
   async presentToast(message: string, color: string = 'success') {
@@ -119,33 +129,71 @@ export class LoginComponent  implements OnInit, OnDestroy {
   }
 
   /** Prajayatna: Send OTP then show OTP step. */
-  sendOtp() {
+  async sendOtp() {
     if (!this.userLoginData.tenantName) {
       const latest = sessionStorage.getItem('siteName') || '';
       this.userLoginData.tenantName = latest;
       this.siteName = latest;
       this.isPrajayatna = latest === 'Prajayatna';
     }
-    this.apiUrl = this.getApiBaseUrl();
+    await this.refreshApiUrl();
     const payload: any = {
       ...this.getAuthPayload(),
       purpose: 'login',
       password: this.userLoginData.password
     };
+    this.apiErrorMessage = '';
     this.sendOtpLoading = true;
-    this.http.post(`${this.apiUrl}auth/send-otp`, payload).subscribe({
-      next: () => {
+    this.http.post<{ message?: string; expiresInSeconds?: number }>(`${this.apiUrl}auth/send-otp`, payload).subscribe({
+      next: (res) => {
         this.sendOtpLoading = false;
         this.loginStep = 'otp';
         this.otpValue = '';
+        this.otpExpiresInSeconds = res?.expiresInSeconds ?? 600;
+        this.otpCountdown = this.otpExpiresInSeconds;
+        this.startOtpCountdown();
+        this.startResendCooldown(60);
         this.presentToast('OTP sent to your ' + (this.loginType === 'phone' ? 'phone' : 'email'), 'success');
       },
       error: (err) => {
         this.sendOtpLoading = false;
+        const status = err?.status;
         const msg = err?.error?.message || 'Failed to send OTP. Please try again.';
-        this.presentToast(msg, 'danger');
+        this.apiErrorMessage = msg;
+        if (status === 429) {
+          const retryAfter = err?.error?.retryAfterSeconds ?? 60;
+          this.startResendCooldown(retryAfter);
+          this.presentToast(msg, 'warning');
+        } else {
+          this.presentToast(msg, 'danger');
+        }
       }
     });
+  }
+
+  private startOtpCountdown(): void {
+    if (this.otpCountdownInterval) clearInterval(this.otpCountdownInterval);
+    this.otpCountdownInterval = setInterval(() => {
+      if (this.otpCountdown <= 0) {
+        clearInterval(this.otpCountdownInterval);
+        return;
+      }
+      this.otpCountdown -= 1;
+    }, 1000);
+  }
+
+  private startResendCooldown(seconds: number): void {
+    if (this.resendCooldownInterval) clearInterval(this.resendCooldownInterval);
+    this.resendCooldownSeconds = seconds;
+    this.resendCooldownInterval = setInterval(() => {
+      this.resendCooldownSeconds -= 1;
+      if (this.resendCooldownSeconds <= 0) clearInterval(this.resendCooldownInterval);
+    }, 1000);
+  }
+
+  resendOtp(): void {
+    if (this.resendCooldownSeconds > 0) return;
+    this.sendOtp();
   }
 
   /** Prajayatna: Verify OTP then call login. */
@@ -155,6 +203,7 @@ export class LoginComponent  implements OnInit, OnDestroy {
       purpose: 'login',
       otp: this.otpValue.trim()
     };
+    this.apiErrorMessage = '';
     this.verifyAndLoginLoading = true;
     this.http.post(`${this.apiUrl}auth/verify-otp`, payload).subscribe({
       next: () => {
@@ -163,6 +212,7 @@ export class LoginComponent  implements OnInit, OnDestroy {
       error: (err) => {
         this.verifyAndLoginLoading = false;
         const msg = err?.error?.message || 'Invalid or expired OTP.';
+        this.apiErrorMessage = msg;
         this.presentToast(msg, 'danger');
       }
     });
@@ -176,8 +226,8 @@ export class LoginComponent  implements OnInit, OnDestroy {
     this.http.post(`${this.apiUrl}auth/login`, payload).subscribe({
       next: async (res: any) => {
         this.verifyAndLoginLoading = false;
-        localStorage.setItem('access_token', res.access_token);
-        localStorage.setItem('user', JSON.stringify(res.user));
+        this.apiErrorMessage = '';
+        this.authToken.setTokenAndUser(res.access_token, res.user || {});
         await this.presentToast('Login successful!', 'success');
         sessionStorage.setItem('reloadHomeOnce', '1');
         this.router.navigate(['/tabs/home']);
@@ -190,19 +240,22 @@ export class LoginComponent  implements OnInit, OnDestroy {
       },
       error: async (err) => {
         this.verifyAndLoginLoading = false;
-        await this.presentToast(err?.error?.message || 'Login failed. Please try again.', 'danger');
+        const msg = err?.error?.message || 'Login failed. Please try again.';
+        this.apiErrorMessage = msg;
+        await this.presentToast(msg, 'danger');
       }
     });
   }
 
   /** Non-Prajayatna: direct login. Prajayatna: credentials step -> Send OTP; otp step -> Verify & Login. */
-  onSubmit() {
+  async onSubmit() {
     if (!this.userLoginData.tenantName) {
       const latest = sessionStorage.getItem('siteName') || '';
       this.userLoginData.tenantName = latest;
       this.siteName = latest;
       this.isPrajayatna = latest === 'Prajayatna';
     }
+    await this.refreshApiUrl();
     if (this.isPrajayatna) {
       if (this.loginStep === 'credentials') {
         this.sendOtp();
@@ -217,6 +270,10 @@ export class LoginComponent  implements OnInit, OnDestroy {
   backToCredentials() {
     this.loginStep = 'credentials';
     this.otpValue = '';
+    this.apiErrorMessage = '';
+    if (this.otpCountdownInterval) clearInterval(this.otpCountdownInterval);
+    if (this.resendCooldownInterval) clearInterval(this.resendCooldownInterval);
+    this.resendCooldownSeconds = 0;
   }
   
 
