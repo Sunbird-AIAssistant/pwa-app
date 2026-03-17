@@ -26,102 +26,105 @@
       </div>
     </div>
     <form (ngSubmit)="onSubmit()" #registerForm="ngForm" class="register-form">
-      <!-- Name -->
-      <div class="form-group">
-        <label>Name <sup class="mandatory-sign">*</sup></label>
-        <input type="text" name="name" class="form-control" [(ngModel)]="userregisterData.name" required
-          #name="ngModel">
-        <div *ngIf="name.invalid && name.touched" class="error">
-          <span *ngIf="name.errors?.['required']">Name is required</span>
+      <!-- Step 1: Registration form (hidden when Prajayatna is on OTP step) -->
+      <ng-container *ngIf="!isPrajayatna || registrationStep === 'form'">
+        <!-- Name -->
+        <div class="form-group">
+          <label>Name <sup class="mandatory-sign">*</sup></label>
+          <input type="text" name="name" class="form-control" [(ngModel)]="userregisterData.name" required
+            #name="ngModel">
+          <div *ngIf="name.invalid && name.touched" class="error">
+            <span *ngIf="name.errors?.['required']">Name is required</span>
+          </div>
         </div>
-      </div>
-      <div *ngIf="isPrajayatna" class="form-group">
+        <div *ngIf="isPrajayatna" class="form-group">
 
-      </div>
-      <!-- Email/Phone Toggle for Prajayatna -->
-      <div *ngIf="isPrajayatna" class="form-group">
-        <label>Register with <sup class="mandatory-sign">*</sup></label>
-        <ion-segment [(ngModel)]="registrationType" name="registrationType"
-          (ionChange)="userregisterData.email = ''; userregisterData.phoneNumber = ''">
-          <ion-segment-button value="email">
-            <ion-label>Email</ion-label>
-          </ion-segment-button>
-          <ion-segment-button value="phone">
-            <ion-label>Phone</ion-label>
-          </ion-segment-button>
-        </ion-segment>
-      </div>
-
-
-
-      <!-- Email Input (default for all, or when email selected for Prajayatna) -->
-      <div class="form-group" *ngIf="!isPrajayatna || registrationType === 'email'">
-        <label>Email <sup class="mandatory-sign">*</sup></label>
-        <input type="email" name="email" class="form-control" [(ngModel)]="userregisterData.email" required
-          pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" #email="ngModel">
-        <div *ngIf="email.invalid && email.touched" class="error">
-          <span *ngIf="email.errors?.['required']">Email is required</span>
-          <span *ngIf="email.errors?.['pattern']">Enter a valid email address</span>
         </div>
-      </div>
-
-      <!-- Phone Input (only when phone selected for Prajayatna) -->
-      <div class="form-group" *ngIf="isPrajayatna && registrationType === 'phone'">
-        <label>Phone Number <sup class="mandatory-sign">*</sup></label>
-        <input type="text" name="phoneNumber" class="form-control" [(ngModel)]="userregisterData.phoneNumber" required
-          pattern="^[0-9]{10}$" #phoneNumber="ngModel">
-        <div *ngIf="phoneNumber.invalid && phoneNumber.touched" class="error">
-          <span *ngIf="phoneNumber.errors?.['required']">Phone Number is required</span>
-          <span *ngIf="phoneNumber.errors?.['pattern']">Enter a valid 10-digit Phone Number</span>
+        <!-- Email/Phone Toggle for Prajayatna -->
+        <div *ngIf="isPrajayatna" class="form-group">
+          <label>Register with <sup class="mandatory-sign">*</sup></label>
+          <ion-segment [(ngModel)]="registrationType" name="registrationType"
+            (ionChange)="userregisterData.email = ''; userregisterData.phoneNumber = ''">
+            <ion-segment-button value="email">
+              <ion-label>Email</ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="phone">
+              <ion-label>Phone</ion-label>
+            </ion-segment-button>
+          </ion-segment>
         </div>
-      </div>
 
-      <div *ngIf="isPrajayatna" class="form-group">
-        <label for="stateSelect">Select State</label>
-        <select id="stateSelect" class="form-control" [(ngModel)]="selectedState" name="state">
-          <option value="" disabled selected>Select your state</option>
-          <option *ngFor="let state of states" [value]="state">
-            {{ state }}
-          </option>
-        </select>
-      </div>
-
-      <div class="form-group position-relative">
-        <label>Password <sup class="mandatory-sign">*</sup></label>
-        <input [type]="showPassword ? 'text' : 'password'" name="password" class="form-control"
-          [(ngModel)]="userregisterData.password" required pattern="^(?=.*[A-Za-z])(?=.*\d).{8,}$"
-          #password="ngModel" />
-        <!-- 👁️ Ionic eye button -->
-        <ion-button fill="clear" (click)="togglePasswordVisibility()" class="toggle-btn" type="button">
-          <ion-icon [name]="showPassword ? 'eye-off' : 'eye'"></ion-icon>
-        </ion-button>
-        <div *ngIf="password.invalid && password.touched" class="error">
-          <span *ngIf="password.errors?.['required']">Password is required</span>
-          <span *ngIf="password.errors?.['pattern']">
-            Password must be at least 8 characters and include letters and numbers.
-          </span>
+        <!-- Email Input (default for all, or when email selected for Prajayatna) -->
+        <div class="form-group" *ngIf="!isPrajayatna || registrationType === 'email'">
+          <label>Email <sup class="mandatory-sign">*</sup></label>
+          <input type="email" name="email" class="form-control" [(ngModel)]="userregisterData.email" required
+            pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" #email="ngModel">
+          <div *ngIf="email.invalid && email.touched" class="error">
+            <span *ngIf="email.errors?.['required']">Email is required</span>
+            <span *ngIf="email.errors?.['pattern']">Enter a valid email address</span>
+          </div>
         </div>
-      </div>
-      <div class="form-group position-relative">
-        <label>Confirm Password <sup class="mandatory-sign">*</sup></label>
-        <input [type]="showPassword ? 'text' : 'password'" name="confirmPassword" class="form-control"
-          [(ngModel)]="userregisterData.confirmPassword" required pattern="^(?=.*[A-Za-z])(?=.*\d).{8,}$"
-          #confirmPassword="ngModel" />
-        <!-- Eye icon button -->
-        <ion-button fill="clear" type="button" (click)="togglePasswordVisibility()" class="toggle-btn">
-          <ion-icon [name]="showPassword ? 'eye-off' : 'eye'"></ion-icon>
-        </ion-button>
-        <div *ngIf="confirmPassword.invalid && confirmPassword.touched" class="error">
-          <span *ngIf="confirmPassword.errors?.['required']">Password is required</span>
-          <span *ngIf="confirmPassword.errors?.['pattern']">
-            Password must be at least 8 characters and include letters and numbers.
-          </span>
-        </div>
-      </div>
 
-      <button *ngIf="!isPrajayatna || registrationStep === 'form'" type="submit" [disabled]="registerForm.invalid || sendOtpLoading">
-        {{ isPrajayatna ? (sendOtpLoading ? 'Sending…' : 'Send OTP') : 'Register' }}
-      </button>
+        <!-- Phone Input (only when phone selected for Prajayatna) -->
+        <div class="form-group" *ngIf="isPrajayatna && registrationType === 'phone'">
+          <label>Phone Number <sup class="mandatory-sign">*</sup></label>
+          <input type="text" name="phoneNumber" class="form-control" [(ngModel)]="userregisterData.phoneNumber" required
+            pattern="^[0-9]{10}$" #phoneNumber="ngModel">
+          <div *ngIf="phoneNumber.invalid && phoneNumber.touched" class="error">
+            <span *ngIf="phoneNumber.errors?.['required']">Phone Number is required</span>
+            <span *ngIf="phoneNumber.errors?.['pattern']">Enter a valid 10-digit Phone Number</span>
+          </div>
+        </div>
+
+        <div *ngIf="isPrajayatna" class="form-group">
+          <label for="stateSelect">Select State</label>
+          <select id="stateSelect" class="form-control" [(ngModel)]="selectedState" name="state">
+            <option value="" disabled selected>Select your state</option>
+            <option *ngFor="let state of states" [value]="state">
+              {{ state }}
+            </option>
+          </select>
+        </div>
+
+        <div class="form-group position-relative">
+          <label>Password <sup class="mandatory-sign">*</sup></label>
+          <input [type]="showPassword ? 'text' : 'password'" name="password" class="form-control"
+            [(ngModel)]="userregisterData.password" required pattern="^(?=.*[A-Za-z])(?=.*\d).{8,}$"
+            #password="ngModel" />
+          <!-- 👁️ Ionic eye button -->
+          <ion-button fill="clear" (click)="togglePasswordVisibility()" class="toggle-btn" type="button">
+            <ion-icon [name]="showPassword ? 'eye-off' : 'eye'"></ion-icon>
+          </ion-button>
+          <div *ngIf="password.invalid && password.touched" class="error">
+            <span *ngIf="password.errors?.['required']">Password is required</span>
+            <span *ngIf="password.errors?.['pattern']">
+              Password must be at least 8 characters and include letters and numbers.
+            </span>
+          </div>
+        </div>
+        <div class="form-group position-relative">
+          <label>Confirm Password <sup class="mandatory-sign">*</sup></label>
+          <input [type]="showPassword ? 'text' : 'password'" name="confirmPassword" class="form-control"
+            [(ngModel)]="userregisterData.confirmPassword" required pattern="^(?=.*[A-Za-z])(?=.*\d).{8,}$"
+            #confirmPassword="ngModel" />
+          <!-- Eye icon button -->
+          <ion-button fill="clear" type="button" (click)="togglePasswordVisibility()" class="toggle-btn">
+            <ion-icon [name]="showPassword ? 'eye-off' : 'eye'"></ion-icon>
+          </ion-button>
+          <div *ngIf="confirmPassword.invalid && confirmPassword.touched" class="error">
+            <span *ngIf="confirmPassword.errors?.['required']">Password is required</span>
+            <span *ngIf="confirmPassword.errors?.['pattern']">
+              Password must be at least 8 characters and include letters and numbers.
+            </span>
+          </div>
+        </div>
+
+        <button type="submit" [disabled]="registerForm.invalid || sendOtpLoading">
+          {{ isPrajayatna ? (sendOtpLoading ? 'Sending…' : 'Send OTP') : 'Register' }}
+        </button>
+      </ng-container>
+
+      <!-- Step 2: OTP only (Prajayatna – shown after Send OTP) -->
       <ng-container *ngIf="isPrajayatna && registrationStep === 'otp'">
         <div class="form-group">
           <label>Enter OTP <sup class="mandatory-sign">*</sup></label>
