@@ -33,15 +33,6 @@ export class SplashPage implements OnInit {
     }
     
   async ngOnInit() {
-    ConfigVariables.then(config => {
-      this.configVariables = config;
-      try { 
-        sessionStorage.removeItem('siteName');
-        sessionStorage.setItem('siteName', config?.siteName || ''); } catch {}
-    }).catch(error => {
-      console.error('Failed to load configuration:', error);
-    });
-    
     this.headerService.showStatusBar(true);
     this.headerService.hideHeader();
     ApiModule.getInstance().init(await this.utilService.getDeviceId())
@@ -49,23 +40,37 @@ export class SplashPage implements OnInit {
     let sid = uuidv4();
     this.storage.setData("sid", sid);
     this.appinitialise.initialize();
+
+    // Wait for config to load so siteName (e.g. Prajayatna) is set before deciding login vs home
+    let config: any;
+    try {
+      config = await ConfigVariables;
+    } catch (error) {
+      console.error('Failed to load configuration:', error);
+    }
+    this.configVariables = config;
+    try {
+      sessionStorage.removeItem('siteName');
+      sessionStorage.setItem('siteName', config?.siteName || '');
+    } catch {}
+
     setTimeout(async () => {
       this.startTelemetry()
       const siteName = (sessionStorage.getItem('siteName') || this.configVariables?.siteName || '').trim();
       const isLoggedIn = await this.storage.getData('authToken');
       if (siteName) {
-        this.router.navigate(['/login']); 
+        this.router.navigate(['/login']);
       } else {
         this.router.navigate(['/tabs/home']);
       }
     }, 2000);
-    let config: Config = await this.configService.getConfigMeta();
-    let notif: LocalNotificationSchema = config?.notification?.android
+    let configMeta: Config = await this.configService.getConfigMeta();
+    let notif: LocalNotificationSchema = configMeta?.notification?.android
     if(notif) {
       await this.lcoalNotifService.cancelNotification(notif.id);
       await this.lcoalNotifService.initializeLocalNotif(notif);
     }
-    this.storage.setData('configMeta', JSON.stringify(config));
+    this.storage.setData('configMeta', JSON.stringify(configMeta));
     let lang = await this.storage.getData('lang')
     if(lang) {
       // if(lang !== 'hi') {
@@ -74,7 +79,7 @@ export class SplashPage implements OnInit {
         this.translate.use(lang);
       // }
     } else {
-      config?.languages.forEach(lang => {
+      configMeta?.languages.forEach(lang => {
         if (lang?.default) {
           this.storage.setData('lang', lang.id);
           // if(lang.id !== 'hi') {

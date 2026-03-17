@@ -1,8 +1,6 @@
 // config.ts
-const urlObj = new URL(document.baseURI);
-const hostname = urlObj.hostname; // e.g., "subdomain.example.com"
-const domainParts = hostname.split('.');
-const jsonFilename = domainParts[0] + '.json';
+const subdomain = 'localhost';
+const jsonFilename = subdomain + '.json';
 const jsonUrl = `../assets/appConfig/${jsonFilename}`;
 export const ConfigVariables = fetch(jsonUrl)
   .then(response => {

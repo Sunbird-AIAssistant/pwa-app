@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { AppHeaderService, UtilService } from '../../../app/services';
 import { MenuController, ModalController } from '@ionic/angular';
 import { TelemetryGeneratorService } from 'src/app/services/telemetry/telemetry.generator.service';
@@ -9,7 +9,8 @@ import { StorageService } from 'src/app/services';
 import { LanguageService } from '../../components/langauge-select/language.service';
 import { AlertController } from '@ionic/angular';
 import { ToastController } from '@ionic/angular';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
+import { filter } from 'rxjs/operators';
 
 
 @Component({
@@ -17,7 +18,7 @@ import { Router } from '@angular/router';
   templateUrl: './application-header.component.html',
   styleUrls: ['./application-header.component.scss'],
 })
-export class ApplicationHeaderComponent  implements OnInit {
+export class ApplicationHeaderComponent implements OnInit, OnDestroy {
   appInfo: any;
   @Input() headerConfig: any = false;
   @Output() headerEvents = new EventEmitter();
@@ -30,7 +31,8 @@ export class ApplicationHeaderComponent  implements OnInit {
   configVariables : any;
   isTitleChanged : boolean = false;
   languageSubscription: any;
-  userName:string='';
+  routerSubscription: any;
+  userName: string = '';
 
   language: string = '';
   constructor(private utilService: UtilService,
@@ -84,13 +86,12 @@ export class ApplicationHeaderComponent  implements OnInit {
     })
     this.appInfo = await this.utilService.getAppInfo();
 
-    // Load userName on first init if user already exists in localStorage
-    try {
-      const userRaw = localStorage.getItem('user');
-      if (userRaw) {
-        this.userName = JSON.parse(userRaw).name || '';
-      }
-    } catch {}
+    this.refreshUserName();
+
+    // Refresh name on every navigation (e.g. after login or registration)
+    this.routerSubscription = this.router.events.pipe(
+      filter((e): e is NavigationEnd => e instanceof NavigationEnd)
+    ).subscribe(() => this.refreshUserName());
 
     // Keep userName in sync if localStorage changes in this or other tabs
     window.addEventListener('storage', (event: StorageEvent) => {
@@ -114,6 +115,19 @@ export class ApplicationHeaderComponent  implements OnInit {
       }
     }, 500);
 
+  }
+
+  refreshUserName() {
+    try {
+      const userRaw = localStorage.getItem('user');
+      this.userName = userRaw ? (JSON.parse(userRaw).name || '') : '';
+    } catch {
+      this.userName = '';
+    }
+  }
+
+  ngOnDestroy() {
+    this.routerSubscription?.unsubscribe();
   }
 
   async scan() {

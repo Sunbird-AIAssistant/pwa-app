@@ -86,11 +86,28 @@
       </div>
 
 
-      <!-- Submit Button -->
-      <button type="submit" [disabled]="loginForm.invalid">Login</button>
-      <p class="forgot-password" (click)="switchToForgotPassword()"> Forgot Password ?</p>
+      <!-- Submit: Prajayatna step 1 = Send OTP, step 2 = Verify & Login; others = Login -->
+      <button *ngIf="!isPrajayatna || loginStep === 'credentials'" type="submit" [disabled]="loginForm.invalid || sendOtpLoading">
+        {{ isPrajayatna ? (sendOtpLoading ? 'Sending…' : 'Send OTP') : 'Login' }}
+      </button>
+      <ng-container *ngIf="isPrajayatna && loginStep === 'otp'">
+        <div class="form-group">
+          <label>Enter OTP <sup class="mandatory-sign">*</sup></label>
+          <input type="text" name="otp" class="form-control" [(ngModel)]="otpValue" required
+            minlength="4" maxlength="8" pattern="[0-9]+" placeholder="Enter 6-digit OTP" #otpInput="ngModel" />
+          <div *ngIf="otpInput.invalid && otpInput.touched" class="error">
+            <span *ngIf="otpInput.errors?.['required']">OTP is required</span>
+            <span *ngIf="otpInput.errors?.['pattern']">OTP should be digits only</span>
+          </div>
+        </div>
+        <button type="submit" [disabled]="!otpValue.trim() || verifyAndLoginLoading">
+          {{ verifyAndLoginLoading ? 'Verifying…' : 'Verify & Login' }}
+        </button>
+        <p (click)="backToCredentials()" class="forgot-password" style="cursor:pointer; margin-top:8px;">Back to credentials</p>
+      </ng-container>
+      <p *ngIf="!isPrajayatna || loginStep === 'credentials'" class="forgot-password" (click)="switchToForgotPassword()"> Forgot Password ?</p>
 
-      <p (click)="switchToRegistration()" style="cursor:pointer; margin-top:12px;">
+      <p *ngIf="!isPrajayatna || loginStep === 'credentials'" (click)="switchToRegistration()" style="cursor:pointer; margin-top:12px;">
         Don’t have an account yet? Register here
       </p>
 

@@ -16,7 +16,11 @@ export class ForgotPasswordComponent  implements OnInit, OnDestroy {
   siteName: string = '';
   apiUrl: string = '';
   isPrajayatna: boolean = false;
-  forgotPasswordType: 'email' | 'phone' = 'email'; // For Prajayatna: toggle between email and phone
+  forgotPasswordType: 'email' | 'phone' = 'email';
+  forgotStep: 'identifier' | 'otp' = 'identifier';
+  otpValue = '';
+  sendOtpLoading = false;
+  verifyAndResetLoading = false;
 
   forgotPasswordData = {
     phoneNumber: '',
@@ -39,7 +43,7 @@ export class ForgotPasswordComponent  implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.siteName = sessionStorage.getItem('siteName') || '';
-    this.apiUrl = config.api.BASE_URL;
+    this.apiUrl = this.getApiBaseUrl();
     this.forgotPasswordData.tenantName = this.siteName;
     this.isPrajayatna = this.siteName === 'Prajayatna';
 
@@ -82,8 +86,14 @@ export class ForgotPasswordComponent  implements OnInit, OnDestroy {
     window.removeEventListener('storage', this.onStorageChange);
   }
 
+  private getApiBaseUrl(): string {
+    if (typeof window !== 'undefined' && window.location?.hostname === 'localhost') {
+      return 'http://localhost:3000/';
+    }
+    return config.api.BASE_URL;
+  }
 
-togglePasswordVisibility(type: 'new' | 'confirm') {
+  togglePasswordVisibility(type: 'new' | 'confirm') {
   if (type === 'new') {
     this.showNewPassword = !this.showNewPassword;
   } else {
@@ -107,51 +117,114 @@ checkPasswordMatch() {
     toast.present();
   }
 
-onSubmitForgotPassword() {
-  if (this.passwordMismatch) return;
-  // Final guard to ensure tenantName is present
-  if (!this.forgotPasswordData.tenantName) {
-    const latest = sessionStorage.getItem('siteName') || '';
-    this.forgotPasswordData.tenantName = latest;
-    this.siteName = latest;
-    this.isPrajayatna = latest === 'Prajayatna';
+  private getIdentifierPayload(): { email?: string; mobileNumber?: string; tenantName: string } {
+    const tenantName = this.forgotPasswordData.tenantName || sessionStorage.getItem('siteName') || '';
+    const payload: any = { tenantName };
+    if (this.isPrajayatna && this.forgotPasswordType === 'phone') {
+      payload.mobileNumber = this.forgotPasswordData.phoneNumber;
+    } else {
+      payload.email = this.forgotPasswordData.email;
+    }
+    return payload;
   }
 
-  // Prepare payload based on forgot password type for Prajayatna
-  const payload: any = {
-    newPassword: this.forgotPasswordData.newPassword,
-    confirmNewPassword: this.forgotPasswordData.confirmNewPassword,
-    tenantName: this.forgotPasswordData.tenantName
-  };
-  
-  if (this.isPrajayatna && this.forgotPasswordType === 'phone') {
-    payload.mobileNumber = this.forgotPasswordData.phoneNumber;
-  } else {
-    payload.email = this.forgotPasswordData.email;
+  sendOtp() {
+    if (!this.forgotPasswordData.tenantName) {
+      const latest = sessionStorage.getItem('siteName') || '';
+      this.forgotPasswordData.tenantName = latest;
+      this.siteName = latest;
+      this.isPrajayatna = latest === 'Prajayatna';
+    }
+    const payload = { ...this.getIdentifierPayload(), purpose: 'forgot_password' as const };
+    this.sendOtpLoading = true;
+    this.http.post(`${this.apiUrl}auth/send-otp`, payload).subscribe({
+      next: () => {
+        this.sendOtpLoading = false;
+        this.forgotStep = 'otp';
+        this.otpValue = '';
+        this.presentToast('OTP sent to your ' + (this.forgotPasswordType === 'phone' ? 'phone' : 'email'), 'success');
+      },
+      error: (err) => {
+        this.sendOtpLoading = false;
+        this.presentToast(err?.error?.message || 'Failed to send OTP.', 'danger');
+      }
+    });
   }
 
-  this.http.post(`${this.apiUrl}auth/change-password`, payload)
-    .subscribe({
+  verifyOtpThenReset() {
+    if (this.passwordMismatch) return;
+    const payload: any = { ...this.getIdentifierPayload(), purpose: 'forgot_password', otp: this.otpValue.trim() };
+    this.verifyAndResetLoading = true;
+    this.http.post(`${this.apiUrl}auth/verify-otp`, payload).subscribe({
+      next: () => this.doChangePassword(),
+      error: (err) => {
+        this.verifyAndResetLoading = false;
+        this.presentToast(err?.error?.message || 'Invalid or expired OTP.', 'danger');
+      }
+    });
+  }
+
+  private doChangePassword() {
+    const payload: any = {
+      newPassword: this.forgotPasswordData.newPassword,
+      confirmNewPassword: this.forgotPasswordData.confirmNewPassword,
+      tenantName: this.forgotPasswordData.tenantName
+    };
+    if (this.isPrajayatna && this.forgotPasswordType === 'phone') {
+      payload.mobileNumber = this.forgotPasswordData.phoneNumber;
+    } else {
+      payload.email = this.forgotPasswordData.email;
+    }
+    this.http.post(`${this.apiUrl}auth/change-password`, payload).subscribe({
       next: async () => {
+        this.verifyAndResetLoading = false;
         await this.presentToast('Password reset successful!', 'success');
         this.router.navigate(['/login']);
         this.resetForm();
       },
-      error: async () => {
-        await this.presentToast('Something went wrong. Please try again later.', 'danger');
+      error: async (err) => {
+        this.verifyAndResetLoading = false;
+        await this.presentToast(err?.error?.message || 'Something went wrong. Please try again.', 'danger');
       }
     });
-}
+  }
 
-resetForm() {
-  this.forgotPasswordData = {
-    phoneNumber: '',
-    email: '',
-    newPassword: '',
-    confirmNewPassword: '',
-    tenantName: ''
-  };
-}
+  onSubmitForgotPassword() {
+    if (this.passwordMismatch && this.forgotStep === 'otp') return;
+    if (!this.forgotPasswordData.tenantName) {
+      const latest = sessionStorage.getItem('siteName') || '';
+      this.forgotPasswordData.tenantName = latest;
+      this.siteName = latest;
+      this.isPrajayatna = latest === 'Prajayatna';
+    }
+    this.apiUrl = this.getApiBaseUrl();
+    if (this.isPrajayatna) {
+      if (this.forgotStep === 'identifier') {
+        this.sendOtp();
+        return;
+      }
+      this.verifyOtpThenReset();
+      return;
+    }
+    this.doChangePassword();
+  }
+
+  backToIdentifier() {
+    this.forgotStep = 'identifier';
+    this.otpValue = '';
+  }
+
+  resetForm() {
+    this.forgotPasswordData = {
+      phoneNumber: '',
+      email: '',
+      newPassword: '',
+      confirmNewPassword: '',
+      tenantName: ''
+    };
+    this.forgotStep = 'identifier';
+    this.otpValue = '';
+  }
 
   switchToLogin() {
    this.router.navigate(['/login']);

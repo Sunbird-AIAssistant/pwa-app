@@ -16,13 +16,17 @@ export class LoginComponent  implements OnInit, OnDestroy {
   apiUrl: string = '';
   isPrajayatna: boolean = false;
   loginType: 'email' | 'phone' = 'email'; // For Prajayatna: toggle between email and phone
+  /** For Prajayatna: 'credentials' = enter email/phone + password then Send OTP; 'otp' = enter OTP then Verify & Login */
+  loginStep: 'credentials' | 'otp' = 'credentials';
+  otpValue = '';
+  sendOtpLoading = false;
+  verifyAndLoginLoading = false;
 
   showPassword = false;
 
   togglePasswordVisibility() {
     this.showPassword = !this.showPassword;
   }
-
 
   userLoginData = {
     email: '',
@@ -41,7 +45,7 @@ export class LoginComponent  implements OnInit, OnDestroy {
 
   ngOnInit() {
    this.siteName = sessionStorage.getItem('siteName') || '';
-    this.apiUrl = config.api.BASE_URL;
+    this.apiUrl = this.getApiBaseUrl();
     this.userLoginData.tenantName = this.siteName;
     this.isPrajayatna = this.siteName === 'Prajayatna';
 
@@ -84,6 +88,14 @@ export class LoginComponent  implements OnInit, OnDestroy {
     window.removeEventListener('storage', this.onStorageChange);
   }
 
+  /** Use local backend when app is served from localhost (e.g. ng serve / ionic serve). */
+  private getApiBaseUrl(): string {
+    if (typeof window !== 'undefined' && window.location?.hostname === 'localhost') {
+      return 'http://localhost:3000/';
+    }
+    return config.api.BASE_URL;
+  }
+
   async presentToast(message: string, color: string = 'success') {
     const toast = await this.toastController.create({
       message,
@@ -94,55 +106,117 @@ export class LoginComponent  implements OnInit, OnDestroy {
     toast.present();
   }
 
-  onSubmit() {
-    // Final guard to ensure tenantName is present
+  /** Build auth payload (email or mobileNumber + tenantName). */
+  private getAuthPayload(): { email?: string; mobileNumber?: string; tenantName: string } {
+    const tenantName = this.userLoginData.tenantName || sessionStorage.getItem('siteName') || '';
+    const payload: any = { tenantName };
+    if (this.isPrajayatna && this.loginType === 'phone') {
+      payload.mobileNumber = this.userLoginData.phoneNumber;
+    } else {
+      payload.email = this.userLoginData.email;
+    }
+    return payload;
+  }
+
+  /** Prajayatna: Send OTP then show OTP step. */
+  sendOtp() {
     if (!this.userLoginData.tenantName) {
       const latest = sessionStorage.getItem('siteName') || '';
       this.userLoginData.tenantName = latest;
       this.siteName = latest;
       this.isPrajayatna = latest === 'Prajayatna';
     }
-    
-    // Prepare payload based on login type for Prajayatna
+    this.apiUrl = this.getApiBaseUrl();
     const payload: any = {
-      password: this.userLoginData.password,
-      tenantName: this.userLoginData.tenantName
+      ...this.getAuthPayload(),
+      purpose: 'login',
+      password: this.userLoginData.password
     };
-    
-    if (this.isPrajayatna && this.loginType === 'phone') {
-      payload.mobileNumber = this.userLoginData.phoneNumber;
-    } else {
-      payload.email = this.userLoginData.email;
+    this.sendOtpLoading = true;
+    this.http.post(`${this.apiUrl}auth/send-otp`, payload).subscribe({
+      next: () => {
+        this.sendOtpLoading = false;
+        this.loginStep = 'otp';
+        this.otpValue = '';
+        this.presentToast('OTP sent to your ' + (this.loginType === 'phone' ? 'phone' : 'email'), 'success');
+      },
+      error: (err) => {
+        this.sendOtpLoading = false;
+        const msg = err?.error?.message || 'Failed to send OTP. Please try again.';
+        this.presentToast(msg, 'danger');
+      }
+    });
+  }
+
+  /** Prajayatna: Verify OTP then call login. */
+  verifyOtpThenLogin() {
+    const payload: any = {
+      ...this.getAuthPayload(),
+      purpose: 'login',
+      otp: this.otpValue.trim()
+    };
+    this.verifyAndLoginLoading = true;
+    this.http.post(`${this.apiUrl}auth/verify-otp`, payload).subscribe({
+      next: () => {
+        this.doLogin();
+      },
+      error: (err) => {
+        this.verifyAndLoginLoading = false;
+        const msg = err?.error?.message || 'Invalid or expired OTP.';
+        this.presentToast(msg, 'danger');
+      }
+    });
+  }
+
+  private doLogin() {
+    const payload: any = {
+      ...this.getAuthPayload(),
+      password: this.userLoginData.password
+    };
+    this.http.post(`${this.apiUrl}auth/login`, payload).subscribe({
+      next: async (res: any) => {
+        this.verifyAndLoginLoading = false;
+        localStorage.setItem('access_token', res.access_token);
+        localStorage.setItem('user', JSON.stringify(res.user));
+        await this.presentToast('Login successful!', 'success');
+        sessionStorage.setItem('reloadHomeOnce', '1');
+        this.router.navigate(['/tabs/home']);
+        this.userLoginData.email = '';
+        this.userLoginData.phoneNumber = '';
+        this.userLoginData.password = '';
+        this.userLoginData.tenantName = '';
+        this.loginStep = 'credentials';
+        this.otpValue = '';
+      },
+      error: async (err) => {
+        this.verifyAndLoginLoading = false;
+        await this.presentToast(err?.error?.message || 'Login failed. Please try again.', 'danger');
+      }
+    });
+  }
+
+  /** Non-Prajayatna: direct login. Prajayatna: credentials step -> Send OTP; otp step -> Verify & Login. */
+  onSubmit() {
+    if (!this.userLoginData.tenantName) {
+      const latest = sessionStorage.getItem('siteName') || '';
+      this.userLoginData.tenantName = latest;
+      this.siteName = latest;
+      this.isPrajayatna = latest === 'Prajayatna';
     }
-    
-    this.http.post(`${this.apiUrl}auth/login`, payload)
-      .subscribe({
-        next: async (res: any) => {
-  
-          // Store access_token and user info in localStorage
-          localStorage.setItem('access_token', res.access_token);
-          localStorage.setItem('user', JSON.stringify(res.user));
-  
-          // Show success toast
-          await this.presentToast('Login successful!', 'success');
-  
-          // Redirect to home/dashboard page
-          // Set a one-time reload flag for Home to ensure initial state is fully rendered
-          sessionStorage.setItem('reloadHomeOnce', '1');
-          this.router.navigate(['/tabs/home']); // replace with your route
-          this.userLoginData.email = '';
-          this.userLoginData.phoneNumber = '';
-          this.userLoginData.password ='';
-          this.userLoginData.tenantName =''
+    if (this.isPrajayatna) {
+      if (this.loginStep === 'credentials') {
+        this.sendOtp();
+        return;
+      }
+      this.verifyOtpThenLogin();
+      return;
+    }
+    this.doLogin();
+  }
 
-
-        },
-        error: async (err) => {
-          console.error('Login failed:', err);
-  
-          await this.presentToast('Login failed. Please check your credentials.', 'danger');
-        }
-      });
+  backToCredentials() {
+    this.loginStep = 'credentials';
+    this.otpValue = '';
   }
   
 

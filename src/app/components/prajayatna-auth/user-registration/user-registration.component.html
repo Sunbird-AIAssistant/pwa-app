@@ -119,9 +119,26 @@
         </div>
       </div>
 
-      <button type="submit" [disabled]="registerForm.invalid">Register</button>
-      <p (click)="switchToLogin()" style="cursor:pointer; margin-top:12px;">
-        Already an account yet? Login here
+      <button *ngIf="!isPrajayatna || registrationStep === 'form'" type="submit" [disabled]="registerForm.invalid || sendOtpLoading">
+        {{ isPrajayatna ? (sendOtpLoading ? 'Sending…' : 'Send OTP') : 'Register' }}
+      </button>
+      <ng-container *ngIf="isPrajayatna && registrationStep === 'otp'">
+        <div class="form-group">
+          <label>Enter OTP <sup class="mandatory-sign">*</sup></label>
+          <input type="text" name="otp" class="form-control" [(ngModel)]="otpValue" required
+            minlength="4" maxlength="8" pattern="[0-9]+" placeholder="Enter 6-digit OTP" #otpInput="ngModel" />
+          <div *ngIf="otpInput.invalid && otpInput.touched" class="error">
+            <span *ngIf="otpInput.errors?.['required']">OTP is required</span>
+            <span *ngIf="otpInput.errors?.['pattern']">OTP should be digits only</span>
+          </div>
+        </div>
+        <button type="submit" [disabled]="!otpValue.trim() || verifyAndRegisterLoading">
+          {{ verifyAndRegisterLoading ? 'Verifying…' : 'Verify & Register' }}
+        </button>
+        <p (click)="backToForm()" class="forgot-password" style="cursor:pointer; margin-top:8px;">Back to form</p>
+      </ng-container>
+      <p *ngIf="!isPrajayatna || registrationStep === 'form'" (click)="switchToLogin()" style="cursor:pointer; margin-top:12px;">
+        Already have an account? Login here
       </p>
     </form>
 
