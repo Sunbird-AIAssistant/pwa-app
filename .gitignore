@@ -73,3 +73,5 @@ Thumbs.db
 #env files
 /configuration/environment.dev.ts
 /configuration/environment.prod.ts
+.env*.pem
+secrets.json

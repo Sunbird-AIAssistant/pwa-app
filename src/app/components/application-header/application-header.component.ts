@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { AppHeaderService, UtilService } from '../../../app/services';
 import { MenuController, ModalController } from '@ionic/angular';
 import { TelemetryGeneratorService } from 'src/app/services/telemetry/telemetry.generator.service';
@@ -6,10 +6,12 @@ import { App } from '@capacitor/app';
 import { ConfigVariables } from '../../config';
 import { QrcodePopupComponent } from '../qrcode-popup/qrcode-popup.component';
 import { StorageService } from 'src/app/services';
+import { AuthTokenService } from 'src/app/services/auth-token.service';
 import { LanguageService } from '../../components/langauge-select/language.service';
 import { AlertController } from '@ionic/angular';
 import { ToastController } from '@ionic/angular';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
+import { filter } from 'rxjs/operators';
 
 
 @Component({
@@ -17,7 +19,7 @@ import { Router } from '@angular/router';
   templateUrl: './application-header.component.html',
   styleUrls: ['./application-header.component.scss'],
 })
-export class ApplicationHeaderComponent  implements OnInit {
+export class ApplicationHeaderComponent implements OnInit, OnDestroy {
   appInfo: any;
   @Input() headerConfig: any = false;
   @Output() headerEvents = new EventEmitter();
@@ -30,7 +32,8 @@ export class ApplicationHeaderComponent  implements OnInit {
   configVariables : any;
   isTitleChanged : boolean = false;
   languageSubscription: any;
-  userName:string='';
+  routerSubscription: any;
+  userName: string = '';
 
   language: string = '';
   constructor(private utilService: UtilService,
@@ -43,6 +46,7 @@ export class ApplicationHeaderComponent  implements OnInit {
     private alertController: AlertController,
     private toastController: ToastController,
     private router: Router,
+    private authToken: AuthTokenService
     ) {
       App.getInfo().then(val => {
         this.appVersion = `v${val.version}.${val.build}`
@@ -55,7 +59,8 @@ export class ApplicationHeaderComponent  implements OnInit {
       }).catch(error => {
         console.error('Failed to load configuration:', error);
       });
-      this.userName = JSON.parse(localStorage.getItem('user') || '{}').name || '';
+      const user = this.authToken.getUser();
+      this.userName = user?.name || '';
     }
 
     loadTabData(language: string) {
@@ -84,24 +89,15 @@ export class ApplicationHeaderComponent  implements OnInit {
     })
     this.appInfo = await this.utilService.getAppInfo();
 
-    // Load userName on first init if user already exists in localStorage
-    try {
-      const userRaw = localStorage.getItem('user');
-      if (userRaw) {
-        this.userName = JSON.parse(userRaw).name || '';
-      }
-    } catch {}
+    this.refreshUserName();
 
-    // Keep userName in sync if localStorage changes in this or other tabs
-    window.addEventListener('storage', (event: StorageEvent) => {
-      if (event.key === 'user') {
-        try {
-          this.userName = event.newValue ? (JSON.parse(event.newValue).name || '') : '';
-        } catch {
-          this.userName = '';
-        }
-      }
-    });
+    // Refresh name on every navigation (e.g. after login or registration)
+    this.routerSubscription = this.router.events.pipe(
+      filter((e): e is NavigationEnd => e instanceof NavigationEnd)
+    ).subscribe(() => this.refreshUserName());
+
+    // Keep userName in sync when navigating (e.g. after login)
+    // Note: sessionStorage does not fire storage events across tabs; refreshUserName() covers same-tab updates
 
     // Fallback: if username still not visible, refresh the screen once
     setTimeout(() => {
@@ -114,6 +110,15 @@ export class ApplicationHeaderComponent  implements OnInit {
       }
     }, 500);
 
+  }
+
+  refreshUserName() {
+    const user = this.authToken.getUser();
+    this.userName = user?.name || '';
+  }
+
+  ngOnDestroy() {
+    this.routerSubscription?.unsubscribe();
   }
 
   async scan() {
@@ -203,18 +208,10 @@ export class ApplicationHeaderComponent  implements OnInit {
   }
 
   performLogout() {
-    this.headerConfig= false;
-      // Remove token and user info from localStorage
-      localStorage.removeItem('access_token');
-      localStorage.removeItem('user');
-    
-      // Optional: show toast
-      this.presentToast('Logged out successfully', 'success');
-    
-      // Redirect to login page
-      this.router.navigate(['/login']);
-    
-    
+    this.headerConfig = false;
+    this.authToken.clear();
+    this.presentToast('Logged out successfully', 'success');
+    this.router.navigate(['/login']);
     this.emitEvent(new Event(''), 'logout');
   }
 
