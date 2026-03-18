@@ -8,8 +8,7 @@ import { ComponentsModule } from './components/components.module';
 import { AuthModule } from './components/prajayatna-auth/auth.module';
 import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { AuthHttpInterceptor } from './services/auth-http.interceptor';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { StorageService } from './services/storage.service';
 import { DbService } from './services/db/db.service';
 import { AppInitializeService } from './services/appInitialize.service';
@@ -76,7 +75,6 @@ export function initializeFactory(init: DbService) {
   ],
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    { provide: HTTP_INTERCEPTORS, useClass: AuthHttpInterceptor, multi: true },
     StorageService,
     DbService,
     AppInitializeService,
@@ -158,15 +156,20 @@ export class AppModule {
   private findSiteSubDomain(){
     ConfigVariables.then(config => {
       const sub = (config && (config as any).subDomain) || subdomain;
-      localStorage.setItem('subDomain', sub);
-      this.setManifestFile(sub);
+      if (sub) {
+        localStorage.setItem('subDomain', sub);
+        this.setManifestFile(sub);
+      }
     }).catch(() => {
-      localStorage.setItem('subDomain', subdomain);
-      this.setManifestFile(subdomain);
+      if (subdomain) {
+        localStorage.setItem('subDomain', subdomain);
+        this.setManifestFile(subdomain);
+      }
     });
   }
 
-  private setManifestFile(currentDomain: any) {
+  private setManifestFile(currentDomain: string) {
+    if (!currentDomain) return;
     var link = document.createElement('link');
     link.rel = 'manifest';
     link.href = currentDomain + '.webmanifest';
