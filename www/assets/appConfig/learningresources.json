@@ -1,0 +1,87 @@
+{
+    "apiBaseUrl": "http://localhost:3000/",
+    "tenantLogo": "assets/school/P_128x128.svg",
+    "siteName": "Prajayatna",
+    "siteByLine": "We learn. We live",
+    "splashImage": "assets/school/P_512x512.png",
+    "bots": ["teacher"],
+    "defaultContentFilter": [
+        {
+            "language":["Kannada", "Hindi"]
+        }
+    ],
+    "headerFilters": [
+        {
+            "defaultFilter": {
+                "id": "All",
+                "label": "All",
+                "query": "",
+                "filters": "All"
+            },
+            "additionalFilters": [
+                {
+                    "id": "Stories",
+                    "label": "Stories",
+                    "query": "Stories",
+                    "filters": "Stories"
+                },
+                {
+                    "id": "Activities",
+                    "label": "Activities",
+                    "query": "Activities",
+                    "filters": "Activities"
+                },
+                {
+                    "id": "Songs",
+                    "label": "Songs",
+                    "query": "Songs",
+                    "filters": "Songs"
+                },
+                {
+                    "id": "Audio",
+                    "label": "Audio",
+                    "query": "Audio",
+                    "filters": "Audio"
+                },
+                {
+                    "id": "Handbooks",
+                    "label": "Handbooks",
+                    "query": "Handbooks",
+                    "filters": "Handbooks"
+                }
+            ]
+        }
+    ],
+    "languages": [
+        {
+            "id": "kn",
+            "label": "ಕನ್ನಡ",
+            "default": true
+        },
+        {
+            "id": "hi",
+            "label": "हिंदी",
+            "default": false
+        }
+    ],
+    "titleCode": ["kn", "hi"],
+    "kn": {
+        "teacherTaraBotName": "ಅಂಗನವಾಡಿ ಕಾರ್ಯಕರ್ತೆ"
+    },
+    "hi": {
+        "teacherTaraBotName": "शिक्षक तारा"
+    },
+    "footerText": "Developed with ❤️ by Tekdi Technologies ",
+    "headerColor": "#AB251B",
+    "headerFontSize": "16",
+    "footerColor": "#AB251B",
+    "footerFontSize": "16",
+    "primaryCss" : {
+        "primary": "#AB251B",
+        "shade": "#FDB529"
+    },
+    "secondaryCss" : {
+        "secondary": "#FDB529",
+        "shade": "#e98021ff"
+    }
+}

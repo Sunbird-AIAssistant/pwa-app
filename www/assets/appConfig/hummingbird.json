@@ -1,0 +1,110 @@
+{
+    "tenantLogo": "assets/school/THSM_128x128.svg",
+    "siteName": "Hummingbird School in Assam",
+    "siteByLine": "Listen, Learn & Grow !!!",
+    "splashImage": "assets/school/THSM_152x152.png",
+    "bots": ["story", "parent", "teacher"],
+    "defaultContentFilter": [{
+        "agegroup": ["3-6", "6-8"],
+        "language":["English", "Hindi", "Assamese", "Bengali"]
+
+    }],
+    "headerFilters": [{
+        "defaultFilter": {
+            "id": "All",
+            "label": "All",
+            "query": "",
+            "filters": "All"
+        },
+        "additionalFilters": [
+            {
+                "id": "Stories",
+                "label": "Stories",
+                "query": "Stories",
+                "filters": "Stories"
+            },
+            {
+                "id": "Activities",
+                "label": "Activities",
+                "query": "Activities",
+                "filters": "Activities"
+            },
+            {
+                "id": "Songs",
+                "label": "Songs",
+                "query": "Songs",
+                "filters": "Songs"
+            },
+            {
+                "id": "Audio",
+                "label": "Audio",
+                "query": "Audio",
+                "filters": "Audio"
+            },
+            {
+                "id": "Handbooks",
+                "label": "Handbooks",
+                "query": "Handbooks",
+                "filters": "Handbooks"
+            }
+        ]
+    }],
+    "languages": [
+        {
+            "id": "hi",
+            "label": "हिंदी",
+            "default": false
+        },
+        {
+            "id": "as",
+            "label": "অসমীয়া",
+            "default": false
+        },
+        {
+            "id": "bn",
+            "label": "বাংলা",
+            "default": false
+        },
+        {
+            "id": "en",
+            "label": "English",
+            "default": true
+        }
+    ],
+    "titleCode": [
+        "en", "hi", "as", "bn"
+       ],
+    "en": {
+        "kathaSakhiBotName": "Story Baideo",
+        "parentTaraBotName": "Parent Bondhu",
+        "teacherTaraBotName": "Teacher Bondhu"
+       },
+       "hi": {
+        "kathaSakhiBotName": "कहानी बैदेओ",
+        "parentTaraBotName": "पेरेंट बन्धु",
+        "teacherTaraBotName": "टीचर बन्धु"
+       },
+       "as": {
+        "kathaSakhiBotName": "গল্প বেডিয়ো",
+        "parentTaraBotName": "পেৰেণ্ট বন্ধু",
+        "teacherTaraBotName": "শিক্ষক বন্ধু"
+       },
+       "bn": {
+ 
+        "kathaSakhiBotName": "গল্প বেদেও",
+        "parentTaraBotName": "পেরেন্ট বন্ধু",
+        "teacherTaraBotName": "শিক্ষক বন্ধু"
+       },
+   
+    "footerText": "Developed with ❤️ by Tekdi Technologies ",
+    "headerColor": "brown",
+    "headerFontSize": "16",
+    "footerColor": "brown",
+    "footerFontSize": "16",
+    "primaryCss" : {
+        "primary": "#327a97"
+    },
+    "secondaryCss" : {
+        "secondary": "#327a97"
+    }
+}
