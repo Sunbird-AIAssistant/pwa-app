@@ -17,7 +17,8 @@ export class ForgotPasswordComponent  implements OnInit, OnDestroy {
   apiUrl: string = '';
   isPrajayatna: boolean = false;
   forgotPasswordType: 'email' | 'phone' = 'email';
-  forgotStep: 'identifier' | 'otp' = 'identifier';
+  /** Prajayatna: identifier → otp → newPassword. */
+  forgotStep: 'identifier' | 'otp' | 'newPassword' = 'identifier';
   otpValue = '';
   sendOtpLoading = false;
   verifyAndResetLoading = false;
@@ -36,6 +37,12 @@ export class ForgotPasswordComponent  implements OnInit, OnDestroy {
     tenantName: ''
   };
 
+  /** When true, identifier was passed from Login screen – hide identifier form and use pre-filled value. */
+  identifierPreFilledFromLogin = false;
+
+  /** State passed from Login (captured in constructor while navigation is current). */
+  private loginState: { email?: string; phoneNumber?: string; identifierType?: string } | null = null;
+
   showNewPassword = false;
   showConfirmPassword = false;
   passwordMismatch : boolean = false;
@@ -46,7 +53,12 @@ export class ForgotPasswordComponent  implements OnInit, OnDestroy {
     private router: Router,
     private toastController: ToastController,
     private authApi: AuthApiService
-  ) { }
+  ) {
+    const nav = this.router.getCurrentNavigation();
+    if (nav?.extras?.state) {
+      this.loginState = nav.extras.state as { email?: string; phoneNumber?: string; identifierType?: string };
+    }
+  }
 
   ngOnInit() {
     this.siteName = sessionStorage.getItem('siteName') || '';
@@ -65,6 +77,7 @@ export class ForgotPasswordComponent  implements OnInit, OnDestroy {
           this.siteName = computed;
           this.forgotPasswordData.tenantName = computed;
           this.isPrajayatna = computed === 'Prajayatna';
+          setTimeout(() => this.maybeAutoSendOtpFromLogin(), 0);
         }
       }).catch(() => {});
 
@@ -74,11 +87,36 @@ export class ForgotPasswordComponent  implements OnInit, OnDestroy {
           this.siteName = refreshed;
           this.forgotPasswordData.tenantName = refreshed;
           this.isPrajayatna = refreshed === 'Prajayatna';
+          this.maybeAutoSendOtpFromLogin();
         }
       }, 300);
     }
 
+    // Pre-fill identifier from Login when user came via Forgot Password with email/phone already entered (all tenants)
+    const state = this.loginState || (history.state || {}) as { email?: string; phoneNumber?: string; identifierType?: string };
+    if (state.identifierType !== undefined && (state.email !== undefined || state.phoneNumber !== undefined)) {
+      this.forgotPasswordData.email = (state.email || '').trim();
+      this.forgotPasswordData.phoneNumber = (state.phoneNumber || '').trim();
+      this.forgotPasswordType = (state.identifierType === 'phone' ? 'phone' : 'email') as 'email' | 'phone';
+      this.identifierPreFilledFromLogin = true;
+    }
+
+    // Prajayatna + from Login: send OTP immediately (email or phone per user’s login choice)
+    setTimeout(() => this.maybeAutoSendOtpFromLogin(), 0);
+    setTimeout(() => this.maybeAutoSendOtpFromLogin(), 400);
+
     window.addEventListener('storage', this.onStorageChange);
+  }
+
+  /**
+   * When user opened Forgot Password from Login with email/phone already entered, send OTP without an extra tap.
+   */
+  private maybeAutoSendOtpFromLogin(): void {
+    if (!this.identifierPreFilledFromLogin) return;
+    if (this.siteName !== 'Prajayatna') return;
+    if (this.forgotStep !== 'identifier') return;
+    if (this.sendOtpLoading) return;
+    void this.sendOtp();
   }
 
   private onStorageChange = (event: StorageEvent) => {
@@ -101,12 +139,12 @@ export class ForgotPasswordComponent  implements OnInit, OnDestroy {
   }
 
   togglePasswordVisibility(type: 'new' | 'confirm') {
-  if (type === 'new') {
-    this.showNewPassword = !this.showNewPassword;
-  } else {
-    this.showConfirmPassword = !this.showConfirmPassword;
+    if (type === 'new') {
+      this.showNewPassword = !this.showNewPassword;
+    } else {
+      this.showConfirmPassword = !this.showConfirmPassword;
+    }
   }
-}
 
 checkPasswordMatch() {
   const { newPassword, confirmNewPassword } = this.forgotPasswordData;
@@ -136,37 +174,45 @@ checkPasswordMatch() {
   }
 
   async sendOtp() {
-    if (!this.forgotPasswordData.tenantName) {
-      const latest = sessionStorage.getItem('siteName') || '';
-      this.forgotPasswordData.tenantName = latest;
-      this.siteName = latest;
-      this.isPrajayatna = latest === 'Prajayatna';
-    }
-    await this.refreshApiUrl();
-    const payload = { ...this.getIdentifierPayload(), purpose: 'forgot_password' as const };
+    if (this.sendOtpLoading) return;
+    this.apiErrorMessage = '';
     this.sendOtpLoading = true;
-    this.http.post<{ message?: string; expiresInSeconds?: number }>(`${this.apiUrl}auth/send-otp`, payload).subscribe({
-      next: (res) => {
-        this.sendOtpLoading = false;
-        this.forgotStep = 'otp';
-        this.otpValue = '';
-        this.otpExpiresInSeconds = res?.expiresInSeconds ?? 600;
-        this.otpCountdown = this.otpExpiresInSeconds;
-        this.startOtpCountdown();
-        this.startResendCooldown(60);
-        this.presentToast('OTP sent to your ' + (this.forgotPasswordType === 'phone' ? 'phone' : 'email'), 'success');
-      },
-      error: (err) => {
-        this.sendOtpLoading = false;
-        this.apiErrorMessage = err?.error?.message || 'Failed to send OTP.';
-        if (err?.status === 429) {
-          this.startResendCooldown(err?.error?.retryAfterSeconds ?? 60);
-          this.presentToast(this.apiErrorMessage, 'warning');
-        } else {
-          this.presentToast(this.apiErrorMessage, 'danger');
-        }
+    try {
+      if (!this.forgotPasswordData.tenantName) {
+        const latest = sessionStorage.getItem('siteName') || '';
+        this.forgotPasswordData.tenantName = latest;
+        this.siteName = latest;
+        this.isPrajayatna = latest === 'Prajayatna';
       }
-    });
+      await this.refreshApiUrl();
+      const payload = { ...this.getIdentifierPayload(), purpose: 'forgot_password' as const };
+      this.http.post<{ message?: string; expiresInSeconds?: number }>(`${this.apiUrl}auth/send-otp`, payload).subscribe({
+        next: (res) => {
+          this.sendOtpLoading = false;
+          this.forgotStep = 'otp';
+          this.otpValue = '';
+          this.otpExpiresInSeconds = res?.expiresInSeconds ?? 600;
+          this.otpCountdown = this.otpExpiresInSeconds;
+          this.startOtpCountdown();
+          this.startResendCooldown(60);
+          this.presentToast('OTP sent to your ' + (this.forgotPasswordType === 'phone' ? 'phone' : 'email'), 'success');
+        },
+        error: (err) => {
+          this.sendOtpLoading = false;
+          this.apiErrorMessage = err?.error?.message || 'Failed to send OTP.';
+          if (err?.status === 429) {
+            this.startResendCooldown(err?.error?.retryAfterSeconds ?? 60);
+            this.presentToast(this.apiErrorMessage, 'warning');
+          } else {
+            this.presentToast(this.apiErrorMessage, 'danger');
+          }
+        }
+      });
+    } catch {
+      this.sendOtpLoading = false;
+      this.apiErrorMessage = 'Failed to send OTP. Please try again.';
+      this.presentToast(this.apiErrorMessage, 'danger');
+    }
   }
 
   private startOtpCountdown(): void {
@@ -191,13 +237,18 @@ checkPasswordMatch() {
     this.sendOtp();
   }
 
-  verifyOtpThenReset() {
-    if (this.passwordMismatch) return;
+  /** Prajayatna: Verify OTP only; on success go to newPassword step (separate screen). */
+  verifyOtpOnly() {
     this.apiErrorMessage = '';
     const payload: any = { ...this.getIdentifierPayload(), purpose: 'forgot_password', otp: this.otpValue.trim() };
     this.verifyAndResetLoading = true;
-    this.http.post(`${this.apiUrl}auth/verify-otp`, payload).subscribe({
-      next: () => this.doChangePassword(),
+    this.http.post<{ message?: string; verified?: boolean }>(`${this.apiUrl}auth/verify-otp`, payload).subscribe({
+      next: () => {
+        this.verifyAndResetLoading = false;
+        this.forgotStep = 'newPassword';
+        this.otpValue = '';
+        this.presentToast('OTP verified. Set your new password.', 'success');
+      },
       error: (err) => {
         this.verifyAndResetLoading = false;
         this.apiErrorMessage = err?.error?.message || 'Invalid or expired OTP.';
@@ -234,7 +285,6 @@ checkPasswordMatch() {
   }
 
   async onSubmitForgotPassword() {
-    if (this.passwordMismatch && this.forgotStep === 'otp') return;
     if (!this.forgotPasswordData.tenantName) {
       const latest = sessionStorage.getItem('siteName') || '';
       this.forgotPasswordData.tenantName = latest;
@@ -247,7 +297,13 @@ checkPasswordMatch() {
         this.sendOtp();
         return;
       }
-      this.verifyOtpThenReset();
+      if (this.forgotStep === 'otp') {
+        this.verifyOtpOnly();
+        return;
+      }
+      // forgotStep === 'newPassword'
+      if (this.passwordMismatch) return;
+      this.doChangePassword();
       return;
     }
     this.doChangePassword();
@@ -262,6 +318,12 @@ checkPasswordMatch() {
     this.resendCooldownSeconds = 0;
   }
 
+  /** Prajayatna: from newPassword step back to OTP step. */
+  backToOtp() {
+    this.forgotStep = 'otp';
+    this.apiErrorMessage = '';
+  }
+
   resetForm() {
     this.forgotPasswordData = {
       phoneNumber: '',
@@ -272,6 +334,10 @@ checkPasswordMatch() {
     };
     this.forgotStep = 'identifier';
     this.otpValue = '';
+    this.identifierPreFilledFromLogin = false;
+    if (this.otpCountdownInterval) clearInterval(this.otpCountdownInterval);
+    if (this.resendCooldownInterval) clearInterval(this.resendCooldownInterval);
+    this.resendCooldownSeconds = 0;
   }
 
   switchToLogin() {

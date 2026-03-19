@@ -32,6 +32,8 @@ export class LoginComponent  implements OnInit, OnDestroy {
   private resendCooldownInterval: any;
   /** Inline error message from API (cleared on success or when user retries) */
   apiErrorMessage = '';
+  /** Validation message when Forgot Password is clicked without Email/Mobile */
+  forgotPasswordValidationMessage = '';
 
   showPassword = false;
 
@@ -281,8 +283,51 @@ export class LoginComponent  implements OnInit, OnDestroy {
     this.router.navigate(['/registration']);
   }
 
-  switchToForgotPassword(){
-    this.router.navigate(['/forgot-password'])
+  /** Validates email format. */
+  private isValidEmail(value: string): boolean {
+    return /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test((value || '').trim());
+  }
+
+  /** Validates 10-digit mobile number. */
+  private isValidPhone(value: string): boolean {
+    return /^[0-9]{10}$/.test((value || '').replace(/\s/g, ''));
+  }
+
+  switchToForgotPassword() {
+    this.forgotPasswordValidationMessage = '';
+    // Prajayatna: require email/phone and validate before navigating
+    if (this.siteName === 'Prajayatna') {
+      const usePhone = this.loginType === 'phone';
+      const email = (this.userLoginData.email || '').trim();
+      const phone = (this.userLoginData.phoneNumber || '').trim();
+      const identifier = usePhone ? phone : email;
+      if (!identifier) {
+        this.forgotPasswordValidationMessage = 'Please enter an Email or Number';
+        return;
+      }
+      if (usePhone && !this.isValidPhone(phone)) {
+        this.forgotPasswordValidationMessage = 'Please enter a valid 10-digit Phone Number';
+        return;
+      }
+      if (!usePhone && !this.isValidEmail(email)) {
+        this.forgotPasswordValidationMessage = 'Please enter a valid Email address';
+        return;
+      }
+    }
+    // All tenants: pass email/phone in state when entered so Forgot Password doesn't ask again
+    const email = (this.userLoginData.email || '').trim();
+    const phone = (this.userLoginData.phoneNumber || '').trim();
+    if (email || phone) {
+      this.router.navigate(['/forgot-password'], {
+        state: {
+          email: this.userLoginData.email.trim(),
+          phoneNumber: this.userLoginData.phoneNumber.trim(),
+          identifierType: this.siteName === 'Prajayatna' ? this.loginType : 'email'
+        }
+      });
+    } else {
+      this.router.navigate(['/forgot-password']);
+    }
   }
 
 }
