@@ -50,7 +50,8 @@
         <div class="form-group" *ngIf="!isPrajayatna || loginType === 'email'">
           <label>Email <sup class="mandatory-sign">*</sup></label>
           <input type="email" name="email" class="form-control" [(ngModel)]="userLoginData.email" required
-            pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" #email="ngModel">
+            pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" #email="ngModel"
+            (input)="forgotPasswordValidationMessage = ''">
           <div *ngIf="email.invalid && email.touched" class="error">
             <span *ngIf="email.errors?.['required']">Email is required</span>
             <span *ngIf="email.errors?.['pattern']">Enter a valid email address</span>
@@ -61,7 +62,8 @@
         <div class="form-group" *ngIf="isPrajayatna && loginType === 'phone'">
           <label>Phone Number <sup class="mandatory-sign">*</sup></label>
           <input type="text" name="phoneNumber" class="form-control" [(ngModel)]="userLoginData.phoneNumber" required
-            pattern="^[0-9]{10}$" #phoneNumber="ngModel">
+            pattern="^[0-9]{10}$" #phoneNumber="ngModel"
+            (input)="forgotPasswordValidationMessage = ''">
           <div *ngIf="phoneNumber.invalid && phoneNumber.touched" class="error">
             <span *ngIf="phoneNumber.errors?.['required']">Phone Number is required</span>
             <span *ngIf="phoneNumber.errors?.['pattern']">Enter a valid 10-digit Phone Number</span>
@@ -114,6 +116,7 @@
         </button>
         <p (click)="backToCredentials()" class="forgot-password" style="cursor:pointer; margin-top:8px;">Back to login page</p>
       </ng-container>
+      <p *ngIf="isPrajayatna && forgotPasswordValidationMessage" class="error">{{ forgotPasswordValidationMessage }}</p>
       <p *ngIf="!isPrajayatna || loginStep === 'credentials'" class="forgot-password" (click)="switchToForgotPassword()"> Forgot Password ?</p>
 
       <p *ngIf="!isPrajayatna || loginStep === 'credentials'" (click)="switchToRegistration()" style="cursor:pointer; margin-top:12px;">
