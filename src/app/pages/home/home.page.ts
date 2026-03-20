@@ -18,7 +18,7 @@ import confetti from 'canvas-confetti';
 import { NativeAudio } from '@capacitor-community/native-audio';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
-import { App } from '@capacitor/app';
+import { UtilService } from 'src/app/services/util.service';
 import { LocalNotificationSchema } from '@capacitor/local-notifications';
 import { AppUpdateService } from 'src/app/services/app-update/app-update.service';
 import { ConfigVariables } from "../../config";
@@ -71,7 +71,8 @@ export class HomePage implements OnInit, OnTabViewWillEnter, OnDestroy {
     private botMessageApiService: BotApiService,
     private lcoalNotifService: LocalNotificationService,
     private appUpdateService: AppUpdateService,
-    private confirmService: ConfirmService) {
+    private confirmService: ConfirmService,
+    private utilService: UtilService) {
 
       ConfigVariables.then(config => {
         this.configVariables = config;
@@ -91,7 +92,7 @@ export class HomePage implements OnInit, OnTabViewWillEnter, OnDestroy {
         console.error('Failed to load configuration:', error);
       });
       
-      App.getInfo().then(info => {this.appName = info.name});
+      this.utilService.getAppInfo().then((info) => { this.appName = info.name; });
     this.configContents = [];
     this.contentList = [];
     this.networkChangeSub = this.networkService.networkConnection$.subscribe(ev => {

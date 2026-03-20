@@ -11,6 +11,8 @@ import { DJPTelemetry } from './models/telemetry';
 import { TelemetryDecorator } from './models/telemetry.decorator';
 import { v4 as uuidv4 } from "uuid";
 import { ApiService } from '../api/api.service';
+import { Capacitor } from '@capacitor/core';
+import { config } from 'configuration/environment.prod';
 
 declare const window: any;
 
@@ -114,6 +116,23 @@ export class TelemetryService {
     }
 
     sync(): Observable<boolean> {
+        // Browser blocks cross-origin POST without CORS; skip sync on web when telemetry host ≠ app origin
+        if (this.shouldSkipTelemetryNetworkSync()) {
+            return of(true);
+        }
         return new TelemetrySyncHandler(this.dbService, this.apiService).handle(this.deviceId);
+    }
+
+    /** Avoid CORS console noise and failed requests when API does not allow the PWA origin (e.g. prajayatna.in → school-api-prod). */
+    private shouldSkipTelemetryNetworkSync(): boolean {
+        if (Capacitor.getPlatform() !== 'web') {
+            return false;
+        }
+        try {
+            const telemetryOrigin = new URL(config.api.TELEMETRY_BASE_URL).origin;
+            return telemetryOrigin !== window.location.origin;
+        } catch {
+            return false;
+        }
     }
 }   
