@@ -28,18 +28,23 @@ export class UtilService {
     const deviceId: DeviceId = await Device.getId()
     return SHA1(deviceId.identifier).toString();
   }
+  /**
+   * App.getInfo() throws "Not implemented on web" in Capacitor — use this everywhere instead of App.getInfo().
+   */
   async getAppInfo(): Promise<AppInfo> {
     if (Capacitor.getPlatform() === 'web') {
-      // Provide a mock response for the web platform
+      const title =
+        typeof document !== 'undefined' && document.title
+          ? document.title.split('|')[0].trim()
+          : 'Web App';
       return {
-        name: 'Web App',
-        build: '1.0.0',
-      } as AppInfo;
-    } else {
-      // Call the native implementation
-      return await App.getInfo();
+        name: title,
+        id: 'web',
+        build: '0',
+        version: '1.0.0',
+      };
     }
-    // return await App.getInfo();
+    return App.getInfo();
   }
   
 

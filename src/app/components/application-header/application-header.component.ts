@@ -2,7 +2,6 @@ import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angu
 import { AppHeaderService, UtilService } from '../../../app/services';
 import { MenuController, ModalController } from '@ionic/angular';
 import { TelemetryGeneratorService } from 'src/app/services/telemetry/telemetry.generator.service';
-import { App } from '@capacitor/app';
 import { ConfigVariables } from '../../config';
 import { QrcodePopupComponent } from '../qrcode-popup/qrcode-popup.component';
 import { StorageService } from 'src/app/services';
@@ -48,10 +47,10 @@ export class ApplicationHeaderComponent implements OnInit, OnDestroy {
     private router: Router,
     private authToken: AuthTokenService
     ) {
-      App.getInfo().then(val => {
-        this.appVersion = `v${val.version}.${val.build}`
-        this.appName = val.name
-      })
+      this.utilService.getAppInfo().then((val) => {
+        this.appVersion = `v${val.version}.${val.build}`;
+        this.appName = val.name;
+      });
 
       ConfigVariables.then(config => {
         this.configVariables = config;

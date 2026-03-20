@@ -2,15 +2,17 @@ import { Injectable } from '@angular/core';
 import { Animation, StatusBar, Style } from '@capacitor/status-bar';
 import { Subject } from 'rxjs/internal/Subject';
 import { HeaderConfig } from '../appConstants';
-import { App } from '@capacitor/app';
+import { UtilService } from './util.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AppHeaderService {
   appName: string = ''
-  constructor() { 
-    App.getInfo().then(info => {this.appName = info.name});
+  constructor(private utilService: UtilService) {
+    this.utilService.getAppInfo().then((info) => {
+      this.appName = info.name;
+    });
   }
   private headerEvent = new Subject<any>();
   headerEventEmitted$ = this.headerEvent.asObservable();
