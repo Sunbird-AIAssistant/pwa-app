@@ -10,6 +10,7 @@ import { ApiModule } from 'src/app/services/api/api.module';
 import { Config } from 'src/app/appConstants';
 import { LocalNotificationSchema } from '@capacitor/local-notifications';
 import { ConfigVariables } from "../../config";
+import { AuthTokenService } from 'src/app/services/auth-token.service';
 
 @Component({
   selector: 'app-splash',
@@ -28,7 +29,8 @@ export class SplashPage implements OnInit {
     private configService: ConfigService,
     private translate: TranslateService,
     private apiService: ApiService,
-    private lcoalNotifService: LocalNotificationService) {
+    private lcoalNotifService: LocalNotificationService,
+    private authToken: AuthTokenService) {
       this.cachingService.initStorage();
     }
     
@@ -54,12 +56,12 @@ export class SplashPage implements OnInit {
       sessionStorage.setItem('siteName', config?.siteName || '');
     } catch {}
 
-    setTimeout(async () => {
+    setTimeout(() => {
       this.startTelemetry()
       const siteName = (sessionStorage.getItem('siteName') || this.configVariables?.siteName || '').trim();
-      const isLoggedIn = await this.storage.getData('authToken');
       if (siteName) {
-        this.router.navigate(['/login']);
+        // Login lasts as long as the token (30 days): skip the login page while it is still valid
+        this.router.navigate([this.authToken.hasValidSession(siteName) ? '/tabs/home' : '/login']);
       } else {
         this.router.navigate(['/tabs/home']);
       }
